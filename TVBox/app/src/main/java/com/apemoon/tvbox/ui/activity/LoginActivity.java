@@ -33,7 +33,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
 
     private String mAccount;
     private String mPassword;
-    private LoginPresenter
+    private LoginPresenter mLoginPresenter;
 
     ;
 
@@ -83,6 +83,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                     view.setScaleX(1.0f);
                     view.setScaleY(1.0f);
                 }
+
             }
         });
     }
