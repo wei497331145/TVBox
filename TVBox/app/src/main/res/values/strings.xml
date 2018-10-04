@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">教育专区</string>
+
+    <!--主界面底部tab文字-->
+    <string-array name="main_text">
+        <item>首页</item>
+        <item>公告通知</item>
+        <item>我的课堂</item>
+        <item>我的班级</item>
+        <item>校园风采</item>
+        <item>传统文化</item>
+        <item>个人中心</item>
+    </string-array>
+
+    <!--BaseRecyclerViewAdapterHelper-->
+    <string name="load_end"></string>
+    <string name="load_failed">加载失败，请点我重试</string>
+    <string name="loading">正在加载中...</string>
+
+    <string name="back">返回</string>
+    <string name="logout">退出登录</string>
+    <string name="switch_account">切换账号</string>
+
+    <string name="login_account">登录账号</string>
+    <string name="account_hint">请输入账号</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="login">登录</string>
+
+    <string name="switch_school">切换学校</string>
+    <string name="class_schedule">班级课表</string>
+    <string name="class_performance">课堂表现</string>
+    <string name="class_task">课堂作业</string>
+    <string name="my_achievement">我的成绩</string>
+    <string name="class_album">班级相册</string>
+    <string name="class_curriculum">精品课程</string>
+    <string name="news_information">新闻资讯</string>
+
+    <string name="main">首页</string>
+    <string name="notice_of_announcement">公告通知</string>
+    <string name="my_class">我的课堂</string>
+    <string name="my_class_class">我的班级</string>
+    <string name="campus_elegant_demeanor">校园风采</string>
+    <string name="traditional_culture">传统文化</string>
+    <string name="personal_center">个人中心</string>
+
+
+
+
+</resources>

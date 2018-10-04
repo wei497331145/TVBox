@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_main_tab"
+    android:layout_marginTop="@dimen/dp_20"
+    android:layout_marginLeft="@dimen/dp_30"
+    android:layout_marginRight="@dimen/dp_30"
+    android:layout_height="@dimen/dp_45"
+    tools:showIn="@layout/activity_main">
+
+    <TextView
+        android:id="@+id/tv_main"
+        android:enabled="true"
+        android:text="@string/main"
+        style="@style/tv_main_tab" />
+
+    <TextView
+        android:id="@+id/tv_notice"
+        android:text="@string/notice_of_announcement"
+        style="@style/tv_main_tab" />
+
+    <TextView
+        android:id="@+id/tv_class"
+        android:text="@string/my_class"
+        style="@style/tv_main_tab" />
+
+    <TextView
+        android:id="@+id/tv_class_class"
+        android:text="@string/my_class_class"
+        style="@style/tv_main_tab" />
+
+    <TextView
+        android:id="@+id/tv_elegant_demeanor"
+        android:text="@string/campus_elegant_demeanor"
+        style="@style/tv_main_tab" />
+
+    <TextView
+        android:id="@+id/tv_traditional_culture"
+        android:text="@string/traditional_culture"
+        style="@style/tv_main_tab" />
+
+    <TextView
+        android:id="@+id/tv_personal"
+        android:text="@string/personal_center"
+        style="@style/tv_main_tab" />
+
+</LinearLayout>

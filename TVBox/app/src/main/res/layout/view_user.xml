@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_30"
+    android:layout_marginRight="@dimen/dp_30"
+    android:layout_marginTop="@dimen/dp_20"
+    tools:showIn="@layout/activity_setting">
+
+    <TextView
+        android:id="@+id/tv_school_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/iv_switch_school"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_centerVertical="true"
+        android:focusable="true"
+        android:src="@drawable/bg_school_switch_selector"
+
+        android:scaleType="centerCrop"
+        android:layout_toRightOf="@+id/tv_school_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_17"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_17"
+            android:layout_marginRight="@dimen/dp_15"
+            android:background="@color/font_66FFFFFF"></View>
+
+        <TextView
+            android:id="@+id/tv_grade_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:drawableLeft="@drawable/school_class"
+            android:drawablePadding="@dimen/dp_11"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:focusable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:src="@drawable/bg_set_selector" />
+
+    </LinearLayout>
+
+</RelativeLayout>

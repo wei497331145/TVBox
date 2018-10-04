@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4993FA</color>
+    <color name="colorPrimaryDark">#4993FA</color>
+    <color name="colorAccent">#4993FA</color>
+
+    <color name="font_33FFFFFF">#33FFFFFF</color>
+    <color name="font_66FFFFFF">#66FFFFFF</color>
+    <color name="font_CCFFFFFF">#CCFFFFFF</color>
+    <color name="font_99FFFFFF">#99FFFFFF</color>
+    <color name="font_CC00A4F8">#CC00A4F8</color>
+    <color name="font_3300A9FF">#3300A9FF</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="view_line">#FFE6E6E6</color>
+    <color name="font_FF999999">#FF999999</color>
+    <color name="font_FF006599">#FF006599</color>
+    <color name="font_FF0072AC">#FF0072AC</color>
+    <color name="font_FF0080C3">#FF0080C3</color>
+    <color name="font_FF162543">#FF162543</color>
+    <color name="font_FF00A4F8">#FF00A4F8</color>
+
+    <color name="font_FF4993FA">#FF4993FA</color>
+    <color name="font_FFFFBA00">#FFFFBA00</color>
+    <color name="font_FFFD3B3B">#FFFD3B3B</color>
+    <color name="font_FF743AEB">#FF743AEB</color>
+    <color name="font_FF2B68F2">#FF2B68F2</color>
+
+
+    <color name="font_FF0095E3">#FF0095E3</color>
+
+
+
+
+
+</resources>
