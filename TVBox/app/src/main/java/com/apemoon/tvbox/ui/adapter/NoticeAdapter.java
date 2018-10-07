@@ -1,9 +1,12 @@
 package com.apemoon.tvbox.ui.adapter;
 
+import android.support.annotation.Nullable;
 import android.text.Html;
+import android.view.View;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
+import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -25,8 +28,21 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
             helper.setText(R.id.tv_title, item.getTitle());
             helper.setText(R.id.tv_content, (Html.fromHtml(item.getContent())).toString());
             helper.setText(R.id.tv_time, DateTimeUtil.getStrTime(item.getCreateTime()));
+            helper.setVisible(R.id.v_dot_read,"0".endsWith(item.getIsRead()));
         }
-    }
 
+        helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+//                if(hasFocus){
+//                    view.setBackgroundResource(R.drawable.bg_notice_normal);
+//                }else{
+//                    view.setBackgroundResource(R.drawable.bg_notice_selected);
+//                }
+                AnimationUtil.setTextAnimation(view,hasFocus,1.01f,1.01f,1.0f,1.0f);
+
+            }
+        });
+    }
 
 }

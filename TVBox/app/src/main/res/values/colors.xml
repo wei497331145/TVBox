@@ -10,9 +10,11 @@
     <color name="font_99FFFFFF">#99FFFFFF</color>
     <color name="font_CC00A4F8">#CC00A4F8</color>
     <color name="font_3300A9FF">#3300A9FF</color>
+    <color name="font_3300C6FF">#ff00C6FF</color>
 
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="red">#FFFF0000</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="view_line">#FFE6E6E6</color>
     <color name="font_FF999999">#FF999999</color>
@@ -21,7 +23,7 @@
     <color name="font_FF0080C3">#FF0080C3</color>
     <color name="font_FF162543">#FF162543</color>
     <color name="font_FF00A4F8">#FF00A4F8</color>
-
+    <color name="font_FF00CCFF">#FF00CCFF</color>
     <color name="font_FF4993FA">#FF4993FA</color>
     <color name="font_FFFFBA00">#FFFFBA00</color>
     <color name="font_FFFD3B3B">#FFFD3B3B</color>

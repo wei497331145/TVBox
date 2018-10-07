@@ -4,6 +4,8 @@ import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.NetUrl;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
+import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
+import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
 
 import java.util.Map;
 import io.reactivex.Observable;
@@ -35,8 +37,29 @@ public interface INetService {
     @POST(NetUrl.NOTICE_RECEIVENOTICELIST)
     Observable<HttpResultBody<ReceiveNoticeListEntity>> receiveNoticeListCall(@FieldMap Map<String, String> paras);
 
+    /**
+     * 设置公告通知为已读
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.NOTICE_SETNOTEREADED)
+    Observable<HttpResultBody<ReceiveNoticeListEntity>> setNoticeRead(@FieldMap Map<String, String> paras);
 
 
+    //===========================  个人中心的接口 ==================================
+    /**
+     * 获取个人用户信息
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_INFO)
+    Observable<HttpResultBody<UserInfoEntity>> getUserInfo(@FieldMap Map<String, String> paras);
+
+
+    /**
+     * 获取奖惩，评价，教师信息
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_INFO)
+    Observable<HttpResultBody<UserRecordInfoEntity>> getUserRecords(@FieldMap Map<String, String> paras);
 
 }
 

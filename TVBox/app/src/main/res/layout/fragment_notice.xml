@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <com.skw.library.TVRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="@dimen/dp_0"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dp_30"
         android:layout_weight="4"
+        android:descendantFocusability="afterDescendants"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <LinearLayout

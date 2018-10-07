@@ -33,8 +33,12 @@ public class NetUrl {
 
     //==============================通知的接口========================================================
     public static final String NOTICE_RECEIVENOTICELIST = BASE_URL + "notice/receiveNoticeList";//查询我接受的公告通知
+    public static final String NOTICE_SETNOTEREADED = BASE_URL + "notice/readNotice";//设置同志公告为已读
 
+    //==============================个人中心接口========================================================
+    public static final String USER_INFO = BASE_URL + "user/getUserInfo";//获取用户个人信息
 
+    public static final String USER_STUDY_INFO = BASE_URL + "user/getInfoRecords";//获取奖惩，评价，教师信息
 
 
 

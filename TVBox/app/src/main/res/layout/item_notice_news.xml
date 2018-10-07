@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_notice"
     android:orientation="vertical"
     android:focusable="true"
     android:background="@drawable/bg_notice_selector"
     android:layout_marginBottom="@dimen/dp_10"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_title"
         android:layout_marginTop="@dimen/dp_20"
@@ -18,7 +21,15 @@
         android:ellipsize="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+        <View
+            android:id="@+id/v_dot_read"
+            android:layout_width="@dimen/dp_5"
+            android:layout_height="@dimen/dp_5"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/dp_16"
+            android:visibility="gone"
+            android:background="@drawable/dot_red"/>
+    </RelativeLayout>
     <TextView
         android:id="@+id/tv_content"
         android:layout_marginTop="@dimen/dp_18"

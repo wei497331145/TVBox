@@ -12,4 +12,8 @@ public interface IReceiveNoticeView {
     void getReceiveNoticeListSuccess(ReceiveNoticeListEntity receiveNoticeListEntity);
 
     void getReceiveNoticeListFail();
+
+    void setNoticeReadSuccess();
+
+    void setNoticeReadFail();
 }

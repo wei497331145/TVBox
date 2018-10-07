@@ -1,16 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/dp_10"
+        android:background="@color/font_FF0080C3"
+        android:layout_weight="3">
+        <TextView
+            android:id="@+id/tv_base_info"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:layout_weight="1"
+            android:background="@drawable/bg_bl_tv_selector"
+            android:gravity="center"
+            android:focusable="true"
+            android:text="@string/class_schedule"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15" />
+        <TextView
+            android:id="@+id/tv_sanction_info"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:layout_weight="1"
+            android:background="@drawable/bg_bl_tv_selector"
+            android:gravity="center"
+            android:focusable="true"
+            android:text="@string/class_schedule"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15" />
 
-    <TextView
-        android:layout_centerInParent="true"
-        android:text="@string/personal_center"
-        android:textSize="@dimen/sp_20"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_judge_info"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:layout_weight="1"
+            android:background="@drawable/bg_bl_tv_selector"
+            android:gravity="center"
+            android:focusable="true"
+            android:text="@string/class_schedule"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:layout_weight="2"></View>
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_web"
+            android:focusable="false"
+            android:orientation="vertical"
+            android:background="@drawable/bg_web_normal"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_weight="14">
 
-</RelativeLayout>
+        <include layout="@layout/view_personal_md1"/>
+
+        </LinearLayout>
+
+
+</LinearLayout>
 
 

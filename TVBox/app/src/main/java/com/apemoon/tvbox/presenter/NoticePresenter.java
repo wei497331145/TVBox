@@ -32,7 +32,7 @@ public class NoticePresenter extends RxBasePresenter {
     }
 
     /**
-     * 用户登录接口
+     * 获取公告列表
      */
     public void receiveNoticeList(String pageNo,String size){
         Map<String, String> paras = RequestUtil.createMap();
@@ -60,6 +60,33 @@ public class NoticePresenter extends RxBasePresenter {
                 });
     }
 
+    /**
+     * 设置公告为已读
+     */
+    public void setNoteReaded(String noticeId){
+        Map<String, String> paras = RequestUtil.createMap();
+        paras.put("userId", PreferenceUtil.getString(ConstantUtil.USER_ID,""));
+        paras.put("userType", PreferenceUtil.getString(ConstantUtil.USER_TYPE,""));
+        paras.put("noticeId", noticeId);
+        addDisposable(mDataManager.getNetService().setNoticeRead(paras),
+                new ProgressObserver<HttpResultBody<ReceiveNoticeListEntity>>(mContext, true) {
+
+                    @Override
+                    public void doNext(HttpResultBody<ReceiveNoticeListEntity> httpResultBody) {
+                        if (mIReceiveNoticeView != null && TextUtils.equals(httpResultBody.code,"0000")) {
+                            mIReceiveNoticeView.setNoticeReadSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        if (mIReceiveNoticeView != null) {
+                            mIReceiveNoticeView.setNoticeReadFail();
+                        }
+                    }
+                });
+    }
 
 
 

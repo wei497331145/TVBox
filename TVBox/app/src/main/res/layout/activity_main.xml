@@ -16,6 +16,7 @@
         <com.apemoon.tvbox.ui.view.MainTabView
             android:id="@+id/main_tab"
             android:focusable="true"
+            android:background="@drawable/bg_bl_tv_selector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

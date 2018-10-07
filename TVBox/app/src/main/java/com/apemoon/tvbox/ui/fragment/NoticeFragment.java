@@ -22,6 +22,7 @@ import com.apemoon.tvbox.presenter.NoticePresenter;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
 import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.skw.library.TVRecyclerView;
 
 import java.io.InputStream;
 import java.util.List;
@@ -37,9 +38,9 @@ import static java.lang.System.in;
  * des：公告通知的碎片
  */
 
-public class NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView {
+public class  NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView {
     @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    TVRecyclerView mRecyclerView;
     @BindView(R.id.web_view)
     WebView mWebView;
     @BindView(R.id.ll_web)
@@ -49,6 +50,9 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     private NoticeAdapter mNoticeAdapter;
     private NoticePresenter mNoticePresenter;
+
+    List<ReceiveNoticeListEntity.NoticeListBean> noticeList = null;
+
 
     @Override
     public Boolean isLoadMore() {
@@ -110,6 +114,11 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                 if (noticeListBean != null) {
                     mTvTitle.setText(noticeListBean.getTitle());
                     mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
+                    mNoticePresenter.setNoteReaded("" + noticeListBean.getId());
+                    noticeListBean.setIsRead("1");
+                    noticeList.remove(position);
+                    noticeList.add(position, noticeListBean);
+                    mNoticeAdapter.addData(noticeList);
                 }
             }
         });
@@ -173,7 +182,7 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     @Override
     public void getReceiveNoticeListSuccess(ReceiveNoticeListEntity receiveNoticeListEntity) {
         if (receiveNoticeListEntity != null) {
-            List<ReceiveNoticeListEntity.NoticeListBean> noticeList = receiveNoticeListEntity.getNoticeList();
+            noticeList = receiveNoticeListEntity.getNoticeList();
             if (noticeList != null) {
                 setPageInfo(noticeList.size());
                 switch (getRequestType()) {
@@ -183,6 +192,7 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                             if (noticeList != null) {
                                 mTvTitle.setText(noticeListBean.getTitle());
                                 mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
+                                mRecyclerView.setSelected(true);
                             }
                         }
                         mNoticeAdapter.setNewData(noticeList);
@@ -200,7 +210,15 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     }
 
+    @Override
+    public void setNoticeReadSuccess() {
 
+    }
+
+    @Override
+    public void setNoticeReadFail() {
+//        requestNew();
+    }
 
 
 }

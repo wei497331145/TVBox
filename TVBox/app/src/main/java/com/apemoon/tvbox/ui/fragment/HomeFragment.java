@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseFragment;
@@ -33,11 +34,11 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.iv_album)
     ImageView mIvAlbum;
     @BindView(R.id.cv_album)
-    CardView mCvAlbum;
+    RelativeLayout mCvAlbum;
     @BindView(R.id.iv_curriculum)
     ImageView mIvCurriculum;
     @BindView(R.id.cv_curriculum)
-    CardView mCvCurriculum;
+    RelativeLayout mCvCurriculum;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
