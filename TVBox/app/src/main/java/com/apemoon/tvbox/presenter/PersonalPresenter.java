@@ -6,9 +6,9 @@ import android.text.TextUtils;
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.rx.ProgressObserver;
 import com.apemoon.tvbox.base.rx.RxBasePresenter;
-import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
-import com.apemoon.tvbox.interfaces.notice.IReceiveNoticeView;
-import com.apemoon.tvbox.interfaces.personal.IPersonalView;
+import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
+import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
+import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.apemoon.tvbox.utils.RequestUtil;
@@ -36,11 +36,11 @@ public class PersonalPresenter extends RxBasePresenter {
         Map<String, String> paras = RequestUtil.createMap();
         paras.put("userId", PreferenceUtil.getString(ConstantUtil.USER_ID,""));
         paras.put("userType", PreferenceUtil.getString(ConstantUtil.USER_TYPE,""));
-        addDisposable(mDataManager.getNetService().receiveNoticeListCall(paras),
-                new ProgressObserver<HttpResultBody<ReceiveNoticeListEntity>>(mContext, true) {
+        addDisposable(mDataManager.getNetService().getUserInfo(paras),
+                new ProgressObserver<HttpResultBody<UserInfoEntity>>(mContext, true) {
 
                     @Override
-                    public void doNext(HttpResultBody<ReceiveNoticeListEntity> httpResultBody) {
+                    public void doNext(HttpResultBody<UserInfoEntity> httpResultBody) {
                         if (mIPersaonlView != null && TextUtils.equals(httpResultBody.code,"0000")) {
                             mIPersaonlView.receivePersonalInfoSuccess(httpResultBody.result);
                         }
@@ -67,13 +67,17 @@ public class PersonalPresenter extends RxBasePresenter {
         paras.put("userType", PreferenceUtil.getString(ConstantUtil.USER_TYPE,""));
         paras.put("semesterId", PreferenceUtil.getString(ConstantUtil.USER_ACCOUNT,""));
         paras.put("type", type);
-        addDisposable(mDataManager.getNetService().setNoticeRead(paras),
-                new ProgressObserver<HttpResultBody<ReceiveNoticeListEntity>>(mContext, true) {
+        addDisposable(mDataManager.getNetService().getUserRecords(paras),
+                new ProgressObserver<HttpResultBody<UserRecordInfoEntity>>(mContext, true) {
 
                     @Override
-                    public void doNext(HttpResultBody<ReceiveNoticeListEntity> httpResultBody) {
+                    public void doNext(HttpResultBody<UserRecordInfoEntity> httpResultBody) {
                         if (mIPersaonlView != null && TextUtils.equals(httpResultBody.code,"0000")) {
-                            mIPersaonlView.receiveRecordsSuccess();
+                            if("1".equals(type)) {
+                                mIPersaonlView.receiveRecords1Success(httpResultBody.result);
+                            }else if("2".equals(type)){
+                                mIPersaonlView.receiveRecords2Success(httpResultBody.result);
+                            }
                         }
                     }
 
@@ -81,7 +85,11 @@ public class PersonalPresenter extends RxBasePresenter {
                     public void onError(Throwable e) {
                         super.onError(e);
                         if (mIPersaonlView != null) {
-                            mIPersaonlView.receiveRecordsFail();
+                            if("1".equals(type)) {
+                                mIPersaonlView.receiveRecords1Fail();
+                            }else if("2".equals(type)){
+                                mIPersaonlView.receiveRecords2Fail();
+                            }
                         }
                     }
                 });

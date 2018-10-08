@@ -3,9 +3,11 @@ package com.apemoon.tvbox.interfaces.net;
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.NetUrl;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
 import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
+import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 
 import java.util.Map;
 import io.reactivex.Observable;
@@ -58,8 +60,27 @@ public interface INetService {
      * 获取奖惩，评价，教师信息
      */
     @FormUrlEncoded
-    @POST(NetUrl.USER_INFO)
+    @POST(NetUrl.USER_STUDY_INFO)
     Observable<HttpResultBody<UserRecordInfoEntity>> getUserRecords(@FieldMap Map<String, String> paras);
+
+
+    /**
+     * 获取所在班级教师信息
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_TEACHER_INFO)
+    Observable<HttpResultBody<UserTeachersEntity>> getUserTeachers(@FieldMap Map<String, String> paras);
+
+
+    //=========================== 咨询列表的接口 ==================================
+
+
+    /**
+     * 获取所在班级教师信息
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.INFORMATION_LIST)
+    Observable<HttpResultBody<InfoListEntity>> getInfoList(@FieldMap Map<String, String> paras);
 
 }
 

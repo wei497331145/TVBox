@@ -40,6 +40,14 @@ public class NetUrl {
 
     public static final String USER_STUDY_INFO = BASE_URL + "user/getInfoRecords";//获取奖惩，评价，教师信息
 
+    public static final String USER_TEACHER_INFO = BASE_URL + "user/subjectTeacher";//获取所在班级教师信息
+
+
+    //==============================个人中心接口========================================================
+    public static final String INFORMATION_LIST = BASE_URL + "information/informationList";//获取咨询列表
+
+
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.apemoon.tvbox.interfaces.notice;
+package com.apemoon.tvbox.interfaces.fragment;
 
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 

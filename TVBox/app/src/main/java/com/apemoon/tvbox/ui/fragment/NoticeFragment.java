@@ -1,12 +1,7 @@
 package com.apemoon.tvbox.ui.fragment;
 
-import android.content.res.AssetManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -17,21 +12,15 @@ import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
-import com.apemoon.tvbox.interfaces.notice.IReceiveNoticeView;
+import com.apemoon.tvbox.interfaces.fragment.IReceiveNoticeView;
 import com.apemoon.tvbox.presenter.NoticePresenter;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
-import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.skw.library.TVRecyclerView;
 
-import java.io.InputStream;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
-import static java.lang.System.in;
 
 /**
  * Created by water on 2018/8/28/028.

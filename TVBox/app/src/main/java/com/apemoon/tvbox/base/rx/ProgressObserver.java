@@ -98,6 +98,7 @@ public abstract class ProgressObserver<T> extends DisposableObserver<T> {
         switch (errorCode) {
             case "0000":
                 doNext(t);
+
                 break;
             default:
                 doNext(t);
