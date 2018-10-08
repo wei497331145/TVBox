@@ -35,6 +35,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
     }
 
+
     @Override
     protected void lazyLoadData() {
         if (mPersonalPresenter != null) {
