@@ -7,6 +7,7 @@ import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
 import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
+import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity;
 import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 
 import java.util.Map;
@@ -55,6 +56,12 @@ public interface INetService {
     @POST(NetUrl.USER_INFO)
     Observable<HttpResultBody<UserInfoEntity>> getUserInfo(@FieldMap Map<String, String> paras);
 
+    /**
+     * 获取学期信息
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_SEMSTERS_INFO)
+    Observable<HttpResultBody<UserSemstersEntity>> getSemstersInfo(@FieldMap Map<String, String> paras);
 
     /**
      * 获取奖惩，评价，教师信息

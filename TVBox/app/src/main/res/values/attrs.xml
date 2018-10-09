@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 左右对齐显示自定义属性 -->
+    <declare-styleable name="ItemLinearLayout">
+        <attr name="left_text" format="string"/>
+        <attr name="right_text" format="string"/>
+    </declare-styleable>
+</resources>

@@ -25,6 +25,20 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15" />
         <TextView
+            android:id="@+id/tv_duty_info"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:layout_weight="1"
+            android:background="@drawable/bg_bl_tv_selector"
+            android:gravity="center"
+            android:focusable="true"
+            android:text="任职信息"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15" />
+        <TextView
             android:id="@+id/tv_sanction_info"
             android:layout_marginTop="@dimen/dp_4"
             android:layout_marginLeft="@dimen/dp_4"

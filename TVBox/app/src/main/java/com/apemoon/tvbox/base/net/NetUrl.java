@@ -38,6 +38,8 @@ public class NetUrl {
     //==============================个人中心接口========================================================
     public static final String USER_INFO = BASE_URL + "user/getUserInfo";//获取用户个人信息
 
+    public static final String USER_SEMSTERS_INFO = BASE_URL + "user/getSemesterList";//获取学期信息
+
     public static final String USER_STUDY_INFO = BASE_URL + "user/getInfoRecords";//获取奖惩，评价，教师信息
 
     public static final String USER_TEACHER_INFO = BASE_URL + "user/subjectTeacher";//获取所在班级教师信息
