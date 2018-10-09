@@ -59,48 +59,86 @@ public class UserTeachersEntity implements Serializable{
                                "updateTime": null,
                                "updateUser":
  */
-
-
     private String activeState;
-        private String headImage;
-        private int address;
-        private int birthday;
+    private String address;
+    private String autograph;
+        private String birthday;
         private String census;
         private String certificate;
         private String characterC;
-        private int createTime;
+        private long createTime;
         private String createUser;
         private String degree;
-        private int dualC;
-        private String dutyId;
+        private String headImage;
+        private String hireDate;
+        private String hireState;
+        private int id;
+        private String idCard;
+        private int loginId;
+        private String name;
+        private String nation;
+        private int ofSchoolAge;
+
+        private String openId;
+        private int orgId;
+        private int page;
+        private String phone;
+
+        private String dualC;
+        private int dutyId;
+
+
         private String dutyName;
         private String education;
         private String email;
-        private int hireDate;
-        private String hireState;
-        private String id;
-        private String idCard;
-        private int loginId;
-        private int name;
-        private String nation;
-        private String ofSchoolAge;
-        private String orgId;
-        private int overseasChinese;
-        private String page;
-        private String phone;
-        private int politicsStatus;
+
+        private String overseasChinese;
+
+        private String politicsStatus;
         private String professionalTitle;
-        private String rows;
-        private String schoolId;
+        private int rows;
+        private int schoolId;
         private String schoolName;
-        private int sex;
+        private String sex;
         private String speciality;
         private String subjectIds;
         private String type;
         private String type2;
-        private String updateTime;
+        private long updateTime;
         private String updateUser;
 
+
+        public String getAutograph() {
+            return autograph;
+        }
+
+        public void setAutograph(String autograph) {
+            this.autograph = autograph;
+        }
+
+        public String getDegree() {
+            return degree;
+        }
+
+        public void setDegree(String degree) {
+            this.degree = degree;
+        }
+
+        public String getDualC() {
+            return dualC;
+        }
+
+        public void setDualC(String dualC) {
+            this.dualC = dualC;
+        }
+
+        public int getDutyId() {
+            return dutyId;
+        }
+
+        public void setDutyId(int dutyId) {
+            this.dutyId = dutyId;
+        }
 
         public String getActiveState() {
             return activeState;
@@ -110,27 +148,19 @@ public class UserTeachersEntity implements Serializable{
             this.activeState = activeState;
         }
 
-        public String getHeadImage() {
-            return headImage;
-        }
-
-        public void setHeadImage(String headImage) {
-            this.headImage = headImage;
-        }
-
-        public int getAddress() {
+        public String getAddress() {
             return address;
         }
 
-        public void setAddress(int address) {
+        public void setAddress(String address) {
             this.address = address;
         }
 
-        public int getBirthday() {
+        public String getBirthday() {
             return birthday;
         }
 
-        public void setBirthday(int birthday) {
+        public void setBirthday(String birthday) {
             this.birthday = birthday;
         }
 
@@ -158,11 +188,11 @@ public class UserTeachersEntity implements Serializable{
             this.characterC = characterC;
         }
 
-        public int getCreateTime() {
+        public long getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(int createTime) {
+        public void setCreateTime(long createTime) {
             this.createTime = createTime;
         }
 
@@ -172,30 +202,6 @@ public class UserTeachersEntity implements Serializable{
 
         public void setCreateUser(String createUser) {
             this.createUser = createUser;
-        }
-
-        public String getDegree() {
-            return degree;
-        }
-
-        public void setDegree(String degree) {
-            this.degree = degree;
-        }
-
-        public int getDualC() {
-            return dualC;
-        }
-
-        public void setDualC(int dualC) {
-            this.dualC = dualC;
-        }
-
-        public String getDutyId() {
-            return dutyId;
-        }
-
-        public void setDutyId(String dutyId) {
-            this.dutyId = dutyId;
         }
 
         public String getDutyName() {
@@ -222,11 +228,19 @@ public class UserTeachersEntity implements Serializable{
             this.email = email;
         }
 
-        public int getHireDate() {
+        public String getHeadImage() {
+            return headImage;
+        }
+
+        public void setHeadImage(String headImage) {
+            this.headImage = headImage;
+        }
+
+        public String getHireDate() {
             return hireDate;
         }
 
-        public void setHireDate(int hireDate) {
+        public void setHireDate(String hireDate) {
             this.hireDate = hireDate;
         }
 
@@ -238,11 +252,11 @@ public class UserTeachersEntity implements Serializable{
             this.hireState = hireState;
         }
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
@@ -262,11 +276,11 @@ public class UserTeachersEntity implements Serializable{
             this.loginId = loginId;
         }
 
-        public int getName() {
+        public String getName() {
             return name;
         }
 
-        public void setName(int name) {
+        public void setName(String name) {
             this.name = name;
         }
 
@@ -274,39 +288,46 @@ public class UserTeachersEntity implements Serializable{
             return nation;
         }
 
+        public String getOpenId() {
+            return openId;
+        }
+
+        public void setOpenId(String openId) {
+            this.openId = openId;
+        }
         public void setNation(String nation) {
             this.nation = nation;
         }
 
-        public String getOfSchoolAge() {
+        public int getOfSchoolAge() {
             return ofSchoolAge;
         }
 
-        public void setOfSchoolAge(String ofSchoolAge) {
+        public void setOfSchoolAge(int ofSchoolAge) {
             this.ofSchoolAge = ofSchoolAge;
         }
 
-        public String getOrgId() {
+        public int getOrgId() {
             return orgId;
         }
 
-        public void setOrgId(String orgId) {
+        public void setOrgId(int orgId) {
             this.orgId = orgId;
         }
 
-        public int getOverseasChinese() {
+        public String getOverseasChinese() {
             return overseasChinese;
         }
 
-        public void setOverseasChinese(int overseasChinese) {
+        public void setOverseasChinese(String overseasChinese) {
             this.overseasChinese = overseasChinese;
         }
 
-        public String getPage() {
+        public int getPage() {
             return page;
         }
 
-        public void setPage(String page) {
+        public void setPage(int page) {
             this.page = page;
         }
 
@@ -318,11 +339,11 @@ public class UserTeachersEntity implements Serializable{
             this.phone = phone;
         }
 
-        public int getPoliticsStatus() {
+        public String getPoliticsStatus() {
             return politicsStatus;
         }
 
-        public void setPoliticsStatus(int politicsStatus) {
+        public void setPoliticsStatus(String politicsStatus) {
             this.politicsStatus = politicsStatus;
         }
 
@@ -334,19 +355,19 @@ public class UserTeachersEntity implements Serializable{
             this.professionalTitle = professionalTitle;
         }
 
-        public String getRows() {
+        public int getRows() {
             return rows;
         }
 
-        public void setRows(String rows) {
+        public void setRows(int rows) {
             this.rows = rows;
         }
 
-        public String getSchoolId() {
+        public int getSchoolId() {
             return schoolId;
         }
 
-        public void setSchoolId(String schoolId) {
+        public void setSchoolId(int schoolId) {
             this.schoolId = schoolId;
         }
 
@@ -358,11 +379,11 @@ public class UserTeachersEntity implements Serializable{
             this.schoolName = schoolName;
         }
 
-        public int getSex() {
+        public String getSex() {
             return sex;
         }
 
-        public void setSex(int sex) {
+        public void setSex(String sex) {
             this.sex = sex;
         }
 
@@ -398,11 +419,11 @@ public class UserTeachersEntity implements Serializable{
             this.type2 = type2;
         }
 
-        public String getUpdateTime() {
+        public long getUpdateTime() {
             return updateTime;
         }
 
-        public void setUpdateTime(String updateTime) {
+        public void setUpdateTime(long updateTime) {
             this.updateTime = updateTime;
         }
 
@@ -413,7 +434,6 @@ public class UserTeachersEntity implements Serializable{
         public void setUpdateUser(String updateUser) {
             this.updateUser = updateUser;
         }
-
 
 
 

@@ -3,20 +3,20 @@ package com.apemoon.tvbox.entity.userCenter;
 import com.apemoon.tvbox.entity.UserEntity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserRecordInfoEntity implements Serializable{
-    /**
-     * userInfo : {"address":"","autograph":"","birthday":"2018-08-30","census":"","censusType":"","classId":1,"createTime":null,"createUser":"","dutyId":6,"dutyName":"学习委员","email":"","examNumber":"","gradeId":2,"headImage":"http://oocunhzw9.bkt.clouddn.com//PICTURE/20180831/5144AZYIL2.jpg","healthCondition":"","id":2,"idcard":"4211811989021231","loginId":2,"name":"张三","nation":"汉族","overseasChinese":"","page":1,"phone":"15377000000","politicsStatus":"","rows":10,"schoolId":1,"schoolName":"真光小学","sex":"男","stuNumber":"2222","type":"","updateTime":null,"updateUser":""}
-     */
-    private UserRecordInfoEntity.UserRecordsInfoBean infoRecordsList;
 
-    public UserRecordInfoEntity.UserRecordsInfoBean getUserInfo() {
+    public List<UserRecordsInfoBean> getInfoRecordsList() {
         return infoRecordsList;
     }
 
-    public void setUserInfo(UserRecordInfoEntity.UserRecordsInfoBean infoRecordsList) {
+    public void setInfoRecordsList(List<UserRecordsInfoBean> infoRecordsList) {
         this.infoRecordsList = infoRecordsList;
     }
+
+    private List<UserRecordInfoEntity.UserRecordsInfoBean> infoRecordsList;
+
 
     public class UserRecordsInfoBean implements Serializable {
 
@@ -43,32 +43,31 @@ public class UserRecordInfoEntity implements Serializable{
          "type1": "市优秀教师"——》奖惩类型
          */
 
-        private String classId;
+        private int classId;
         private String content;
-        private String dutyId;
+        private int dutyId;
         private String endTime;
         private String gradeName;
-        private String gradesId;
-        private String id;
+        private int gradesId;
+        private int id;
         private String intro;
         private String jcTime;
-        private String relevanceId;
+        private int relevanceId;
         private String schoolId;
         private String schoolName;
-        private String semesterId;
+        private int semesterId;
         private String ssTime;
         private String startTime;
-        private String subjectId;
+        private int subjectId;
         private String teacherId;
-        private String type;
+        private int type;
         private String type1;
 
-
-        public String getClassId() {
+        public int getClassId() {
             return classId;
         }
 
-        public void setClassId(String classId) {
+        public void setClassId(int classId) {
             this.classId = classId;
         }
 
@@ -80,11 +79,11 @@ public class UserRecordInfoEntity implements Serializable{
             this.content = content;
         }
 
-        public String getDutyId() {
+        public int getDutyId() {
             return dutyId;
         }
 
-        public void setDutyId(String dutyId) {
+        public void setDutyId(int dutyId) {
             this.dutyId = dutyId;
         }
 
@@ -104,19 +103,19 @@ public class UserRecordInfoEntity implements Serializable{
             this.gradeName = gradeName;
         }
 
-        public String getGradesId() {
+        public int getGradesId() {
             return gradesId;
         }
 
-        public void setGradesId(String gradesId) {
+        public void setGradesId(int gradesId) {
             this.gradesId = gradesId;
         }
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
@@ -136,11 +135,11 @@ public class UserRecordInfoEntity implements Serializable{
             this.jcTime = jcTime;
         }
 
-        public String getRelevanceId() {
+        public int getRelevanceId() {
             return relevanceId;
         }
 
-        public void setRelevanceId(String relevanceId) {
+        public void setRelevanceId(int relevanceId) {
             this.relevanceId = relevanceId;
         }
 
@@ -160,11 +159,11 @@ public class UserRecordInfoEntity implements Serializable{
             this.schoolName = schoolName;
         }
 
-        public String getSemesterId() {
+        public int getSemesterId() {
             return semesterId;
         }
 
-        public void setSemesterId(String semesterId) {
+        public void setSemesterId(int semesterId) {
             this.semesterId = semesterId;
         }
 
@@ -184,11 +183,11 @@ public class UserRecordInfoEntity implements Serializable{
             this.startTime = startTime;
         }
 
-        public String getSubjectId() {
+        public int getSubjectId() {
             return subjectId;
         }
 
-        public void setSubjectId(String subjectId) {
+        public void setSubjectId(int subjectId) {
             this.subjectId = subjectId;
         }
 
@@ -200,11 +199,11 @@ public class UserRecordInfoEntity implements Serializable{
             this.teacherId = teacherId;
         }
 
-        public String getType() {
+        public int getType() {
             return type;
         }
 
-        public void setType(String type) {
+        public void setType(int type) {
             this.type = type;
         }
 
@@ -215,7 +214,6 @@ public class UserRecordInfoEntity implements Serializable{
         public void setType1(String type1) {
             this.type1 = type1;
         }
-
 
 
 

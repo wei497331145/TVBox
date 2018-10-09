@@ -14,6 +14,9 @@ public class ConstantUtil {
     public static String USER_ID= "user_id";//用户id
     public static String USER_TYPE = "user_type";//用户type
 
+    public static String GRADED_ID= "graded_id";//班级id
+
+
 
 
 

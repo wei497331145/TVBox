@@ -14,20 +14,16 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * des：
  */
 
-public class SanctionAdapter extends BaseQuickAdapter<UserRecordInfoEntity.UserRecordsInfoBean,BaseViewHolder> {
+public class JudegeAdapter extends BaseQuickAdapter<UserRecordInfoEntity.UserRecordsInfoBean,BaseViewHolder> {
 
-    public SanctionAdapter() {
-        super(R.layout.item_personl_santion);
+    public JudegeAdapter() {
+        super(R.layout.item_personl_judege);
     }
 
     @Override
     protected void convert(BaseViewHolder helper,UserRecordInfoEntity.UserRecordsInfoBean item) {
         if (item != null) {
-            ((ItemLinearLayout)helper.getView(R.id.item_school)).setRightText(item.getSchoolName());
-            ((ItemLinearLayout)helper.getView(R.id.item_time)).setRightText(item.getStartTime());
-            ((ItemLinearLayout)helper.getView(R.id.item_santion)).setRightText(item.getContent());
-            ((ItemLinearLayout)helper.getView(R.id.item_info)).setRightText(item.getIntro());
-        }
+            helper.setText(R.id.tv_content, item.getContent());        }
 
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_notice"
     android:orientation="vertical"
-    android:focusable="true"
-    android:background="@drawable/bg_notice_selector"
     android:layout_marginBottom="@dimen/dp_10"
-    android:layout_width="match_parent"
+    android:layout_margin="@dimen/dp_10"
+    android:layout_width="@dimen/dp_80"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/iv_head"
         android:layout_width="@dimen/dp_30"
         android:layout_height="@dimen/dp_30"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_vertical" />
 
     <TextView
         android:id="@+id/tv_name"
+        android:layout_below="@id/iv_head"
         android:layout_marginTop="@dimen/dp_4"
         android:layout_marginLeft="@dimen/dp_4"
         android:layout_marginRight="@dimen/dp_4"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_0"
-        android:layout_weight="1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_bl_tv_selector"
         android:gravity="center"
-        android:focusable="true"
-        android:text="奖罚信息"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_12" />
 
     <TextView
         android:id="@+id/tv_duty"
+        android:layout_below="@id/tv_name"
         android:layout_marginTop="@dimen/dp_4"
         android:layout_marginLeft="@dimen/dp_4"
         android:layout_marginRight="@dimen/dp_4"
+        android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_0"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_bl_tv_selector"
         android:gravity="center"
-        android:focusable="true"
-        android:text="奖罚信息"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_15" />
-</LinearLayout>
+        android:textSize="@dimen/sp_12" />
+</RelativeLayout>

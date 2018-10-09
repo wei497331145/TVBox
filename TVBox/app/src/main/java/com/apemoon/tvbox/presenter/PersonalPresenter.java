@@ -62,11 +62,13 @@ public class PersonalPresenter extends RxBasePresenter {
     /**
      * 获取老师信息
      */
-    public void receiveTeacherslInfo(String gradeId){
+    public void receiveTeacherslInfo(){
         Map<String, String> paras = RequestUtil.createMap();
         paras.put("userId", PreferenceUtil.getString(ConstantUtil.USER_ID,""));
         paras.put("userType", PreferenceUtil.getString(ConstantUtil.USER_TYPE,""));
-        paras.put("greadeId", gradeId);
+        String id = PreferenceUtil.getString(ConstantUtil.GRADED_ID,"");
+        paras.put("greadeId", id);
+
         addDisposable(mDataManager.getNetService().getUserTeachers(paras),
                 new ProgressObserver<HttpResultBody<UserTeachersEntity>>(mContext, true) {
 

@@ -2,15 +2,20 @@ package com.apemoon.tvbox.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.apemoon.tvbox.R;
@@ -24,6 +29,8 @@ import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.presenter.PersonalPresenter;
 import com.apemoon.tvbox.ui.adapter.MyTeacherAdapter;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
+import com.apemoon.tvbox.ui.adapter.personalCenter.JudegeAdapter;
+import com.apemoon.tvbox.ui.adapter.personalCenter.SanctionAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.SemesterListViewAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.SemestersAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.TeachersAdapter;
@@ -46,6 +53,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
     //年级信息
     List<UserSemstersEntity.SemstersBean> semstersBeanList;
+    private UserSemstersEntity mUserSemsterEntity;
 
     @BindView(R.id.iv_head)
     ImageView mIvHead;
@@ -68,6 +76,12 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
     @BindView(R.id.recyclerView_md1)
     RecyclerView mRecyclerViewMd1;
+    @BindView(R.id.recyclerView_md2)
+    RecyclerView mRecyclerViewMd2;
+    @BindView(R.id.recyclerView_md3)
+    RecyclerView mRecyclerViewMd3;
+
+
 
 
     @BindView(R.id.person_md1)
@@ -87,16 +101,15 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     /**
      *  奖罚模块
      */
-    @BindView(R.id.tv2_semester_select)
-    TextView tv2SemesterSelect;
-    @BindView(R.id.item_school)
-    ItemLinearLayout itemSchool;
-    @BindView(R.id.item_time)
-    ItemLinearLayout itemTime;
-    @BindView(R.id.item_santion)
-    ItemLinearLayout itemSantion;
-    @BindView(R.id.item_info)
-    ItemLinearLayout itemInfo;
+    @BindView(R.id.md2_tv_semester_select)
+    Button md2TvSemesterSelect;
+
+    /**
+     *  评价模块
+     */
+    @BindView(R.id.md3_tv_semester_select)
+    Button md3TvSemesterSelect;
+
 
 
     private MyTeacherAdapter mMyTeacheradapter;
@@ -142,13 +155,13 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
                 llPersonalMd2.setVisibility(View.GONE);
                 llPersonalMd3.setVisibility(View.VISIBLE);
                 break;
-            case R.id.tv2_semester_select:
+            case R.id.md2_tv_semester_select: {
                 final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                 alertDialog.show();
                 Window window = alertDialog.getWindow();
                 window.setContentView(R.layout.layout_dialog_fee);
                 ListView rates_lst = (ListView) window.findViewById(R.id.recyclerView);
-                SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(),semstersBeanList);
+                SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(), semstersBeanList);
                 rates_lst.setAdapter(mAdapter);
                 rates_lst.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -160,9 +173,55 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
                 rates_lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        md3TvSemesterSelect.setText(semstersBeanList.get(position).getName());
+                        mPersonalPresenter.receiveRecords("2", "" + semstersBeanList.get(position).getId());
 
                     }
                 });
+                break;
+            }
+            case R.id.md3_tv_semester_select: {
+
+                View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_dialog_fee, null);
+
+                final PopupWindow popupWindow = new PopupWindow(contentView,
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+                popupWindow.setTouchable(true);
+// 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+// 这里单独写一篇文章来分析
+                popupWindow.setBackgroundDrawable(new ColorDrawable());
+// 设置好参数之后再show
+                popupWindow.showAsDropDown(contentView);
+//
+//                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+//                alertDialog.show();
+//                Window window = alertDialog.getWindow();
+//                window.setContentView(R.layout.layout_dialog_fee);
+
+
+                ListView rates_lst = (ListView) contentView.findViewById(R.id.recyclerView);
+                SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(), semstersBeanList);
+                rates_lst.setAdapter(mAdapter);
+                rates_lst.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        return imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                    }
+                });
+                rates_lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        md3TvSemesterSelect.setText(semstersBeanList.get(position).getName());
+                        mPersonalPresenter.receiveRecords("4", "" + semstersBeanList.get(position).getId());
+
+                    }
+                });
+                break;
+            }
+
+
 
 
         }
@@ -182,23 +241,12 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     }
 
 
-    private void initTeacherData() {
-        mMyTeacheradapter = new MyTeacherAdapter();
-        mRecyclerViewMd1.setAdapter(mMyTeacheradapter);
-        ArrayList<String> newList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            newList.add("1");
-        }
-        mMyTeacheradapter.setNewData(newList);
-        mPersonalPresenter = new PersonalPresenter(activity, this);
-    }
-
 
     @Override
     protected void lazyLoadData() {
         if (mPersonalPresenter != null) {
             mPersonalPresenter.receivePersonalInfo();
-            mPersonalPresenter.receiveTeacherslInfo("11");
+            mPersonalPresenter.receiveTeacherslInfo();
             mPersonalPresenter.receiveSemseterList();
 
         }
@@ -218,11 +266,11 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     @Override
     public void receiveTeachersInfoSuccess(UserTeachersEntity entity) {
         TeachersAdapter mTeachersAdapter = new TeachersAdapter();
+        LinearLayoutManager ms = new LinearLayoutManager(getActivity());
+        ms.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerViewMd1.setLayoutManager(ms);
         mRecyclerViewMd1.setAdapter(mTeachersAdapter);
         ArrayList<String> newList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            newList.add("1");
-        }
         mTeachersAdapter.setNewData(entity.getTeacherList());
     }
 
@@ -234,13 +282,11 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
     @Override
     public void receiveRecords2Success(UserRecordInfoEntity entity) {
-//        mNewAdapter = new NewAdapter();
-//        ree.setAdapter(mNewAdapter);
-//        ArrayList<String> newList = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            newList.add("1");
-//        }
-//        mNewAdapter.setNewData(newList);
+
+        SanctionAdapter mSanctionAdapter = new SanctionAdapter();
+        mRecyclerViewMd2.setAdapter(mSanctionAdapter);
+        mSanctionAdapter.setNewData(entity.getInfoRecordsList());
+
 
     }
 
@@ -253,6 +299,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     @Override
     public void receiveRecords4Success(UserRecordInfoEntity entity) {
 
+        JudegeAdapter mJudegeAdapter = new JudegeAdapter();
+        mRecyclerViewMd3.setAdapter(mJudegeAdapter);
+        mJudegeAdapter.setNewData(entity.getInfoRecordsList());
 
     }
 
@@ -264,7 +313,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     @Override
     public void receiveRemstersSuccess(UserSemstersEntity entity) {
         semstersBeanList = entity.getSemesterList();
-        tv2SemesterSelect.setText(entity.getCurrentSemesterName());
+        mUserSemsterEntity = entity;
+        md2TvSemesterSelect.setText(entity.getCurrentSemesterName());
+        md3TvSemesterSelect.setText(entity.getCurrentSemesterName());
         mPersonalPresenter.receiveRecords("2", entity.getCurrentSemesterId());
         mPersonalPresenter.receiveRecords("3", entity.getCurrentSemesterId());
         mPersonalPresenter.receiveRecords("4", entity.getCurrentSemesterId());
