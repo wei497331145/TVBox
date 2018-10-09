@@ -19,7 +19,7 @@
             android:focusable="true"
             android:text="年级选择"
             android:textColor="@color/font_CCFFFFFF"
-            android:drawableRight="@drawable/down"
+            android:drawableRight="@drawable/dot_red"
             android:textSize="@dimen/sp_12" />
         <com.apemoon.tvbox.ui.view.ItemLinearLayout
             android:id="@+id/item_school"

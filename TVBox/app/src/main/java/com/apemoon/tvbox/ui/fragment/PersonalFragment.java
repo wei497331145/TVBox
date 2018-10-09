@@ -1,9 +1,16 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.apemoon.tvbox.R;
@@ -17,6 +24,8 @@ import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.presenter.PersonalPresenter;
 import com.apemoon.tvbox.ui.adapter.MyTeacherAdapter;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
+import com.apemoon.tvbox.ui.adapter.personalCenter.SemesterListViewAdapter;
+import com.apemoon.tvbox.ui.adapter.personalCenter.SemestersAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.TeachersAdapter;
 import com.apemoon.tvbox.ui.view.ItemLinearLayout;
 import com.apemoon.tvbox.utils.GlideUtil;
@@ -134,7 +143,26 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
                 llPersonalMd3.setVisibility(View.VISIBLE);
                 break;
             case R.id.tv2_semester_select:
+                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.show();
+                Window window = alertDialog.getWindow();
+                window.setContentView(R.layout.layout_dialog_fee);
+                ListView rates_lst = (ListView) window.findViewById(R.id.recyclerView);
+                SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(),semstersBeanList);
+                rates_lst.setAdapter(mAdapter);
+                rates_lst.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        return imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                    }
+                });
+                rates_lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                    }
+                });
 
 
         }
