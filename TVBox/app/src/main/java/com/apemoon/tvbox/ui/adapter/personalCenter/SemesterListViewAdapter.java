@@ -48,7 +48,7 @@ public class SemesterListViewAdapter extends BaseAdapter {
         convertView = inflater.inflate(
                 R.layout.item_personl_semester, null);
         TextView msgTv = (TextView) convertView
-                .findViewById(R.id.tv_schemer);
+                .findViewById(R.id.item_personl_semester);
         msgTv.setText(bean.getName());
         return convertView;
     }

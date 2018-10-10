@@ -1,13 +1,10 @@
 package com.apemoon.tvbox.ui.adapter.information;
 
-import android.text.Html;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
-import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
@@ -22,13 +19,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
 public class InformationAdapter extends BaseQuickAdapter<InfoListEntity.InformationBean,BaseViewHolder> {
 
     public InformationAdapter() {
-        super(R.layout.item_personl_teachers);
+        super(R.layout.item_info_infolist);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, InfoListEntity.InformationBean item) {
         if (item != null) {
             helper.setText(R.id.tv_name, item.getTitle());
+            helper.setText(R.id.tv_time, DateTimeUtil.getStrTime(item.getCreateTime()));
             GlideUtil.image(TvApplication.getGlobalApplication(),item.getCover(),helper.getView(R.id.iv_head));
         }
 

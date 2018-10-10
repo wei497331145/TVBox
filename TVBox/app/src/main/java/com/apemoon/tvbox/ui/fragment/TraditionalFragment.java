@@ -1,26 +1,19 @@
 package com.apemoon.tvbox.ui.fragment;
 
-import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.apemoon.tvbox.R;
-import com.apemoon.tvbox.base.BaseFragment;
 import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
-import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.presenter.InformationPresenter;
-import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
-import com.apemoon.tvbox.ui.adapter.personalCenter.InfoTwoClassicalListViewAdapter;
-import com.apemoon.tvbox.ui.adapter.personalCenter.SemesterListViewAdapter;
+import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalListViewAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
