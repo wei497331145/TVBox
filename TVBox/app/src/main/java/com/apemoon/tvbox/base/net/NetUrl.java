@@ -46,6 +46,8 @@ public class NetUrl {
 
 
     //==============================个人中心接口========================================================
+    public static final String INFORMATION_CLASSIFICAl = BASE_URL + "information/informationClassify";//获取咨询列表
+
     public static final String INFORMATION_LIST = BASE_URL + "information/informationList";//获取咨询列表
 
 

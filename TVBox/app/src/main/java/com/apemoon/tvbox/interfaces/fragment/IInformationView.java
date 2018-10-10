@@ -1,5 +1,6 @@
 package com.apemoon.tvbox.interfaces.fragment;
 
+import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
 import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
@@ -14,5 +15,9 @@ public interface IInformationView {
     void receiveInformationsSuccess(InfoListEntity entity);
 
     void receiveInformationsFail();
+
+    void receiveInformationClassicalSuccess(InfoClassicalEntity entity);
+
+    void receiveInformationClassicalFail();
 
 }

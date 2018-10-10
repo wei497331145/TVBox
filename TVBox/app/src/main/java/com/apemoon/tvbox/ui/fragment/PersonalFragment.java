@@ -1,14 +1,18 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -103,12 +107,14 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
      */
     @BindView(R.id.md2_tv_semester_select)
     Button md2TvSemesterSelect;
+    private PopupWindow md2_popView;
 
     /**
      *  评价模块
      */
     @BindView(R.id.md3_tv_semester_select)
     Button md3TvSemesterSelect;
+    private PopupWindow md3_popView;
 
 
 
@@ -136,7 +142,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     }
 
 
-    @OnClick({R.id.tv_base_info, R.id.tv_judge_info, R.id.tv_sanction_info})
+    @OnClick({R.id.tv_base_info, R.id.tv_judge_info, R.id.tv_sanction_info,R.id.md2_tv_semester_select,R.id.md3_tv_semester_select})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_base_info://个人信息
@@ -156,11 +162,16 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
                 llPersonalMd3.setVisibility(View.VISIBLE);
                 break;
             case R.id.md2_tv_semester_select: {
-                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                alertDialog.show();
-                Window window = alertDialog.getWindow();
-                window.setContentView(R.layout.layout_dialog_fee);
-                ListView rates_lst = (ListView) window.findViewById(R.id.recyclerView);
+                View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
+                md2_popView = new PopupWindow(popupView,md2TvSemesterSelect.getWidth(), WindowManager.LayoutParams.WRAP_CONTENT, true);
+                md2_popView.setTouchable(true);
+                md2_popView.setOutsideTouchable(false);
+                // 设置背景为半透明灰色
+                md2_popView.setBackgroundDrawable(new BitmapDrawable(null,""));
+                // 设置动画
+                md2_popView.setAnimationStyle(R.style.invitation_anim);
+
+                ListView rates_lst = (ListView) popupView.findViewById(R.id.rates_lst);
                 SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(), semstersBeanList);
                 rates_lst.setAdapter(mAdapter);
                 rates_lst.setOnTouchListener(new View.OnTouchListener() {
@@ -178,29 +189,21 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
                     }
                 });
+
+                md2_popView.showAsDropDown(md2TvSemesterSelect);
                 break;
             }
             case R.id.md3_tv_semester_select: {
+                View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
+                md3_popView = new PopupWindow(popupView, md3TvSemesterSelect.getWidth(), WindowManager.LayoutParams.WRAP_CONTENT, true);
+                md3_popView.setTouchable(true);
+                md3_popView.setOutsideTouchable(false);
+                // 设置背景为半透明灰色
+                md3_popView.setBackgroundDrawable(new BitmapDrawable(null,""));
+                // 设置动画
+                md3_popView.setAnimationStyle(R.style.invitation_anim);
 
-                View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_dialog_fee, null);
-
-                final PopupWindow popupWindow = new PopupWindow(contentView,
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-
-                popupWindow.setTouchable(true);
-// 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-// 这里单独写一篇文章来分析
-                popupWindow.setBackgroundDrawable(new ColorDrawable());
-// 设置好参数之后再show
-                popupWindow.showAsDropDown(contentView);
-//
-//                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-//                alertDialog.show();
-//                Window window = alertDialog.getWindow();
-//                window.setContentView(R.layout.layout_dialog_fee);
-
-
-                ListView rates_lst = (ListView) contentView.findViewById(R.id.recyclerView);
+                ListView rates_lst = (ListView) popupView.findViewById(R.id.rates_lst);
                 SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(), semstersBeanList);
                 rates_lst.setAdapter(mAdapter);
                 rates_lst.setOnTouchListener(new View.OnTouchListener() {
@@ -218,6 +221,8 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
                     }
                 });
+                md3_popView.showAsDropDown(md3TvSemesterSelect);
+
                 break;
             }
 

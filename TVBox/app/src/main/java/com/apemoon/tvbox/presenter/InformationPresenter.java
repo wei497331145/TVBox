@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.rx.ProgressObserver;
 import com.apemoon.tvbox.base.rx.RxBasePresenter;
+import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
 import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
@@ -33,13 +34,13 @@ public class InformationPresenter extends RxBasePresenter {
     /**
      * 获取信息列表
      */
-    public void receiveInformations(String pageNo,String size){
+    public void receiveInformations(String pageNo,String size,String twoClassId){
         Map<String, String> paras = RequestUtil.createMap();
         paras.put("userId", PreferenceUtil.getString(ConstantUtil.USER_ID,""));
         paras.put("userType", PreferenceUtil.getString(ConstantUtil.USER_TYPE,""));
         paras.put("pageNo", pageNo);
-        paras.put("size",size);
-        paras.put("twoClassifyId","1");
+        paras.put("pageSize",size);
+        paras.put("twoClassifyId",twoClassId);
         addDisposable(mDataManager.getNetService().getInfoList(paras),
                 new ProgressObserver<HttpResultBody<InfoListEntity>>(mContext, true) {
 
@@ -63,17 +64,17 @@ public class InformationPresenter extends RxBasePresenter {
     /**
      * 获取信息列表
      */
-    public void receiveInfoClassfication(String pageNo,String size){
+    public void receiveInfoClassfication(){
         Map<String, String> paras = RequestUtil.createMap();
-        paras.put("teacherId", PreferenceUtil.getString(ConstantUtil.USER_ID,""));
+        paras.put("schoolId", PreferenceUtil.getString(ConstantUtil.SCHOOL_ID,""));
 
-        addDisposable(mDataManager.getNetService().getInfoList(paras),
-                new ProgressObserver<HttpResultBody<InfoListEntity>>(mContext, true) {
+        addDisposable(mDataManager.getNetService().getInfoClassical(paras),
+                new ProgressObserver<HttpResultBody<InfoClassicalEntity>>(mContext, true) {
 
                     @Override
-                    public void doNext(HttpResultBody<InfoListEntity> httpResultBody) {
+                    public void doNext(HttpResultBody<InfoClassicalEntity> httpResultBody) {
                         if (mIInformationView != null && TextUtils.equals(httpResultBody.code,"0000")) {
-                            mIInformationView.receiveInformationsSuccess(httpResultBody.result);
+                            mIInformationView.receiveInformationClassicalSuccess(httpResultBody.result);
                         }
                     }
 

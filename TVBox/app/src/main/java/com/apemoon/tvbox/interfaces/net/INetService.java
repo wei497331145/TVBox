@@ -3,6 +3,7 @@ package com.apemoon.tvbox.interfaces.net;
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.NetUrl;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
@@ -80,14 +81,21 @@ public interface INetService {
 
 
     //=========================== 咨询列表的接口 ==================================
-
+    /**
+     * 获取资讯分类信息
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.INFORMATION_CLASSIFICAl)
+    Observable<HttpResultBody<InfoClassicalEntity>> getInfoClassical(@FieldMap Map<String, String> paras);
 
     /**
-     * 获取所在班级教师信息
+     * 获取资讯列表
      */
     @FormUrlEncoded
     @POST(NetUrl.INFORMATION_LIST)
     Observable<HttpResultBody<InfoListEntity>> getInfoList(@FieldMap Map<String, String> paras);
+
+
 
 }
 

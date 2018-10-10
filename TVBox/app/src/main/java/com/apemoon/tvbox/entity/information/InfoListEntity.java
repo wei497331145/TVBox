@@ -1,20 +1,23 @@
 package com.apemoon.tvbox.entity.information;
 
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class InfoListEntity implements Serializable{
 
-    private InfoListEntity.InformationBean informationList;
-
-    public InfoListEntity.InformationBean getUserInfo() {
+    public List<InformationBean> getInformationList() {
         return informationList;
     }
 
-    public void setUserInfo(InfoListEntity.InformationBean informationList) {
+    public void setInformationList(List<InformationBean> informationList) {
         this.informationList = informationList;
     }
+
+    private List<InfoListEntity.InformationBean> informationList;
+
 
     public class InformationBean implements Serializable {
 /**
@@ -40,11 +43,10 @@ public class InfoListEntity implements Serializable{
         private String content;
         private String cover;
         private int createTeacherId;
-        private String createTime;
-        private String certificate;
+        private long createTime;
         private int id;
         private String images;
-        private String oneClassifyId;
+        private int oneClassifyId;
         private String oneClassifyName;
         private String partakeObject;
         private String title;
@@ -54,6 +56,135 @@ public class InfoListEntity implements Serializable{
         private String url;
         private String urlDescribe;
         private String videos;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public String getCover() {
+            return cover;
+        }
+
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
+
+        public int getCreateTeacherId() {
+            return createTeacherId;
+        }
+
+        public void setCreateTeacherId(int createTeacherId) {
+            this.createTeacherId = createTeacherId;
+        }
+
+        public long getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(long createTime) {
+            this.createTime = createTime;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getImages() {
+            return images;
+        }
+
+        public void setImages(String images) {
+            this.images = images;
+        }
+
+        public int getOneClassifyId() {
+            return oneClassifyId;
+        }
+
+        public void setOneClassifyId(int oneClassifyId) {
+            this.oneClassifyId = oneClassifyId;
+        }
+
+        public String getOneClassifyName() {
+            return oneClassifyName;
+        }
+
+        public void setOneClassifyName(String oneClassifyName) {
+            this.oneClassifyName = oneClassifyName;
+        }
+
+        public String getPartakeObject() {
+            return partakeObject;
+        }
+
+        public void setPartakeObject(String partakeObject) {
+            this.partakeObject = partakeObject;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public int getTwoClassifyId() {
+            return twoClassifyId;
+        }
+
+        public void setTwoClassifyId(int twoClassifyId) {
+            this.twoClassifyId = twoClassifyId;
+        }
+
+        public String getTwoClassifyName() {
+            return twoClassifyName;
+        }
+
+        public void setTwoClassifyName(String twoClassifyName) {
+            this.twoClassifyName = twoClassifyName;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getUrlDescribe() {
+            return urlDescribe;
+        }
+
+        public void setUrlDescribe(String urlDescribe) {
+            this.urlDescribe = urlDescribe;
+        }
+
+        public String getVideos() {
+            return videos;
+        }
+
+        public void setVideos(String videos) {
+            this.videos = videos;
+        }
+
 
     }
 }

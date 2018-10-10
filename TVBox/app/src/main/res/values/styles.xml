@@ -40,6 +40,11 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <style name="invitation_anim">
+        <item name="android:windowEnterAnimation">@anim/invitation_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/invitation_bottom_out</item>
+    </style>
+
 
 
 
