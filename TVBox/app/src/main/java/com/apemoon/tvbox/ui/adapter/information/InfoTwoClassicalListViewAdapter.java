@@ -1,4 +1,4 @@
-package com.apemoon.tvbox.ui.adapter.personalCenter;
+package com.apemoon.tvbox.ui.adapter.information;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -49,7 +49,7 @@ public class InfoTwoClassicalListViewAdapter extends BaseAdapter {
         convertView = inflater.inflate(
                 R.layout.item_personl_semester, null);
         TextView msgTv = (TextView) convertView
-                .findViewById(R.id.tv_schemer);
+                .findViewById(R.id.item_classical);
         msgTv.setText(bean.getName());
         return convertView;
     }
