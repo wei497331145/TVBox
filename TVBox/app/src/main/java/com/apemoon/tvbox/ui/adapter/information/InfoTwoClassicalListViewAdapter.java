@@ -47,7 +47,7 @@ public class InfoTwoClassicalListViewAdapter extends BaseAdapter {
         final InfoClassicalEntity.TwoClassicalBean bean = twoClassicalBeans.get(position);
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(
-                R.layout.item_personl_semester, null);
+                R.layout.item_info_two_classical, null);
         TextView msgTv = (TextView) convertView
                 .findViewById(R.id.item_classical);
         msgTv.setText(bean.getName());

@@ -71,5 +71,6 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     /*腾讯Bugly*/
     implementation 'com.tencent.bugly:crashreport:latest.release'
-    implementation project(':recylibrary')
+    compile project(path: ':bdvideoplayer')
+    implementation project(':bdvideoplayer')
 }

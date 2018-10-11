@@ -1,6 +1,7 @@
 package com.apemoon.tvbox.ui.fragment;
 
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,12 +11,16 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
+import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.presenter.InformationPresenter;
+import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalListViewAdapter;
+import com.apemoon.tvbox.ui.adapter.personalCenter.TeachersAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,10 +34,11 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     private InformationPresenter mInformaitonPresenter;
     private int currentTwoClassId;
     private InformationAdapter mInformationAdater;
+    private List<InfoClassicalEntity.TwoClassicalBean> twoClasscialList;
     private List<InfoListEntity.InformationBean> informationBeanList;
 
     @BindView(R.id.lv_two_classical)
-    ListView lvTwoClassical;
+    RecyclerView lvTwoClassical;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -107,21 +113,21 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
-        List<InfoClassicalEntity.TwoClassicalBean> twoClasscialList = entity.getTraditonalTwoClassical();
+        twoClasscialList = entity.getTraditonalTwoClassical();
         currentTwoClassId = twoClasscialList.get(0).getId();
-
-        InfoTwoClassicalListViewAdapter mAdapter = new InfoTwoClassicalListViewAdapter(getActivity(), twoClasscialList);
-        lvTwoClassical.setAdapter(mAdapter);
-
-        lvTwoClassical.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter();
+        lvTwoClassical.setAdapter(twoClassicaladapter);
+        twoClassicaladapter.setNewData(twoClasscialList);
+        twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                InfoListEntity.InformationBean bean = mInformationAdater.getData().get(i);
-                currentTwoClassId = bean.getTwoClassifyId();
-                requestNew();
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                InfoClassicalEntity.TwoClassicalBean bean = twoClassicaladapter.getData().get(position);
+                if(bean != null) {
+                    currentTwoClassId = bean.getId();
+                    requestNew();
+                }
             }
         });
-
         mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
     }
 
