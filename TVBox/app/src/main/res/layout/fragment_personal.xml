@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -9,7 +10,7 @@
         android:orientation="vertical"
         android:layout_margin="@dimen/dp_0"
         android:background="@drawable/bg_bl_tv_selector"
-        android:layout_weight="3">
+        android:layout_weight="1">
         <TextView
             android:id="@+id/tv_base_info"
             android:layout_marginTop="@dimen/dp_4"
@@ -58,23 +59,36 @@
             android:layout_height="@dimen/dp_0"
             android:layout_weight="2"></View>
     </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_web"
-            android:focusable="false"
-            android:orientation="vertical"
-            android:background="@drawable/bg_web_normal"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/dp_10"
-            android:paddingLeft="@dimen/dp_15"
-            android:layout_weight="14">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_web"-->
+            <!--android:focusable="false"-->
+            <!--android:orientation="vertical"-->
+            <!--android:background="@drawable/bg_web_normal"-->
+            <!--android:layout_width="@dimen/dp_0"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_margin="@dimen/dp_10"-->
+            <!--android:paddingLeft="@dimen/dp_15"-->
+            <!--android:layout_weight="5">-->
+
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/dp_0"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_marginLeft="@dimen/dp_4"
+        android:layout_marginRight="@dimen/dp_30"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:paddingLeft="@dimen/dp_15"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        app:cardBackgroundColor="@color/font_FF0080C3"
+        app:cardCornerRadius="@dimen/dp_5">
 
             <include layout="@layout/view_personal_md1"/>
 
             <include layout="@layout/view_personal_md2"/>
 
             <include layout="@layout/view_personal_md3"/>
-        </LinearLayout>
+    </android.support.v7.widget.CardView>
+        <!--</LinearLayout>-->
 
 
 </LinearLayout>

@@ -16,7 +16,6 @@ import com.apemoon.tvbox.interfaces.fragment.IReceiveNoticeView;
 import com.apemoon.tvbox.presenter.NoticePresenter;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.skw.library.TVRecyclerView;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ import butterknife.BindView;
 
 public class  NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView {
     @BindView(R.id.recyclerView)
-    TVRecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     @BindView(R.id.web_view)
     WebView mWebView;
     @BindView(R.id.ll_web)

@@ -1,1 +1,1 @@
-include ':app','recylibrary'
+include ':app', ':bdvideoplayer'

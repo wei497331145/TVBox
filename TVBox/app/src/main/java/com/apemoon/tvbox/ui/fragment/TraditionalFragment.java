@@ -78,9 +78,8 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InfoListEntity.InformationBean bean = mInformationAdater.getData().get(position);
-                currentTwoClassId = bean.getTwoClassifyId();
-                onLoadMoreRequested();
+
+
             }
         });
     }
@@ -124,7 +123,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         lvTwoClassical.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                InfoListEntity.InformationBean bean = mInformationAdater.getData().get(i);
+                currentTwoClassId = bean.getTwoClassifyId();
+                requestNew();
             }
         });
 
