@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_notice"
+    android:layout_marginTop="@dimen/dp_10"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_bl_tv_selector"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:layout_margin="@dimen/dp_10"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_100">
+    <ImageView
+        android:id="@+id/iv_head"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp_20"
+        android:scaleType="centerCrop"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="@dimen/dp_0"
+        android:layout_margin="@dimen/dp_20"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_below="@id/iv_head"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_below="@id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/font_CCFFFFFF"
+        android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+</LinearLayout>

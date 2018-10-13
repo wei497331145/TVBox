@@ -1,5 +1,7 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,7 @@ import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
+import com.apemoon.tvbox.factory.main.FragmentFactory;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
@@ -77,7 +80,14 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Fragment fragment = InfoListFragment.getInstance(currentTwoClassId);
+                fragment.setUserVisibleHint(true);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                if (!fragment.isAdded()) {
+                    transaction.add(R.id.fl_main, fragment);
+                }
+                transaction.hide(TraditionalFragment.this);
+                transaction.show(fragment).commit();
 
             }
         });

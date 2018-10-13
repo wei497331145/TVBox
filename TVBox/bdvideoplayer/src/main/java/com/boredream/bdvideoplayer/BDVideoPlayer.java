@@ -71,7 +71,7 @@ public class BDVideoPlayer {
         }
         // we shouldn't clear the target state, because somebody might have
         // called start() previously
-        reset();
+//        reset();
 
         try {
             player = new MediaPlayer();

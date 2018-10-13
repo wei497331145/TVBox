@@ -226,10 +226,39 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
                 break;
             }
 
-
-
-
         }
+    }
+
+    private void initPopWindow(){
+        View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
+        md2_popView = new PopupWindow(popupView,md2TvSemesterSelect.getWidth(), WindowManager.LayoutParams.WRAP_CONTENT, true);
+        md2_popView.setTouchable(true);
+        md2_popView.setOutsideTouchable(false);
+        // 设置背景为半透明灰色
+        md2_popView.setBackgroundDrawable(new BitmapDrawable(null,""));
+        // 设置动画
+        md2_popView.setAnimationStyle(R.style.invitation_anim);
+
+        ListView rates_lst = (ListView) popupView.findViewById(R.id.rates_lst);
+        SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(), semstersBeanList);
+        rates_lst.setAdapter(mAdapter);
+        rates_lst.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                return imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            }
+        });
+        rates_lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                md3TvSemesterSelect.setText(semstersBeanList.get(position).getName());
+                mPersonalPresenter.receiveRecords("2", "" + semstersBeanList.get(position).getId());
+
+            }
+        });
+
+        md2_popView.showAsDropDown(md2TvSemesterSelect);
     }
 
 
