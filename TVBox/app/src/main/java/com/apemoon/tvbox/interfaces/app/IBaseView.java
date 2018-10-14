@@ -17,4 +17,6 @@ public interface IBaseView {
     //初始化监听事件
     void initListener();
 
+
+
 }

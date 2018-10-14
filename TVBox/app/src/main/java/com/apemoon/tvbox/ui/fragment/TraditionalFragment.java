@@ -80,7 +80,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Fragment fragment = InfoListFragment.getInstance(currentTwoClassId);
+                Fragment fragment = InfoListFragment.getInstance(currentTwoClassId,position);
                 fragment.setUserVisibleHint(true);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 if (!fragment.isAdded()) {
@@ -150,6 +150,10 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     public void init() {
 
     }
+
+
+
+
 
 
     @Override

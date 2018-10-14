@@ -25,7 +25,7 @@
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginLeft="@dimen/dp_31"
                 android:paddingLeft="@dimen/dp_11"
-                android:background="@drawable/bg_back"
+                android:background="@drawable/bg_bl_tv_info_selector"
                 android:drawableLeft="@drawable/back_white"
                 android:gravity="center"
                 android:text="@string/back"

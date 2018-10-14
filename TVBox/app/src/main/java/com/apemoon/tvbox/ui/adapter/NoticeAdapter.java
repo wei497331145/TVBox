@@ -39,7 +39,7 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
 //                }else{
 //                    view.setBackgroundResource(R.drawable.bg_notice_selected);
 //                }
-                AnimationUtil.setTextAnimation(view,hasFocus,1.01f,1.01f,1.0f,1.0f);
+//                AnimationUtil.setTextAnimation(view,hasFocus,1.01f,1.01f,1.0f,1.0f);
 
             }
         });

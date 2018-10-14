@@ -5,8 +5,11 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -26,13 +29,17 @@ import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.VideoDetailInfo;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
+import com.apemoon.tvbox.factory.main.FragmentFactory;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.presenter.InformationPresenter;
+import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoImagesAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationTvAdapter;
 import com.apemoon.tvbox.ui.view.ItemLinearLayout;
+import com.apemoon.tvbox.ui.view.RecycleViewDivider;
+import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
 import com.boredream.bdvideoplayer.BDVideoPlayer;
 import com.boredream.bdvideoplayer.BDVideoView;
@@ -46,6 +53,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by water on 2018/8/31/031.
@@ -55,11 +63,12 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     private InformationPresenter mInformaitonPresenter;
     private int currentTwoClassId;
+    private int currentSelectItemPosition;
     private InformationTvAdapter mInformationAdater;
     private List<InfoListEntity.InformationBean> informationBeanList;
 
-    @BindView(R.id.ll_web)
-    CardView mLlWeb;
+    @BindView(R.id.tv_back)
+    TextView mTvBack;
     @BindView(R.id.ll_content)
     LinearLayout llContent;
     @BindView(R.id.ll_tv)
@@ -80,16 +89,18 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     RecyclerView mRVImgList;
 
     private static final String CURRENT_TWO_CLASSICAL_ID = "currnet_two_classical_id";
+    private static final String CURRENT_INFO_ITEM_ID = "currnet_info_item_id";
 
     private static final String TYPE_TEXT_ID = "1";
     private static final String TYPE_TURL_ID = "2";
     private static final String TYPE_VIDEO_ID = "3";
     private static final String TYPE_PAGES_ID = "4";
 
-    public static InfoListFragment getInstance(int currentTwoClassId){
+    public static InfoListFragment getInstance(int currentTwoClassId,int selectInfoPosition){
         InfoListFragment fragment = new InfoListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(CURRENT_TWO_CLASSICAL_ID,currentTwoClassId);//这里的values就是我们要传的值
+        bundle.putInt(CURRENT_INFO_ITEM_ID,selectInfoPosition);//
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -115,11 +126,15 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @Override
     public RecyclerView getRecyclerView() {
+        mRecyclerView.addItemDecoration(new RecycleViewDivider(
+                getActivity(), LinearLayoutManager.VERTICAL, 10, getResources().getColor(R.color.transparent)));
+
         return mRecyclerView;
     }
 
 
     private void configWebView(WebView webView) {
+        setTextChangeListener(mTvBack);
         if (null != webView) {
             webView.requestFocus();
             webView.setHorizontalScrollBarEnabled(true);
@@ -146,7 +161,7 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     public void initData() {
         webView.setBackgroundColor(0);
 //        webView.getBackground().setAlpha(0);
-        mLlWeb.setBackgroundResource(R.drawable.bg_bl_tv_selector);
+//        mLlWeb.setBackgroundResource(R.drawable.bg_bl_tv_selector);
         configWebView(webView);
 
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
@@ -163,14 +178,23 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
             }
         });
 
-        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean hasFocus) {
+//                if (hasFocus) {
+//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
+//                } else {
+//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_normal);
+//                }
+//            }
+//        });
+    }
+
+    private void setTextChangeListener(View view) {
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
-                } else {
-                    mLlWeb.setBackgroundResource(R.drawable.bg_web_normal);
-                }
+                AnimationUtil.setTextAnimation(view,hasFocus,1.1f,1.1f,1.0f,1.0f);
             }
         });
     }
@@ -219,12 +243,29 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     public void receiveInformationsSuccess(InfoListEntity entity) {
         if (entity != null) {
             informationBeanList = entity.getInformationList();
-            if (informationBeanList != null) {
+            if (informationBeanList != null && informationBeanList.size()>0) {
                 setPageInfo(informationBeanList.size());
                 setTvContent(informationBeanList.get(0));
+                if(currentSelectItemPosition<informationBeanList.size()){
+                    setTvContent(informationBeanList.get(currentSelectItemPosition));
+                }
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
                         mInformationAdater.setNewData(informationBeanList);
+                        mRecyclerView.scrollToPosition(currentSelectItemPosition);
+                        mRecyclerView.postDelayed(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                if(mRecyclerView.findViewHolderForAdapterPosition(currentSelectItemPosition)!=null )
+                                {
+
+                                    mRecyclerView.findViewHolderForAdapterPosition(currentSelectItemPosition).itemView.requestFocus();
+                                }
+                            }
+                        },50);
+
                         break;
                     case REQUESTTYPE_ADD_DATE:
                         mInformationAdater.addData(informationBeanList);
@@ -251,14 +292,28 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @Override
     public void init() {
+        ((MainActivity)getActivity()).setMainTabVisiable(false);
         if(getArguments()!=null) {
             currentTwoClassId = getArguments().getInt(CURRENT_TWO_CLASSICAL_ID);
+            currentSelectItemPosition = getArguments().getInt(CURRENT_INFO_ITEM_ID);
         }
 
     }
 
+    @OnClick( R.id.tv_back)
+    public void onViewClicked(View view) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        InfoListFragment.this.setUserVisibleHint(false);
+        transaction.hide(InfoListFragment.this);
+        Fragment fragment = FragmentFactory.getIntance().getFragment(5);
+        fragment.setUserVisibleHint(true);
+        transaction.show(fragment).commit();
+        ((MainActivity)getActivity()).setMainTabVisiable(true);
+    }
 
-    @Override
+
+
+        @Override
     public void requestNew() {
         super.requestNew();
         if (mInformaitonPresenter != null) {
@@ -459,5 +514,9 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         videoView.requestFocus();
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MainActivity)getActivity()).setMainTabVisiable(true);
+    }
 }

@@ -13,18 +13,16 @@
         android:descendantFocusability="afterDescendants"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-    <LinearLayout
-        android:id="@+id/ll_web"
-        android:focusable="false"
-        android:orientation="vertical"
-        android:background="@drawable/bg_web_normal"
-        android:layout_width="@dimen/dp_0"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_30"
-        android:layout_weight="7">
-
-
+        <LinearLayout
+            android:id="@+id/ll_web"
+            android:layout_width="@dimen/dp_0"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:padding="@dimen/dp_15"
+            android:orientation="vertical"
+            android:background="@drawable/bg_bl_tv_info_selector"
+            android:layout_height="match_parent"
+            android:layout_weight="7">
         <TextView
             android:id="@+id/tv_title"
             android:layout_gravity="center_horizontal"

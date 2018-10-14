@@ -44,16 +44,10 @@ public class FragmentFactory {
         Fragment baseFragment = null;
         switch (position) {
             case 0://首页
-//                if (mHomeFragment == null) {
-//                    mHomeFragment = new HomeFragment();
-//                }
-//                baseFragment = mHomeFragment;
-
-                if (mTraditionalFragment == null) {
-                    mTraditionalFragment = new TraditionalFragment();
+                if (mHomeFragment == null) {
+                    mHomeFragment = new HomeFragment();
                 }
-                baseFragment = mTraditionalFragment;
-
+                baseFragment = mHomeFragment;
 
                 break;
             case 1://公告通知

@@ -3,10 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_back"
+        android:focusable="true"
+        android:layout_width="@dimen/dp_65"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:paddingLeft="@dimen/dp_11"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/bg_bl_tv_info_selector"
+        android:drawableLeft="@drawable/back_white"
+        android:gravity="center"
+        android:text="@string/back"
+        android:clickable="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@id/tv_back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_30"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="@dimen/dp_0"
@@ -28,25 +46,21 @@
 
 
         </LinearLayout>
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:id="@+id/ll_web"
             android:layout_width="@dimen/dp_0"
-            android:layout_marginTop="@dimen/dp_4"
-            android:layout_marginLeft="@dimen/dp_4"
             android:layout_marginRight="@dimen/dp_30"
-            android:layout_marginBottom="@dimen/dp_4"
-            android:focusable="true"
-            android:paddingLeft="@dimen/dp_15"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            app:cardBackgroundColor="@color/font_FF0080C3"
-            app:cardCornerRadius="@dimen/dp_5">
+            android:layout_marginLeft="@dimen/dp_10"
+            android:padding="@dimen/dp_15"
+        android:orientation="vertical"
+        android:background="@drawable/bg_bl_tv_info_selector"
+        android:layout_height="match_parent"
+            android:layout_weight="10">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_img_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/dp_15"
-                android:background="@color/transparent"
                 android:descendantFocusability="afterDescendants"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 />
@@ -108,13 +122,11 @@
             <com.boredream.bdvideoplayer.BDVideoView
                 android:id="@+id/video_view"
                 android:visibility="gone"
-                android:focusable="true"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_bl_tv_selector">
+                android:layout_height="match_parent">
 
             </com.boredream.bdvideoplayer.BDVideoView>
-        </android.support.v7.widget.CardView>
+    </LinearLayout>
 
     </LinearLayout>
 

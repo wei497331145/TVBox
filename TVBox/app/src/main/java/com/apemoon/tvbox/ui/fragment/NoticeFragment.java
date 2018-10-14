@@ -1,6 +1,7 @@
 package com.apemoon.tvbox.ui.fragment;
 
 import android.os.Build;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IReceiveNoticeView;
 import com.apemoon.tvbox.presenter.NoticePresenter;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
+import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -55,6 +57,9 @@ public class  NoticeFragment extends RxBaseListFragment implements IReceiveNotic
 
     @Override
     public RecyclerView getRecyclerView() {
+        mRecyclerView.addItemDecoration(new RecycleViewDivider(
+                getActivity(), LinearLayoutManager.VERTICAL, 10, getResources().getColor(R.color.transparent)));
+
         return mRecyclerView;
     }
 
@@ -67,7 +72,7 @@ public class  NoticeFragment extends RxBaseListFragment implements IReceiveNotic
     public void init() {
         mWebView.setBackgroundColor(0);
         mWebView.getBackground().setAlpha(0);
-        mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
+//        mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
 
         configWebView(mWebView);
     }
@@ -110,16 +115,16 @@ public class  NoticeFragment extends RxBaseListFragment implements IReceiveNotic
                 }
             }
         });
-        mWebView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
-                } else {
-                    mLlWeb.setBackgroundResource(R.drawable.bg_web_normal);
-                }
-            }
-        });
+//        mWebView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean hasFocus) {
+//                if (hasFocus) {
+//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
+//                } else {
+//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_normal);
+//                }
+//            }
+//        });
     }
 
     @Override

@@ -58,7 +58,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseV
         initView();
         initData();
         initListener();
+
     }
+
+
 
     /*
     *  请求权限的回调

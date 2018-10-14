@@ -142,6 +142,10 @@ public class MainActivity extends BaseActivity implements IMainView {
         getSupportFragmentManager().beginTransaction().hide(fragment).commit();
     }
 
+    public void setTabFocusable(){
+        mMainTab.requestFocus();
+    }
+
     @Override
     public void success() {
 
@@ -158,6 +162,14 @@ public class MainActivity extends BaseActivity implements IMainView {
             mMainTab.setTabChange(keyCode);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void setMainTabVisiable(boolean isVisiable){
+        if(isVisiable){
+            mMainTab.setVisibility(View.VISIBLE);
+        }else{
+            mMainTab.setVisibility(View.GONE);
+        }
     }
 
     @Override
