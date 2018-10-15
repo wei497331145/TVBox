@@ -1,6 +1,7 @@
 package com.apemoon.tvbox.ui.fragment;
 
 import android.os.Build;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -57,9 +58,6 @@ public class  NoticeFragment extends RxBaseListFragment implements IReceiveNotic
 
     @Override
     public RecyclerView getRecyclerView() {
-        mRecyclerView.addItemDecoration(new RecycleViewDivider(
-                getActivity(), LinearLayoutManager.VERTICAL, 10, getResources().getColor(R.color.transparent)));
-
         return mRecyclerView;
     }
 

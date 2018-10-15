@@ -4,15 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/rates_lst"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_web_normal"
-        android:cacheColorHint="#0000"
-        android:divider="@color/white"
-        android:dividerHeight="1px"
-        android:fadingEdge="none"
-        android:focusableInTouchMode="false"></ListView>
+        android:descendantFocusability="afterDescendants"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
 </LinearLayout>

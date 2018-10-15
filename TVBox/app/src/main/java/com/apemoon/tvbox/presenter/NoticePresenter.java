@@ -37,6 +37,7 @@ public class NoticePresenter extends RxBasePresenter {
         paras.put("userType", PreferenceUtil.getString(ConstantUtil.USER_TYPE,""));
         paras.put("pageNo", pageNo);
         paras.put("size",size);
+        paras.put("selectType","1");
         addDisposable(mDataManager.getNetService().receiveNoticeListCall(paras),
                 new ProgressObserver<HttpResultBody<ReceiveNoticeListEntity>>(mContext, true) {
 

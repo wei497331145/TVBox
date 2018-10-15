@@ -14,7 +14,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
-            android:padding="@dimen/dp_10"
             android:background="@drawable/bg_bl_tv_selector"
             android:gravity="center"
             android:focusable="true"
@@ -23,7 +22,7 @@
             android:textColor="@color/font_CCFFFFFF"
             android:drawableRight="@drawable/down"
             android:drawablePadding="@dimen/dp_5"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_14" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_md2"

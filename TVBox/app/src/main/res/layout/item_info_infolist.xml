@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_notice"
     android:orientation="vertical"
+    android:layout_margin="@dimen/dp_5"
     android:background="@drawable/bg_bl_tv_selector"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">

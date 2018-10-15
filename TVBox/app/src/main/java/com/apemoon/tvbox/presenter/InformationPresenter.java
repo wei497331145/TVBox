@@ -41,6 +41,7 @@ public class InformationPresenter extends RxBasePresenter {
         paras.put("pageNo", pageNo);
         paras.put("pageSize",size);
         paras.put("twoClassifyId",twoClassId);
+        paras.put("selectType","1");
         addDisposable(mDataManager.getNetService().getInfoList(paras),
                 new ProgressObserver<HttpResultBody<InfoListEntity>>(mContext, true) {
 
@@ -67,7 +68,7 @@ public class InformationPresenter extends RxBasePresenter {
     public void receiveInfoClassfication(){
         Map<String, String> paras = RequestUtil.createMap();
         paras.put("schoolId", PreferenceUtil.getString(ConstantUtil.SCHOOL_ID,""));
-
+        paras.put("selectType","1");
         addDisposable(mDataManager.getNetService().getInfoClassical(paras),
                 new ProgressObserver<HttpResultBody<InfoClassicalEntity>>(mContext, true) {
 

@@ -18,12 +18,13 @@ import com.chad.library.adapter.base.BaseViewHolder;
 public class SemestersAdapter extends BaseQuickAdapter<UserSemstersEntity.SemstersBean,BaseViewHolder> {
 
     public SemestersAdapter() {
-        super(R.layout.item_personl_santion);
+        super(R.layout.item_personl_semester);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, UserSemstersEntity.SemstersBean item) {
         if (item != null) {
+            helper.setText(R.id.tv_schemer,item.getName());
 //            ((ItemLinearLayout)helper.getView(R.id.item_school)).setRightText(item.getSchoolName());
 //            ((ItemLinearLayout)helper.getView(R.id.item_time)).setRightText(item.getStartTime());
 //            ((ItemLinearLayout)helper.getView(R.id.item_santion)).setRightText(item.get());

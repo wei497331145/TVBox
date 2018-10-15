@@ -21,6 +21,7 @@ import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalListViewAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.TeachersAdapter;
+import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -70,9 +71,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void initData() {
-        mInformaitonPresenter = new InformationPresenter(getActivity(), this);
         GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mManagerLayout);
+        mInformaitonPresenter = new InformationPresenter(getActivity(), this);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Fragment fragment = InfoListFragment.getInstance(currentTwoClassId,position);
-                fragment.setUserVisibleHint(true);
+//                fragment.setUserVisibleHint(true);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 if (!fragment.isAdded()) {
                     transaction.add(R.id.fl_main, fragment);

@@ -46,9 +46,9 @@ public class FragmentFactory {
             case 0://首页
                 if (mHomeFragment == null) {
                     mHomeFragment = new HomeFragment();
+
                 }
                 baseFragment = mHomeFragment;
-
                 break;
             case 1://公告通知
                 if (mNoticeFragment == null) {

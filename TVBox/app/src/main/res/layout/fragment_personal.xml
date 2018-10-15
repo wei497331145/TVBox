@@ -67,7 +67,6 @@
             android:layout_marginRight="@dimen/dp_30"
             android:layout_marginLeft="@dimen/dp_10"
             android:padding="@dimen/dp_15"
-            android:focusable="true"
             android:orientation="vertical"
             android:background="@drawable/bg_bl_tv_info_selector"
             android:layout_height="match_parent"
