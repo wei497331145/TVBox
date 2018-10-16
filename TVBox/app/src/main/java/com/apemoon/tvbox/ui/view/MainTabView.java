@@ -17,7 +17,7 @@ import com.apemoon.tvbox.interfaces.IMainView;
  */
 
 public class MainTabView extends LinearLayout {
-
+    View view;
     TextView mTvMain;
     TextView mTvNotice;
     TextView mTvClass;
@@ -51,6 +51,12 @@ public class MainTabView extends LinearLayout {
     public MainTabView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
+    }
+
+    public void rqFocus(){
+        if(view!=null){
+            view.requestFocus();
+        }
     }
 
     private void init(Context context) {

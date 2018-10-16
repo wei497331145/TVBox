@@ -31,6 +31,7 @@ import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity;
 import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.presenter.PersonalPresenter;
+import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.MyTeacherAdapter;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.JudegeAdapter;
@@ -129,7 +130,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
     @Override
     public void initView() {
-
+        ((MainActivity)getActivity()).onRequestMainTabFocus();
     }
 
     @Override
@@ -164,67 +165,11 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
                 break;
             case R.id.md2_tv_semester_select: {
                 initPopWindow(md2TvSemesterSelect,"2");
-//                View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
-//                md2_popView = new PopupWindow(popupView,md2TvSemesterSelect.getWidth(), WindowManager.LayoutParams.WRAP_CONTENT, true);
-//                md2_popView.setTouchable(true);
-//                md2_popView.setOutsideTouchable(false);
-//                // 设置背景为半透明灰色
-//                md2_popView.setBackgroundDrawable(new BitmapDrawable(null,""));
-//                // 设置动画
-//                md2_popView.setAnimationStyle(R.style.invitation_anim);
-//
-//                ListView rates_lst = (ListView) popupView.findViewById(R.id.rates_lst);
-//                SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(), semstersBeanList);
-//                rates_lst.setAdapter(mAdapter);
-//                rates_lst.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        return imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-//                    }
-//                });
-//                rates_lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        md3TvSemesterSelect.setText(semstersBeanList.get(position).getName());
-//                        mPersonalPresenter.receiveRecords("2", "" + semstersBeanList.get(position).getId());
-//
-//                    }
-//                });
-//
-//                md2_popView.showAsDropDown(md2TvSemesterSelect);
                 break;
             }
             case R.id.md3_tv_semester_select: {
                 initPopWindow(md3TvSemesterSelect,"4");
-//                View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
-//                md3_popView = new PopupWindow(popupView, md3TvSemesterSelect.getWidth(), WindowManager.LayoutParams.WRAP_CONTENT, true);
-//                md3_popView.setTouchable(true);
-//                md3_popView.setOutsideTouchable(false);
-//                // 设置背景为半透明灰色
-//                md3_popView.setBackgroundDrawable(new BitmapDrawable(null,""));
-//                // 设置动画
-//                md3_popView.setAnimationStyle(R.style.invitation_anim);
-//
-//                ListView rates_lst = (ListView) popupView.findViewById(R.id.rates_lst);
-//                SemesterListViewAdapter mAdapter = new SemesterListViewAdapter(getActivity(), semstersBeanList);
-//                rates_lst.setAdapter(mAdapter);
-//                rates_lst.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        return imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-//                    }
-//                });
-//                rates_lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        md3TvSemesterSelect.setText(semstersBeanList.get(position).getName());
-//                        mPersonalPresenter.receiveRecords("4", "" + semstersBeanList.get(position).getId());
-//
-//                    }
-//                });
-//                md3_popView.showAsDropDown(md3TvSemesterSelect);
+
 
                 break;
             }

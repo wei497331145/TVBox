@@ -13,6 +13,7 @@ import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.presenter.InformationPresenter;
+import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
 import com.apemoon.tvbox.ui.view.RecycleViewDivider;
@@ -55,7 +56,10 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         return R.layout.fragment_traditional_culture;
     }
 
-
+    @Override
+    public void initView() {
+        ((MainActivity)getActivity()).onRequestMainTabFocus();
+    }
 
     @Override
     public RecyclerView getRecyclerView() {

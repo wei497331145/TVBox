@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:focusable="true"
     android:background="@drawable/bg_bl_tv_selector"
+    android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView

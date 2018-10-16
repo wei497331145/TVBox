@@ -3,6 +3,7 @@ package com.apemoon.tvbox.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -170,6 +171,22 @@ public class MainActivity extends BaseActivity implements IMainView {
         }else{
             mMainTab.setVisibility(View.GONE);
         }
+    }
+
+
+    public void onRequestMainTabFocus(){
+        if(mMainTab == null){
+            return;
+        }
+
+        runOnUiThread(() -> {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mMainTab.rqFocus();
+                }
+            }, 500);
+        });
     }
 
     @Override

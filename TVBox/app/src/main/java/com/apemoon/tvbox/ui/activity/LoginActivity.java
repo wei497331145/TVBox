@@ -10,6 +10,7 @@ import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
 import com.apemoon.tvbox.presenter.LoginPresenter;
+import com.apemoon.tvbox.utils.AccountInfoUtil;
 import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.MD5EncoderUtil;
@@ -130,12 +131,15 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             PreferenceUtil.commitString(ConstantUtil.GRADED_ID,  String.valueOf(userEntity.getUserInfo().getGradeId()));
             PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID,  String.valueOf(userEntity.getUserInfo().getSchoolId()));
 
+            AccountInfoUtil.saveAccount(userEntity,mAccount,mPassword);
             MainActivity.actionStart(this,userEntity);
             finish();
         } else {
             GlobalUtil.showToast("用户为空");
         }
     }
+
+
 
     /*
      *  用户登录失败

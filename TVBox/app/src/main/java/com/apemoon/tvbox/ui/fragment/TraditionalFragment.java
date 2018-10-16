@@ -17,6 +17,7 @@ import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.factory.main.FragmentFactory;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.presenter.InformationPresenter;
+import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalListViewAdapter;
@@ -62,6 +63,10 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         return R.layout.fragment_traditional_culture;
     }
 
+    @Override
+    public void initView() {
+        ((MainActivity)getActivity()).onRequestMainTabFocus();
+    }
 
 
     @Override
