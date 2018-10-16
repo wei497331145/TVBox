@@ -2,6 +2,7 @@ package com.apemoon.tvbox.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -104,7 +105,8 @@ public class SettingActivity extends BaseActivity {
 
                 break;
             case R.id.iv_setting://设置
-
+                Intent intent =  new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
                 break;
             case R.id.tv_back://返回
                 finish();

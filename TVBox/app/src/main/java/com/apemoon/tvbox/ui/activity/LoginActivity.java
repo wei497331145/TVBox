@@ -1,10 +1,13 @@
 package com.apemoon.tvbox.ui.activity;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
@@ -30,6 +33,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     EditText mEtPassword;
     @BindView(R.id.tv_login)
     Button mTvLogin;
+
 
 
     private String mAccount;
@@ -89,11 +93,15 @@ public class LoginActivity extends BaseActivity implements ILoginView{
         });
     }
 
-    @OnClick({R.id.tv_login})
+    @OnClick({R.id.tv_login,R.id.iv_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login:
                 login();
+                break;
+            case R.id.iv_setting:
+                Intent intent =  new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
                 break;
         }
     }

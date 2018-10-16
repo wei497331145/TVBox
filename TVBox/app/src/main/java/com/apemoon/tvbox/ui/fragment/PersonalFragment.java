@@ -79,6 +79,8 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     TextView mTvSchool;
     @BindView(R.id.tv_class)
     TextView mTvClass;
+    @BindView(R.id.iv_sex)
+    ImageView mIvSex;
 
     @BindView(R.id.recyclerView_md1)
     RecyclerView mRecyclerViewMd1;
@@ -224,6 +226,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
         mTvPhone.setText(userInfo.getPhone());
         mTvSchool.setText(userInfo.getSchoolName());
         mTvClass.setText(userInfo.getGradeName());
+        if(userInfo.getSex().equals("女")){
+
+        }
     }
 
 
