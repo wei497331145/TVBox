@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.ActivityManager;
 import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.utils.AccountInfoUtil;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import butterknife.BindView;
@@ -21,6 +23,8 @@ import butterknife.OnClick;
  */
 
 public class SettingActivity extends BaseActivity {
+    @BindView(R.id.root_view)
+    LinearLayout mRootView;
     @BindView(R.id.tv_school_name)
     TextView mTvSchoolName;
     @BindView(R.id.iv_switch_school)
@@ -115,7 +119,7 @@ public class SettingActivity extends BaseActivity {
                 ActivityManager.getIntence().logout(SettingActivity.this);
                 break;
             case R.id.tv_switch_account://切换账号
-
+                AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this);
                 break;
         }
     }
