@@ -46,7 +46,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     }
 
     @Override
-    public BaseQuickAdapter getAdapter() {
+    public BaseQuickAdapter<?, ?> getAdapter() {
         mInformationAdater = new InformationAdapter();
         return mInformationAdater;
     }
@@ -56,10 +56,6 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         return R.layout.fragment_traditional_culture;
     }
 
-    @Override
-    public void initView() {
-        ((MainActivity)getActivity()).onRequestMainTabFocus();
-    }
 
     @Override
     public RecyclerView getRecyclerView() {
@@ -71,10 +67,14 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
         GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mManagerLayout);
+        ((MainActivity)getActivity()).onRequestMainTabFocus();
     }
 
     @Override
     public void initListener() {
+        if(mInformationAdater == null){
+            mInformationAdater = new InformationAdapter();
+        }
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

@@ -1,13 +1,17 @@
-package com.smarttop.library.widget;
+package com.apemoon.tvbox.ui.view.address;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.smarttop.library.R;
 import com.smarttop.library.utils.Dev;
+import com.smarttop.library.widget.AddressSelector;
+import com.smarttop.library.widget.OnAddressSelectedListener;
 
 
 /**
@@ -15,19 +19,19 @@ import com.smarttop.library.utils.Dev;
  */
 
 public class BottomDialog extends Dialog {
-    private AddressSelector selector;
+    private AddressSelectorNew selector;
 
-    public BottomDialog(Context context) {
+    public BottomDialog(Activity context) {
         super(context, R.style.bottom_dialog);
         init(context);
     }
 
-    public BottomDialog(Context context, int themeResId) {
+    public BottomDialog(Activity context, int themeResId) {
         super(context, themeResId);
         init(context);
     }
 
-    public BottomDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    public BottomDialog(Activity context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         init(context);
     }
@@ -37,8 +41,8 @@ public class BottomDialog extends Dialog {
      *
      * @param context
      */
-    private void init(Context context) {
-        selector = new AddressSelector(context);
+    private void init(Activity context) {
+        selector = new AddressSelectorNew(context);
         setContentView(selector.getView());
 
         Window window = getWindow();
@@ -47,24 +51,24 @@ public class BottomDialog extends Dialog {
         params.height = Dev.dp2px(context, 256);
         window.setAttributes(params);
 
-        window.setGravity(Gravity.BOTTOM);
+        window.setGravity(Gravity.CENTER);
     }
 
     public void setOnAddressSelectedListener(OnAddressSelectedListener listener) {
         this.selector.setOnAddressSelectedListener(listener);
     }
-    public static BottomDialog show(Context context) {
+    public static BottomDialog show(Activity context) {
         return show(context, null);
     }
 
-    public static BottomDialog show(Context context, OnAddressSelectedListener listener) {
+    public static BottomDialog show(Activity context, OnAddressSelectedListener listener) {
         BottomDialog dialog = new BottomDialog(context, R.style.bottom_dialog);
         dialog.selector.setOnAddressSelectedListener(listener);
         dialog.show();
 
         return dialog;
     }
-    public void setDialogDismisListener(AddressSelector.OnDialogCloseListener listener){
+    public void setDialogDismisListener(AddressSelectorNew.OnDialogCloseListener listener){
         this.selector.setOnDialogCloseListener(listener);
     }
 
@@ -72,7 +76,7 @@ public class BottomDialog extends Dialog {
      * 设置选中位置的监听
      * @param listener
      */
-    public void setSelectorAreaPositionListener(AddressSelector.onSelectorAreaPositionListener listener){
+    public void setSelectorAreaPositionListener(AddressSelectorNew.onSelectorAreaPositionListener listener){
         this.selector.setOnSelectorAreaPositionListener(listener);
     }
     /**

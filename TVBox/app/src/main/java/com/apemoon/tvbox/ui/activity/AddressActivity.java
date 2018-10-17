@@ -7,6 +7,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apemoon.tvbox.R;
+import com.apemoon.tvbox.base.BaseActivity;
+import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
+import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.smarttop.library.bean.AdressBean;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
@@ -14,8 +17,6 @@ import com.smarttop.library.bean.Province;
 import com.smarttop.library.bean.Street;
 import com.smarttop.library.db.manager.AddressDictManager;
 import com.smarttop.library.utils.LogUtil;
-import com.smarttop.library.widget.AddressSelector;
-import com.smarttop.library.widget.BottomDialog;
 import com.smarttop.library.widget.OnAddressSelectedListener;
 
 
@@ -23,7 +24,7 @@ import com.smarttop.library.widget.OnAddressSelectedListener;
  * Created by smartTop on 2016/12/6.
  */
 
-public class AddressActivity extends Activity implements View.OnClickListener, OnAddressSelectedListener, AddressSelector.OnDialogCloseListener, AddressSelector.onSelectorAreaPositionListener {
+public class AddressActivity extends BaseActivity implements View.OnClickListener, OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
     private TextView tv_selector_area;
     private BottomDialog dialog;
     private String provinceCode;
@@ -44,7 +45,7 @@ public class AddressActivity extends Activity implements View.OnClickListener, O
         tv_selector_area = (TextView) findViewById(R.id.tv_selector_area);
         content = (LinearLayout) findViewById(R.id.content);
         tv_selector_area.setOnClickListener(this);
-        AddressSelector selector = new AddressSelector(this);
+        AddressSelectorNew selector = new AddressSelectorNew(AddressActivity.this);
         //获取地址管理数据库
         addressDictManager = selector.getAddressDictManager();
 
@@ -77,20 +78,20 @@ public class AddressActivity extends Activity implements View.OnClickListener, O
 
     @Override
     public void onClick(View view) {
-        if (dialog != null) {
-            dialog.show();
-        } else {
-            dialog = new BottomDialog(this);
-            dialog.setOnAddressSelectedListener(this);
-            dialog.setDialogDismisListener(this);
-            dialog.setTextSize(14);//设置字体的大小
-            dialog.setIndicatorBackgroundColor(android.R.color.holo_orange_light);//设置指示器的颜色
-            dialog.setTextSelectedColor(android.R.color.holo_orange_light);//设置字体获得焦点的颜色
-            dialog.setTextUnSelectedColor(android.R.color.holo_blue_light);//设置字体没有获得焦点的颜色
-//            dialog.setDisplaySelectorArea("31",1,"2704",1,"2711",0,"15582",1);//设置已选中的地区
-            dialog.setSelectorAreaPositionListener(this);
-            dialog.show();
-        }
+//        if (dialog != null) {
+//            dialog.show();
+//        } else {
+//            dialog = new BottomDialog(this);
+//            dialog.setOnAddressSelectedListener(this);
+//            dialog.setDialogDismisListener(this);
+//            dialog.setTextSize(14);//设置字体的大小
+//            dialog.setIndicatorBackgroundColor(android.R.color.holo_orange_light);//设置指示器的颜色
+//            dialog.setTextSelectedColor(android.R.color.holo_orange_light);//设置字体获得焦点的颜色
+//            dialog.setTextUnSelectedColor(android.R.color.holo_blue_light);//设置字体没有获得焦点的颜色
+////            dialog.setDisplaySelectorArea("31",1,"2704",1,"2711",0,"15582",1);//设置已选中的地区
+//            dialog.setSelectorAreaPositionListener(this);
+//            dialog.show();
+//        }
     }
 
     @Override
@@ -144,5 +145,25 @@ public class AddressActivity extends Activity implements View.OnClickListener, O
         LogUtil.d("数据", "城市位置=" + cityPosition);
         LogUtil.d("数据", "乡镇位置=" + countyPosition);
         LogUtil.d("数据", "街道位置=" + streetPosition);
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return 0;
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initListener() {
+
     }
 }

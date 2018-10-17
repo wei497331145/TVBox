@@ -44,6 +44,9 @@ public class NetUrl {
 
     public static final String USER_TEACHER_INFO = BASE_URL + "user/subjectTeacher";//获取所在班级教师信息
 
+    public static final String USER_SCHOOL_TYPE = BASE_URL + "user/getSchoolType";//获取学校类型
+
+    public static final String USER_SCHOOL = BASE_URL + "user/getSchoolList";//根据省市区获取学校列表
 
     //==============================个人中心接口========================================================
     public static final String INFORMATION_CLASSIFICAl = BASE_URL + "information/informationClassify";//获取咨询列表

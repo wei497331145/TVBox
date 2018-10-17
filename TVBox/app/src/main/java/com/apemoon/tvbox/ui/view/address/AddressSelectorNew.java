@@ -1,8 +1,9 @@
-package com.smarttop.library.widget;
+package com.apemoon.tvbox.ui.view.address;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -21,6 +22,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.apemoon.tvbox.entity.SchoolListEntity;
+import com.apemoon.tvbox.entity.SchoolTypeListEntity;
+import com.apemoon.tvbox.interfaces.SchoolView;
+import com.apemoon.tvbox.presenter.SchoolPresenter;
 import com.smarttop.library.R;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
@@ -31,6 +36,7 @@ import com.smarttop.library.bean.Street;
 import com.smarttop.library.db.manager.AddressDictManager;
 import com.smarttop.library.utils.Lists;
 import com.smarttop.library.utils.LogUtil;
+import com.smarttop.library.widget.OnAddressSelectedListener;
 
 import java.util.List;
 
@@ -39,14 +45,21 @@ import java.util.List;
  * Created by smartTop on 2016/10/19.
  */
 
-public class AddressSelectorNew implements AdapterView.OnItemClickListener {
+public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickListener {
+    private SchoolPresenter mSchoolPresenter;
+
+    private Province mProvience;
+    private City mCity;
+    private County mCounty;
+    private SchoolTypeListEntity.SchoolTypeBean mSchoolTypeBean;
+
     private static final int INDEX_TAB_PROVINCE = 0;//省份标志
     private static final int INDEX_TAB_CITY = 1;//城市标志
     private static final int INDEX_TAB_COUNTY = 2;//乡镇标志
     private static final int INDEX_TAB_STREET = 3;//街道标志
     //TODO WXJ 学校
-    private static final int INDEX_TAB_SCHOOLTYPE = 4;//学校类型标志
-    private static final int INDEX_TAB_SCHOOL = 5;//学校标志
+    private static final int INDEX_TAB_SCHOOL = 4;//学校类型标志
+//    private static final int INDEX_TAB_SCHOOL = 5;//学校标志
 
     private int tabIndex = INDEX_TAB_PROVINCE; //默认是省份
 
@@ -55,7 +68,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     private int cityIndex = INDEX_INVALID;//城市的下标
     private int countyIndex = INDEX_INVALID;//乡镇的下标
     private int streetIndex = INDEX_INVALID;//街道的下标
-    private int schooltypeIndex = INDEX_INVALID;//学校类型的下标
     private int schoolIndex = INDEX_INVALID;//学校的下标
 
     private Context context;
@@ -70,8 +82,8 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     private TextView textViewCounty;
     private TextView textViewStreet;
     //TODO WXJ
-    private TextView textViewSchoolType;
     private TextView textViewSchool;
+//    private TextView textViewSchool;
 
     private ProgressBar progressBar;
 
@@ -79,7 +91,7 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     private ProvinceAdapter provinceAdapter;
     private CityAdapter cityAdapter;
     private CountyAdapter countyAdapter;
-    private StreetAdapter streetAdapter;
+//    private StreetAdapter streetAdapter;
     //TODO WXJ
     private SchoolTypeAdapter schoolTypeAdapter;
     private SchoolAdapter schoolAdapter;
@@ -87,11 +99,12 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     private List<Province> provinces;
     private List<City> cities;
     private List<County> counties;
-    //TODO WXJ
-    private List<SchoolType> schoolTypes;
-    private List<School> schools;
-    //TODO WXJ
     private List<Street> streets;
+    //TODO WXJ
+    private List<SchoolTypeListEntity.SchoolTypeBean> schoolTypes;
+    private List<SchoolListEntity.SchoolBean> schools;
+    //TODO WXJ
+//    private List<Street> streets;
     private OnAddressSelectedListener listener;
     private OnDialogCloseListener dialogCloseListener;
     private onSelectorAreaPositionListener selectorAreaPositionListener;
@@ -102,7 +115,7 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     private static final int WHAT_STREETS_PROVIDED = 3;
     //TODO WXJ
     private static final int WHAT_SCHOOLTYPE_PROVIDED = 4;
-    private static final int WHAT_SCHOOL_PROVIDED = 5;
+//    private static final int WHAT_SCHOOL_PROVIDED = 5;
     private AddressDictManager addressDictManager;
     private ImageView iv_colse;
     private int selectedColor;
@@ -113,7 +126,7 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     public int streetPosition;
     //TODO WXJ
     public int schoolTypePosition;
-    public int schoolPosition;
+//    public int schoolPosition;
     @SuppressWarnings("unchecked")
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -154,14 +167,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                     break;
 
                 case WHAT_STREETS_PROVIDED://更新街道列表
-                    streets = (List<Street>) msg.obj;
-                    streetAdapter.notifyDataSetChanged();
-                    if (Lists.notEmpty(streets)) {
-                        listView.setAdapter(streetAdapter);
-                        tabIndex = INDEX_TAB_STREET;
-                    } else {
-                        callbackInternal();
-                    }
 
                     break;
             }
@@ -175,8 +180,48 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     });
 
 
-    public AddressSelectorNew(Context context) {
+    @Override
+    public void receiveSchoolTypeSuccess(SchoolTypeListEntity entity) {
+        schoolTypes = entity.getSchoolTypeList();
+
+        if (Lists.notEmpty(schoolTypes)) {
+            listView.setAdapter(schoolTypeAdapter);
+            tabIndex = INDEX_TAB_STREET;
+
+        } else {
+            callbackInternal();
+        }
+
+    }
+
+    @Override
+    public void receiveSchoolTypFail() {
+
+    }
+
+    @Override
+    public void receiveSchoolSuccess(SchoolListEntity entity) {
+        schools = entity.getSchoolList();
+
+        if (Lists.notEmpty(schools)) {
+            listView.setAdapter(schoolAdapter);
+            tabIndex = INDEX_TAB_COUNTY;
+        } else {
+            callbackInternal();
+        }
+
+    }
+
+    @Override
+    public void receiveSchoolFail() {
+
+    }
+
+
+
+    public AddressSelectorNew(Activity context) {
         this.context = context;
+        mSchoolPresenter = new SchoolPresenter(context,this);
         inflater = LayoutInflater.from(context);
         addressDictManager = new AddressDictManager(context);
         initViews();
@@ -208,9 +253,7 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         this.textViewCounty = (TextView) view.findViewById(R.id.textViewCounty);//区 乡镇
         this.textViewStreet = (TextView) view.findViewById(R.id.textViewStreet);//街道
         //TODO WXJ
-        this.textViewSchoolType = (TextView) view.findViewById(R.id.textViewSchoolType);//学校类型
         this.textViewSchool = (TextView) view.findViewById(R.id.textViewSchool);//学校
-        this.textViewSchoolType.setOnClickListener(new OnStreetTabClickListener());
         this.textViewSchool.setOnClickListener(new OnStreetTabClickListener());
 
         this.textViewProvince.setOnClickListener(new OnProvinceTabClickListener());
@@ -247,7 +290,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         textViewCounty.setTextSize(dp);
         textViewStreet.setTextSize(dp);
         //TODO WXJ
-        textViewSchoolType.setTextSize(dp);
         textViewSchool.setTextSize(dp);
     }
 
@@ -279,7 +321,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         provinceAdapter = new ProvinceAdapter();
         cityAdapter = new CityAdapter();
         countyAdapter = new CountyAdapter();
-        streetAdapter = new StreetAdapter();
         schoolTypeAdapter = new SchoolTypeAdapter();
         schoolAdapter = new SchoolAdapter();
     }
@@ -303,9 +344,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                         break;
                     case INDEX_TAB_STREET: //街道
                         buildIndicatorAnimatorTowards(textViewStreet).start();
-                        break;
-                    case INDEX_TAB_SCHOOLTYPE: //学校类型
-                        buildIndicatorAnimatorTowards(textViewSchoolType).start();
                         break;
                     case INDEX_TAB_SCHOOL: //学校
                         buildIndicatorAnimatorTowards(textViewSchool).start();
@@ -348,10 +386,9 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         textViewProvince.setVisibility(Lists.notEmpty(provinces) ? View.VISIBLE : View.GONE);
         textViewCity.setVisibility(Lists.notEmpty(cities) ? View.VISIBLE : View.GONE);
         textViewCounty.setVisibility(Lists.notEmpty(counties) ? View.VISIBLE : View.GONE);
-        textViewStreet.setVisibility(Lists.notEmpty(streets) ? View.VISIBLE : View.GONE);
+        textViewStreet.setVisibility(Lists.notEmpty(schoolTypes) ? View.VISIBLE : View.GONE);
         //TODO WXJ
-        textViewSchoolType.setVisibility(Lists.notEmpty(streets) ? View.VISIBLE : View.GONE);
-        textViewSchool.setVisibility(Lists.notEmpty(streets) ? View.VISIBLE : View.GONE);
+        textViewSchool.setVisibility(Lists.notEmpty(schools) ? View.VISIBLE : View.GONE);
 
         //按钮能不能点击 false 不能点击 true 能点击
         textViewProvince.setEnabled(tabIndex != INDEX_TAB_PROVINCE);
@@ -359,7 +396,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         textViewCounty.setEnabled(tabIndex != INDEX_TAB_COUNTY);
         textViewStreet.setEnabled(tabIndex != INDEX_TAB_STREET);
         //TODO WXJ
-        textViewSchoolType.setEnabled(tabIndex != INDEX_TAB_STREET);
         textViewSchool.setEnabled(tabIndex != INDEX_TAB_STREET);
         if (selectedColor != 0 && unSelectedColor != 0) {
             updateTabTextColor();
@@ -392,18 +428,13 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         }
 
         if (tabIndex != INDEX_TAB_STREET) {
-            textViewSchoolType.setTextColor(context.getResources().getColor(selectedColor));
-        } else {
-            textViewSchoolType.setTextColor(context.getResources().getColor(unSelectedColor));
-        }
-
-        if (tabIndex != INDEX_TAB_STREET) {
             textViewSchool.setTextColor(context.getResources().getColor(selectedColor));
         } else {
             textViewSchool.setTextColor(context.getResources().getColor(unSelectedColor));
         }
 
     }
+
 
     /**
      * 点击省份的监听
@@ -467,7 +498,7 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         @Override
         public void onClick(View v) {
             tabIndex = INDEX_TAB_STREET;
-            listView.setAdapter(streetAdapter);
+//            listView.setAdapter(streetAdapter);
 
             if (streetIndex != INDEX_INVALID) {
                 listView.setSelection(streetIndex);
@@ -495,30 +526,27 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (tabIndex) {
             case INDEX_TAB_PROVINCE: //省份
-                Province province = provinceAdapter.getItem(position);
+                mProvience = provinceAdapter.getItem(position);
                 provincePostion = position;
                 // 更新当前级别及子级标签文本
-                textViewProvince.setText(province.name);
+                textViewProvince.setText(mProvience.name);
                 textViewCity.setText("请选择");
                 textViewCounty.setText("请选择");
                 textViewStreet.setText("请选择");
                 //TODO WXJ
-                textViewSchoolType.setText("请选择");
                 textViewSchool.setText("请选择");
 
                 //根据省份的id,从数据库中查询城市列表
-                retrieveCitiesWith(province.id);
+                retrieveCitiesWith(mProvience.id);
 
                 // 清空子级数据
                 cities = null;
                 counties = null;
-                streets = null;
                 //TODO WJ
                 schoolTypes = null;
                 schools = null;
                 cityAdapter.notifyDataSetChanged();
                 countyAdapter.notifyDataSetChanged();
-                streetAdapter.notifyDataSetChanged();
                 //TODO WXJ
                 schoolTypeAdapter.notifyDataSetChanged();
                 schoolAdapter.notifyDataSetChanged();
@@ -528,30 +556,27 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                 this.countyIndex = INDEX_INVALID;
                 this.streetIndex = INDEX_INVALID;
                 //TODO WXJ
-                this.schooltypeIndex = INDEX_INVALID;
                 this.schoolIndex = INDEX_INVALID;
                 // 更新选中效果
                 provinceAdapter.notifyDataSetChanged();
                 break;
             case INDEX_TAB_CITY://城市
-                City city = cityAdapter.getItem(position);
+                mCity = cityAdapter.getItem(position);
                 cityPosition = position;
-                textViewCity.setText(city.name);
+                textViewCity.setText(mCity.name);
                 textViewCounty.setText("请选择");
                 textViewStreet.setText("请选择");
                 //TODO WXJ
-                textViewSchoolType.setText("请选择");
                 textViewSchool.setText("请选择");
                 //根据城市的id,从数据库中查询城市列表
-                retrieveCountiesWith(city.id);
+                retrieveCountiesWith(mCity.id);
                 // 清空子级数据
                 counties = null;
-                streets = null;
+
                 //TODO WJ
                 schoolTypes = null;
                 schools = null;
                 countyAdapter.notifyDataSetChanged();
-                streetAdapter.notifyDataSetChanged();
                 //TODO WXJ
                 schoolTypeAdapter.notifyDataSetChanged();
                 schoolAdapter.notifyDataSetChanged();
@@ -560,27 +585,23 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                 this.countyIndex = INDEX_INVALID;
                 this.streetIndex = INDEX_INVALID;
                 //TODO WXJ
-                this.schooltypeIndex = INDEX_INVALID;
                 this.schoolIndex = INDEX_INVALID;
                 // 更新选中效果
                 cityAdapter.notifyDataSetChanged();
                 break;
             case INDEX_TAB_COUNTY:
-                County county = countyAdapter.getItem(position);
+                mCounty = countyAdapter.getItem(position);
                 countyPosition = position;
-                textViewCounty.setText(county.name);
+                textViewCounty.setText(mCounty.name);
                 textViewStreet.setText("请选择");
                 //TODO WXJ
-                textViewSchoolType.setText("请选择");
                 textViewSchool.setText("请选择");
-                retrieveStreetsWith(county.id);
+                retrieveStreetsWith(mCounty.id);
 
-                streets = null;
                 //TODO WJ
                 schoolTypes = null;
                 schools = null;
 
-                streetAdapter.notifyDataSetChanged();
                 //TODO WXJ
                 schoolTypeAdapter.notifyDataSetChanged();
                 schoolAdapter.notifyDataSetChanged();
@@ -588,49 +609,23 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                 this.countyIndex = position;
                 this.streetIndex = INDEX_INVALID;
                 //TODO WXJ
-                this.schooltypeIndex = INDEX_INVALID;
                 this.schoolIndex = INDEX_INVALID;
                 countyAdapter.notifyDataSetChanged();
                 break;
             case INDEX_TAB_STREET:
-                Street street = streetAdapter.getItem(position);
-                streetPosition = position;
-                textViewStreet.setText(street.name);
-                //TODO WJ
-                schoolTypes = null;
-                schools = null;
-                //TODO WXJ
-                textViewSchoolType.setText("请选择");
-                textViewSchool.setText("请选择");
-
-                this.streetIndex = position;
-                //TODO WXJ
-                this.schooltypeIndex = INDEX_INVALID;
-                this.schoolIndex = INDEX_INVALID;
-
-                streetAdapter.notifyDataSetChanged();
-                //TODO WXJ
-                schoolTypeAdapter.notifyDataSetChanged();
-                schoolAdapter.notifyDataSetChanged();
-
-                callbackInternal();
-                if (selectorAreaPositionListener != null) {
-                    selectorAreaPositionListener.selectorAreaPosition(provincePostion, cityPosition, countyPosition, streetPosition);
-                }
-
-                break;
-            case INDEX_TAB_SCHOOLTYPE:
-                SchoolType schoolType = schoolTypeAdapter.getItem(position);
-                schooltypeIndex = position;
-                textViewSchoolType.setText(schoolType.name);
+                mSchoolTypeBean = schoolTypeAdapter.getItem(position);
+                schoolIndex = position;
+                textViewSchool.setText(mSchoolTypeBean.getName());
                 //TODO WJ
                 schools = null;
                 //TODO WXJ
-                textViewSchool.setText("请选择");
+                textViewStreet.setText("请选择");
 
                 this.streetIndex = position;
+
+                mSchoolPresenter.receiveSchool(mProvience.name,mCity.name,mCounty.name,""+mSchoolTypeBean.getId());
                 //TODO WXJ
-                this.schoolIndex = INDEX_INVALID;
+                this.streetIndex = INDEX_INVALID;
 
                 schoolTypeAdapter.notifyDataSetChanged();
                 //TODO WXJ
@@ -640,11 +635,13 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                     selectorAreaPositionListener.selectorAreaPosition(provincePostion, cityPosition, countyPosition, streetPosition);
                 }
 
+
                 break;
+
             case INDEX_TAB_SCHOOL:
-                School school = schoolAdapter.getItem(position);
+                SchoolListEntity.SchoolBean school = schoolAdapter.getItem(position);
 
-                textViewSchool.setText(school.name);
+                textViewSchool.setText(school.getName());
                 //TODO WXJ
                 textViewSchool.setText("请选择");
 
@@ -700,9 +697,10 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
      * @param countyId 乡镇id
      */
     private void retrieveStreetsWith(int countyId) {
-        progressBar.setVisibility(View.VISIBLE);
-        List<Street> streetList = addressDictManager.getStreetList(countyId);
-        handler.sendMessage(Message.obtain(handler, WHAT_STREETS_PROVIDED, streetList));
+//        progressBar.setVisibility(View.VISIBLE);
+//        List<Street> streetList = addressDictManager.getStreetList(countyId);
+//        handler.sendMessage(Message.obtain(handler, WHAT_STREETS_PROVIDED, streetList));
+        mSchoolPresenter.receiveSchoolType();
     }
 
     /**
@@ -956,13 +954,13 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         }
 
         @Override
-        public SchoolType getItem(int position) {
+        public SchoolTypeListEntity.SchoolTypeBean getItem(int position) {
             return schoolTypes.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).id;
+            return getItem(position).getId();
         }
 
         @Override
@@ -981,10 +979,10 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                 holder = (Holder) convertView.getTag();
             }
 
-            SchoolType item = getItem(position);
-            holder.textView.setText(item.name);
+            SchoolTypeListEntity.SchoolTypeBean item = getItem(position);
+            holder.textView.setText(item.getName());
 
-            boolean checked = streetIndex != INDEX_INVALID && streets.get(streetIndex).id == item.id;
+            boolean checked = streetIndex != INDEX_INVALID && schoolTypes.get(streetIndex).getId() == item.getId();
             holder.textView.setEnabled(!checked);
             holder.imageViewCheckMark.setVisibility(checked ? View.VISIBLE : View.GONE);
 
@@ -1008,13 +1006,13 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
         }
 
         @Override
-        public School getItem(int position) {
+        public SchoolListEntity.SchoolBean getItem(int position) {
             return schools.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).id;
+            return getItem(position).getId();
         }
 
         @Override
@@ -1033,10 +1031,10 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
                 holder = (Holder) convertView.getTag();
             }
 
-            School item = getItem(position);
-            holder.textView.setText(item.name);
+            SchoolListEntity.SchoolBean item = getItem(position);
+            holder.textView.setText(item.getName());
 
-            boolean checked = streetIndex != INDEX_INVALID && streets.get(streetIndex).id == item.id;
+            boolean checked = streetIndex != INDEX_INVALID && schools.get(streetIndex).getId() == item.getId();
             holder.textView.setEnabled(!checked);
             holder.imageViewCheckMark.setVisibility(checked ? View.VISIBLE : View.GONE);
 
@@ -1104,7 +1102,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
             streets = null;
             cityAdapter.notifyDataSetChanged();
             countyAdapter.notifyDataSetChanged();
-            streetAdapter.notifyDataSetChanged();
             // 更新已选中项
             this.provinceIndex = provincePostion;
             this.cityIndex = INDEX_INVALID;
@@ -1123,7 +1120,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
             counties = null;
             streets = null;
             countyAdapter.notifyDataSetChanged();
-            streetAdapter.notifyDataSetChanged();
             // 更新已选中项
             this.cityIndex = cityPosition;
             this.countyIndex = INDEX_INVALID;
@@ -1139,7 +1135,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
             retrieveStreetsWith(county.id);
 
             streets = null;
-            streetAdapter.notifyDataSetChanged();
 
             this.countyIndex = countyPosition;
             this.streetIndex = INDEX_INVALID;
@@ -1153,7 +1148,6 @@ public class AddressSelectorNew implements AdapterView.OnItemClickListener {
 
             this.streetIndex = streetPosition;
 
-            streetAdapter.notifyDataSetChanged();
 
 
         }

@@ -11,9 +11,18 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.ActivityManager;
 import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
+import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AccountInfoUtil;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
+import com.smarttop.library.bean.City;
+import com.smarttop.library.bean.County;
+import com.smarttop.library.bean.Province;
+import com.smarttop.library.bean.Street;
+import com.smarttop.library.widget.AddressSelector;
+import com.smarttop.library.widget.OnAddressSelectedListener;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -22,7 +31,7 @@ import butterknife.OnClick;
  * des：
  */
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity implements OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
     @BindView(R.id.root_view)
     LinearLayout mRootView;
     @BindView(R.id.tv_school_name)
@@ -47,6 +56,9 @@ public class SettingActivity extends BaseActivity {
     TextView mTvLogout;
     @BindView(R.id.tv_switch_account)
     TextView mTvSwitchAccount;
+
+
+    private BottomDialog dialog;
 
     public static final String USER_ENTITY = "user_entity";
     private UserEntity mUserEntity;
@@ -106,7 +118,7 @@ public class SettingActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_switch_school://切换学校
-
+                showSchoolPop();
                 break;
             case R.id.iv_setting://设置
                 Intent intent =  new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
@@ -124,24 +136,41 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
+    private void showSchoolPop(){
+        if (dialog != null) {
+            dialog.show();
+        } else {
+            dialog = new BottomDialog(this);
+            dialog.setOnAddressSelectedListener(this);
+            dialog.setDialogDismisListener(this);
+            dialog.setTextSize(14);//设置字体的大小
+            dialog.setIndicatorBackgroundColor(android.R.color.holo_orange_light);//设置指示器的颜色
+            dialog.setTextSelectedColor(android.R.color.holo_orange_light);//设置字体获得焦点的颜色
+            dialog.setTextUnSelectedColor(android.R.color.holo_blue_light);//设置字体没有获得焦点的颜色
+//            dialog.setDisplaySelectorArea("31",1,"2704",1,"2711",0,"15582",1);//设置已选中的地区
+            dialog.setSelectorAreaPositionListener(this);
+            dialog.show();
+        }
+    }
 
 
+    @Override
+    public void onAddressSelected(Province province, City city, County county, Street street) {
 
+    }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
 
+    @Override
+    public void dialogclose() {
 
+    }
 
+    @Override
+    public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {
 
-
-
-
-
-
-
-
-
-
-
-
+    }
 }

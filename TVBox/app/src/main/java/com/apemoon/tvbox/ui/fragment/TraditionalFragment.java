@@ -53,7 +53,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     }
 
     @Override
-    public BaseQuickAdapter getAdapter() {
+    public BaseQuickAdapter<?, ?> getAdapter() {
         mInformationAdater = new InformationAdapter();
         return mInformationAdater;
     }
@@ -63,10 +63,6 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         return R.layout.fragment_traditional_culture;
     }
 
-    @Override
-    public void initView() {
-        ((MainActivity)getActivity()).onRequestMainTabFocus();
-    }
 
 
     @Override
@@ -79,6 +75,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mManagerLayout);
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
+        ((MainActivity)getActivity()).onRequestMainTabFocus();
     }
 
     @Override

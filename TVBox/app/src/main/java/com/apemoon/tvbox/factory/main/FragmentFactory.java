@@ -49,6 +49,11 @@ public class FragmentFactory {
 
                 }
                 baseFragment = mHomeFragment;
+//
+//                if (mElegantDemeanorFragment == null) {
+//                    mElegantDemeanorFragment = new ElegantDemeanorFragment();
+//                }
+//                baseFragment = mElegantDemeanorFragment;
                 break;
             case 1://公告通知
                 if (mNoticeFragment == null) {

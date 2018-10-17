@@ -2,6 +2,8 @@ package com.apemoon.tvbox.interfaces.net;
 
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.NetUrl;
+import com.apemoon.tvbox.entity.SchoolListEntity;
+import com.apemoon.tvbox.entity.SchoolTypeListEntity;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
@@ -95,6 +97,21 @@ public interface INetService {
     @POST(NetUrl.INFORMATION_LIST)
     Observable<HttpResultBody<InfoListEntity>> getInfoList(@FieldMap Map<String, String> paras);
 
+//=========================== 学校列表的接口 ==================================
+
+    /**
+     * 获取资讯列表
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_SCHOOL_TYPE)
+    Observable<HttpResultBody<SchoolTypeListEntity>> getSchoolType(@FieldMap Map<String, String> paras);
+
+    /**
+     * 获取资讯列表
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_SCHOOL)
+    Observable<HttpResultBody<SchoolListEntity>> getSchool(@FieldMap Map<String, String> paras);
 
 
 }
