@@ -14,7 +14,6 @@ import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
 import com.apemoon.tvbox.presenter.SettingPresenter;
-import com.apemoon.tvbox.ui.view.AccountDialog;
 import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AccountInfoUtil;
@@ -27,7 +26,6 @@ import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
 import com.smarttop.library.bean.Street;
-import com.smarttop.library.widget.AddressSelector;
 import com.smarttop.library.widget.OnAddressSelectedListener;
 
 import butterknife.BindView;
@@ -69,7 +67,7 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     private BottomDialog dialog;
 
-    private AccountDialog accountDialog;
+
 
     public static final String USER_ENTITY = "user_entity";
     private UserEntity mUserEntity;
@@ -173,12 +171,7 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     private void showAccountPop(){
         AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this);
-        if (accountDialog != null) {
-            accountDialog.show();
-        } else {
-            accountDialog = new AccountDialog(this,AccountInfoUtil.getAccountList(),mSettingPresenter);
-            accountDialog.show();
-        }
+
     }
 
     @Override

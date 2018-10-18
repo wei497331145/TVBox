@@ -7,6 +7,8 @@ import com.apemoon.tvbox.base.rx.ProgressObserver;
 import com.apemoon.tvbox.base.rx.RxBasePresenter;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
+import com.apemoon.tvbox.utils.ConstantUtil;
+import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.apemoon.tvbox.utils.RequestUtil;
 
 import java.util.Map;
@@ -39,6 +41,8 @@ public class SettingPresenter extends RxBasePresenter {
                     public void doNext(HttpResultBody<UserEntity> httpResultBody) {
                         if (mILoginView != null ) {
                             mILoginView.loginSuccess(httpResultBody.result,httpResultBody.code);
+                            //wxj 清除其他学校信息
+                            PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOO_ID, "");
                         }
                     }
 

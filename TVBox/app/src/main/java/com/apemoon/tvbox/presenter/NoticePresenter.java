@@ -44,6 +44,7 @@ public class NoticePresenter extends RxBasePresenter {
         }else {
             paras.put("selectType", "1");
         }
+
         addDisposable(mDataManager.getNetService().receiveNoticeListCall(paras),
                 new ProgressObserver<HttpResultBody<ReceiveNoticeListEntity>>(mContext, true) {
 
