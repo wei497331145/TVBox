@@ -10,6 +10,8 @@ public class ConstantUtil {
     /*用户信息*/
     public static String USER_ACCOUNT= "user_account";//用户账号
     public static String USER_PASSWORD= "user_password";//用户密码
+    public static String TOKEN= "toen";//token
+
 
     public static String USER_ID= "user_id";//用户id
     public static String USER_TYPE = "user_type";//用户type

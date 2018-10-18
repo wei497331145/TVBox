@@ -132,6 +132,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                 GlobalUtil.showToast("只能登录学生的账号");
                 return;
             }
+            PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getUserInfo().getToken());
             PreferenceUtil.commitString(ConstantUtil.USER_ACCOUNT, mAccount);
             PreferenceUtil.commitString(ConstantUtil.USER_PASSWORD, mPassword);
             PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
