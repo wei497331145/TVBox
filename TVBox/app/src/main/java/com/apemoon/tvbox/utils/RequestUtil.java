@@ -26,6 +26,7 @@ public class RequestUtil {
         } else {
             map = new HashMap<>();
         }
+        map.put("token", PreferenceUtil.getString(ConstantUtil.TOKEN, ""));
         return map;
     }
 
