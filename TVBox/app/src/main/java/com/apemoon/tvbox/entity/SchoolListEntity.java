@@ -22,7 +22,7 @@ public class SchoolListEntity implements Serializable {
         private String city;
         private Long createTime;
         private String createUser;
-        private Long foundDate;
+        private String foundDate;
         private String image;
         private String intro;
         private String name;
@@ -36,6 +36,13 @@ public class SchoolListEntity implements Serializable {
         private Long updateTime;
         private String updateUser;
 
+        public String getFoundDate() {
+            return foundDate;
+        }
+
+        public void setFoundDate(String foundDate) {
+            this.foundDate = foundDate;
+        }
 
 
         public int getId() {
@@ -84,14 +91,6 @@ public class SchoolListEntity implements Serializable {
 
         public void setCreateUser(String createUser) {
             this.createUser = createUser;
-        }
-
-        public Long getFoundDate() {
-            return foundDate;
-        }
-
-        public void setFoundDate(Long foundDate) {
-            this.foundDate = foundDate;
         }
 
         public String getImage() {

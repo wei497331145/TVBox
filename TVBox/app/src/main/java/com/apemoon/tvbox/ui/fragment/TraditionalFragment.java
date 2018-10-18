@@ -102,6 +102,16 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     }
 
     @Override
+    public void receiveNewestInformationsSuccess(InfoListEntity entity) {
+
+    }
+
+    @Override
+    public void receiveNewestInformationsFail() {
+
+    }
+
+    @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
         if (entity != null) {
             informationBeanList = entity.getInformationList();

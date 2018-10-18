@@ -12,6 +12,10 @@ import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
 
 public interface IInformationView {
 
+    void receiveNewestInformationsSuccess(InfoListEntity entity);
+
+    void receiveNewestInformationsFail();
+
     void receiveInformationsSuccess(InfoListEntity entity);
 
     void receiveInformationsFail();

@@ -16,6 +16,7 @@
         <com.apemoon.tvbox.ui.view.MainTabView
             android:id="@+id/main_tab"
             android:focusable="true"
+            android:background="@drawable/bg_bl_tv_big_corner_selector"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_30"
             android:layout_marginRight="@dimen/dp_30"

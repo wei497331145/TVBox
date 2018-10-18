@@ -11,6 +11,7 @@
     android:layout_height="@dimen/dp_64">
 
     <ImageView
+        android:id="@+id/iv_head"
         android:src="@drawable/news"
         android:scaleType="centerCrop"
         android:layout_width="@dimen/dp_85"

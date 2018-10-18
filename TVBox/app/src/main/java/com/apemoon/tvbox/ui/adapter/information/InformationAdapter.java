@@ -11,6 +11,9 @@ import com.apemoon.tvbox.utils.GlideUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+
+
+
 /**
  * Created by water on 2018/8/28/028.
  * des：

@@ -3,6 +3,7 @@ package com.apemoon.tvbox.ui.view.address;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,19 +21,26 @@ import com.smarttop.library.widget.OnAddressSelectedListener;
 
 public class BottomDialog extends Dialog {
     private AddressSelectorNew selector;
+    private Activity context;
 
     public BottomDialog(Activity context) {
         super(context, R.style.bottom_dialog);
-        init(context);
+        this.context = context;
     }
 
     public BottomDialog(Activity context, int themeResId) {
         super(context, themeResId);
-        init(context);
+        this.context = context;
     }
 
     public BottomDialog(Activity context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+        this.context = context;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         init(context);
     }
 
@@ -47,8 +55,12 @@ public class BottomDialog extends Dialog {
 
         Window window = getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = Dev.dp2px(context, 256);
+
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int width = manager.getDefaultDisplay().getWidth();
+        int height = manager.getDefaultDisplay().getHeight();
+        params.width = width/2;
+        params.height = height/2;
         window.setAttributes(params);
 
         window.setGravity(Gravity.CENTER);

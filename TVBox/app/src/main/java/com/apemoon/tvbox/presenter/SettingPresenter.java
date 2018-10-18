@@ -1,15 +1,12 @@
 package com.apemoon.tvbox.presenter;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.rx.ProgressObserver;
 import com.apemoon.tvbox.base.rx.RxBasePresenter;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
-import com.apemoon.tvbox.utils.ConstantUtil;
-import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.apemoon.tvbox.utils.RequestUtil;
 
 import java.util.Map;
@@ -19,11 +16,11 @@ import java.util.Map;
  * @Author water
  * @Date 2018-04-11
  */
-public class LoginPresenter extends RxBasePresenter {
+public class SettingPresenter extends RxBasePresenter {
 
     private ILoginView mILoginView;
 
-    public LoginPresenter(Context context , ILoginView iLoginView) {
+    public SettingPresenter(Context context , ILoginView iLoginView) {
         super(context);
         mILoginView = iLoginView;
     }
@@ -33,17 +30,15 @@ public class LoginPresenter extends RxBasePresenter {
      */
     public void login(String account,String password){
         Map<String, String> paras = RequestUtil.createMap();
-        paras.put("account", account);//15245645236
-        paras.put("password",password);//jiaoyu888
+        paras.put("account", account);
+        paras.put("password",password);
         addDisposable(mDataManager.getNetService().loginCall(paras),
                 new ProgressObserver<HttpResultBody<UserEntity>>(mContext, true) {
 
                     @Override
                     public void doNext(HttpResultBody<UserEntity> httpResultBody) {
-                        if (mILoginView != null && TextUtils.equals(httpResultBody.code,"0000")) {
+                        if (mILoginView != null ) {
                             mILoginView.loginSuccess(httpResultBody.result,httpResultBody.code);
-                            //wxj 清除其他学校信息
-                            PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOO_ID, "");
                         }
                     }
 

@@ -19,6 +19,8 @@ public class ConstantUtil {
     public static String GRADED_ID= "graded_id";//班级id
     public static String SCHOOL_ID= "school_id";//学校id
 
+
+    public static String OTHER_SCHOO_ID = "other_school_id";
     public static String ACCOUNT_LIST_STR= "account_list_str";//账户信息
 
 

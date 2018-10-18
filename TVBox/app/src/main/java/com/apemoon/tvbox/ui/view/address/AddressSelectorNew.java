@@ -21,11 +21,15 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apemoon.tvbox.entity.SchoolListEntity;
 import com.apemoon.tvbox.entity.SchoolTypeListEntity;
 import com.apemoon.tvbox.interfaces.SchoolView;
 import com.apemoon.tvbox.presenter.SchoolPresenter;
+import com.apemoon.tvbox.utils.ConstantUtil;
+import com.apemoon.tvbox.utils.GlobalUtil;
+import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.smarttop.library.R;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
@@ -205,7 +209,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
 
         if (Lists.notEmpty(schools)) {
             listView.setAdapter(schoolAdapter);
-            tabIndex = INDEX_TAB_COUNTY;
+            tabIndex = INDEX_TAB_SCHOOL;
         } else {
             callbackInternal();
         }
@@ -607,6 +611,8 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                 schoolAdapter.notifyDataSetChanged();
 
                 this.countyIndex = position;
+                //TODO WXJ
+
                 this.streetIndex = INDEX_INVALID;
                 //TODO WXJ
                 this.schoolIndex = INDEX_INVALID;
@@ -625,7 +631,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
 
                 mSchoolPresenter.receiveSchool(mProvience.name,mCity.name,mCounty.name,""+mSchoolTypeBean.getId());
                 //TODO WXJ
-                this.streetIndex = INDEX_INVALID;
+                this.schoolIndex = INDEX_INVALID;
 
                 schoolTypeAdapter.notifyDataSetChanged();
                 //TODO WXJ
@@ -646,13 +652,22 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                 textViewSchool.setText("请选择");
 
                 this.schoolIndex = position;
-
+                String otherSchoolId = ""+school.getId();
+                String currentSchooldId = PreferenceUtil.getString(ConstantUtil.SCHOOL_ID,"");
+                if(!otherSchoolId.equals(currentSchooldId)) {
+                    PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOO_ID, "" + school.getId());
+                }else{
+                    //清除
+                    PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOO_ID, "");
+                }
                 //TODO WXJ
                 schoolAdapter.notifyDataSetChanged();
                 callbackInternal();
                 if (selectorAreaPositionListener != null) {
                     selectorAreaPositionListener.selectorAreaPosition(provincePostion, cityPosition, countyPosition, streetPosition);
                 }
+                GlobalUtil.showToast("选择成功");
+                dialogCloseListener.dialogclose();
 
                 break;
         }
@@ -1034,7 +1049,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
             SchoolListEntity.SchoolBean item = getItem(position);
             holder.textView.setText(item.getName());
 
-            boolean checked = streetIndex != INDEX_INVALID && schools.get(streetIndex).getId() == item.getId();
+            boolean checked = schoolIndex != INDEX_INVALID && schools.get(schoolIndex).getId() == item.getId();
             holder.textView.setEnabled(!checked);
             holder.imageViewCheckMark.setVisibility(checked ? View.VISIBLE : View.GONE);
 

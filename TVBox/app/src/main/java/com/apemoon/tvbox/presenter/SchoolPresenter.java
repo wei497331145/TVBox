@@ -37,7 +37,7 @@ public class SchoolPresenter extends RxBasePresenter {
      */
     public void receiveSchoolType(){
         Map<String, String> paras = RequestUtil.createMap();
-
+        paras.put("token", PreferenceUtil.getString(ConstantUtil.TOKEN,""));
         addDisposable(mDataManager.getNetService().getSchoolType(paras),
                 new ProgressObserver<HttpResultBody<SchoolTypeListEntity>>(mContext, true) {
 
@@ -63,7 +63,7 @@ public class SchoolPresenter extends RxBasePresenter {
      */
     public void receiveSchool(String provience,String city,String area,String schoolTypeId){
         Map<String, String> paras = RequestUtil.createMap();
-        paras.put("province",provience);
+        paras.put("province",provience+"省");
         paras.put("city",city);
         paras.put("area",area);
         paras.put("schoolTypeId",schoolTypeId);

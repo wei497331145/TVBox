@@ -3,6 +3,7 @@ package com.apemoon.tvbox.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,11 +12,17 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.ActivityManager;
 import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.interfaces.ILoginView;
+import com.apemoon.tvbox.presenter.SettingPresenter;
+import com.apemoon.tvbox.ui.view.AccountDialog;
 import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AccountInfoUtil;
 import com.apemoon.tvbox.utils.AnimationUtil;
+import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
+import com.apemoon.tvbox.utils.GlobalUtil;
+import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
@@ -31,7 +38,7 @@ import butterknife.OnClick;
  * des：
  */
 
-public class SettingActivity extends BaseActivity implements OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
+public class SettingActivity extends BaseActivity implements ILoginView,OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
     @BindView(R.id.root_view)
     LinearLayout mRootView;
     @BindView(R.id.tv_school_name)
@@ -57,8 +64,12 @@ public class SettingActivity extends BaseActivity implements OnAddressSelectedLi
     @BindView(R.id.tv_switch_account)
     TextView mTvSwitchAccount;
 
+    private SettingPresenter mSettingPresenter;
+
 
     private BottomDialog dialog;
+
+    private AccountDialog accountDialog;
 
     public static final String USER_ENTITY = "user_entity";
     private UserEntity mUserEntity;
@@ -81,6 +92,7 @@ public class SettingActivity extends BaseActivity implements OnAddressSelectedLi
 
     @Override
     public void initData() {
+        mSettingPresenter = new SettingPresenter(this,this);
         mUserEntity = (UserEntity) getIntent().getSerializableExtra(USER_ENTITY);
         if (mUserEntity != null) {
             UserEntity.UserInfoBean userInfo = mUserEntity.getUserInfo();
@@ -131,9 +143,15 @@ public class SettingActivity extends BaseActivity implements OnAddressSelectedLi
                 ActivityManager.getIntence().logout(SettingActivity.this);
                 break;
             case R.id.tv_switch_account://切换账号
-                AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this);
+                showAccountPop();
                 break;
         }
+    }
+
+
+    @Override
+    public void onAddressSelected(Province province, City city, County county, Street street) {
+
     }
 
     private void showSchoolPop(){
@@ -153,10 +171,14 @@ public class SettingActivity extends BaseActivity implements OnAddressSelectedLi
         }
     }
 
-
-    @Override
-    public void onAddressSelected(Province province, City city, County county, Street street) {
-
+    private void showAccountPop(){
+        AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this);
+        if (accountDialog != null) {
+            accountDialog.show();
+        } else {
+            accountDialog = new AccountDialog(this,AccountInfoUtil.getAccountList(),mSettingPresenter);
+            accountDialog.show();
+        }
     }
 
     @Override
@@ -166,11 +188,36 @@ public class SettingActivity extends BaseActivity implements OnAddressSelectedLi
 
     @Override
     public void dialogclose() {
-
+        dialog.dismiss();
     }
 
     @Override
     public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {
+
+    }
+
+    @Override
+    public void loginSuccess(UserEntity userEntity, String code) {
+        if (userEntity != null) {
+            if (!TextUtils.equals(userEntity.getUserType(),"2")) {//2 学生
+                GlobalUtil.showToast("只能登录学生的账号");
+                return;
+            }
+            PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
+            PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
+            PreferenceUtil.commitString(ConstantUtil.USER_TYPE,  userEntity.getUserType());
+            PreferenceUtil.commitString(ConstantUtil.GRADED_ID,  String.valueOf(userEntity.getUserInfo().getGradeId()));
+            PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID,  String.valueOf(userEntity.getUserInfo().getSchoolId()));
+
+            MainActivity.actionStart(this,userEntity);
+            finish();
+        } else {
+            GlobalUtil.showToast("用户为空");
+        }
+    }
+
+    @Override
+    public void loginFail() {
 
     }
 }

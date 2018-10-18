@@ -10,6 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseFragment;
+import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
+import com.apemoon.tvbox.entity.information.InfoListEntity;
+import com.apemoon.tvbox.interfaces.fragment.IInformationView;
+import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
@@ -22,7 +26,7 @@ import butterknife.OnClick;
  * des：首页的碎片
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements IInformationView {
     @BindView(R.id.tv_class_schedule)
     TextView mTvClassSchedule;
     @BindView(R.id.tv_class_performance)
@@ -43,6 +47,7 @@ public class HomeFragment extends BaseFragment {
     RecyclerView mRecyclerView;
 
     private NewAdapter mNewAdapter;
+    private InformationPresenter mInformationPresenter;
 
     @Override
     public int getLayoutRes() {
@@ -61,17 +66,18 @@ public class HomeFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mInformationPresenter.receiveNewestInformations();
+    }
 
     @Override
     public void initData() {
+        mInformationPresenter = new InformationPresenter(getActivity(),this);
         mNewAdapter = new NewAdapter();
         mRecyclerView.setAdapter(mNewAdapter);
-        ArrayList<String> newList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            newList.add("1");
-        }
-        mNewAdapter.setNewData(newList);
-    }
+      }
 
 
     @Override
@@ -127,4 +133,36 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void receiveNewestInformationsSuccess(InfoListEntity entity) {
+        if(entity.getInformationList().size()>0) {
+            mNewAdapter.setNewData(entity.getInformationList());
+        }
+
+    }
+
+    @Override
+    public void receiveNewestInformationsFail() {
+
+    }
+
+    @Override
+    public void receiveInformationsSuccess(InfoListEntity entity) {
+
+    }
+
+    @Override
+    public void receiveInformationsFail() {
+
+    }
+
+    @Override
+    public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
+
+    }
+
+    @Override
+    public void receiveInformationClassicalFail() {
+
+    }
 }

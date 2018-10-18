@@ -20,9 +20,16 @@ import com.apemoon.tvbox.interfaces.IMainTabView;
 import com.apemoon.tvbox.interfaces.IMainView;
 import com.apemoon.tvbox.presenter.MainPresenter;
 import com.apemoon.tvbox.ui.view.MainTabView;
+import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
+import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import com.apemoon.tvbox.utils.LogUtil;
+import com.smarttop.library.bean.City;
+import com.smarttop.library.bean.County;
+import com.smarttop.library.bean.Province;
+import com.smarttop.library.bean.Street;
+import com.smarttop.library.widget.OnAddressSelectedListener;
 
 import java.io.Serializable;
 
@@ -30,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements IMainView {
+public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener  {
     @BindView(R.id.tv_school_name)
     TextView mTvSchoolName;
     @BindView(R.id.iv_switch_school)
@@ -47,6 +54,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     MainTabView mMainTab;
     @BindView(R.id.fl_main)
     FrameLayout mFlMain;
+    private BottomDialog dialog;
 
     public static final String USER_ENTITY = "user_entity";
     private UserEntity mUserEntity;
@@ -110,7 +118,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_switch_school://切换学校
-
+                showSchoolPop();
                 break;
             case R.id.iv_setting://设置
                 SettingActivity.actionStart(this,mUserEntity);
@@ -194,9 +202,36 @@ public class MainActivity extends BaseActivity implements IMainView {
         FragmentFactory.getIntance().clearFragment();
         super.onDestroy();
     }
+    private void showSchoolPop(){
+        if (dialog != null) {
+            dialog.show();
+        } else {
+            dialog = new BottomDialog(this);
+            dialog.setOnAddressSelectedListener(this);
+            dialog.setDialogDismisListener(this);
+            dialog.setTextSize(14);//设置字体的大小
+            dialog.setIndicatorBackgroundColor(android.R.color.holo_orange_light);//设置指示器的颜色
+            dialog.setTextSelectedColor(android.R.color.holo_orange_light);//设置字体获得焦点的颜色
+            dialog.setTextUnSelectedColor(android.R.color.holo_blue_light);//设置字体没有获得焦点的颜色
+//            dialog.setDisplaySelectorArea("31",1,"2704",1,"2711",0,"15582",1);//设置已选中的地区
+            dialog.setSelectorAreaPositionListener(this);
+            dialog.show();
+        }
+    }
 
 
+    @Override
+    public void dialogclose() {
 
+    }
 
+    @Override
+    public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {
 
+    }
+
+    @Override
+    public void onAddressSelected(Province province, City city, County county, Street street) {
+
+    }
 }
