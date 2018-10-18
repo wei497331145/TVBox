@@ -16,6 +16,15 @@ public class UserEntity implements Serializable {
     private int userId;
     private UserInfoBean userInfo;
     private String userType;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public int getUserId() {
         return userId;
@@ -110,15 +119,7 @@ public class UserEntity implements Serializable {
         private String type;
         private Object updateTime;
         private String updateUser;
-        private String token;
 
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
-        }
         public String getAddress() {
             return address;
         }
