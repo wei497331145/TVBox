@@ -2,9 +2,16 @@ package com.apemoon.tvbox.interfaces.net;
 
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.NetUrl;
+import com.apemoon.tvbox.entity.ClassActivityList;
+import com.apemoon.tvbox.entity.ClassSchedule;
+import com.apemoon.tvbox.entity.ExamClassifyList;
+import com.apemoon.tvbox.entity.PhotoAlbumList;
 import com.apemoon.tvbox.entity.SchoolListEntity;
 import com.apemoon.tvbox.entity.SchoolTypeListEntity;
+import com.apemoon.tvbox.entity.SubjectList;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.entity.UserMark;
+import com.apemoon.tvbox.entity.WorkList;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
@@ -14,6 +21,7 @@ import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity;
 import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 
 import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -27,6 +35,7 @@ import retrofit2.http.POST;
 
 public interface INetService {
     //===========================  登录的接口 ==================================
+
     /**
      * 用户登录接口
      */
@@ -36,6 +45,7 @@ public interface INetService {
 
 
     //===========================  通知的接口 ==================================
+
     /**
      * 查询我接受的公告通知
      */
@@ -52,6 +62,7 @@ public interface INetService {
 
 
     //===========================  个人中心的接口 ==================================
+
     /**
      * 获取个人用户信息
      */
@@ -82,7 +93,62 @@ public interface INetService {
     Observable<HttpResultBody<UserTeachersEntity>> getUserTeachers(@FieldMap Map<String, String> paras);
 
 
+    /**
+     * 获取课程表
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_CLASS_SCHEDULE_INFO)
+    Observable<HttpResultBody<ClassSchedule>> getClassSchedule(@FieldMap Map<String, String> paras);
+
+
+    /**
+     * 获取课程表
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_EXAMCLASSIFY_INFO)
+    Observable<HttpResultBody<ExamClassifyList>> getExamClassifyList(@FieldMap Map<String, String> paras);
+
+    /**
+     * 获取成绩
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_MARK_INFO)
+    Observable<HttpResultBody<UserMark>> getMark(@FieldMap Map<String, String> paras);
+
+    /**
+     * 获取科目
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_SUBJECT_LIST_INFO)
+    Observable<HttpResultBody<SubjectList>> getSubjectList(@FieldMap Map<String, String> paras);
+
+
+    /**
+     * 获取作业列表
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_WORK_LIST_INFO)
+    Observable<HttpResultBody<WorkList>> getWorkList(@FieldMap Map<String, String> paras);
+
+
+    /**
+     * 班级活动
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_CLASS_ACTIVITY_LIST_INFO)
+    Observable<HttpResultBody<ClassActivityList>> getClassActivityList(@FieldMap Map<String, String> paras);
+
+    /**
+     * 相册
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_PHOTO_ALBUM_LIST_INFO)
+    Observable<HttpResultBody<PhotoAlbumList>> getPhotoAlbumList(@FieldMap Map<String, String> paras);
+
+
+
     //=========================== 咨询列表的接口 ==================================
+
     /**
      * 获取资讯分类信息
      */
@@ -112,7 +178,6 @@ public interface INetService {
     @FormUrlEncoded
     @POST(NetUrl.USER_SCHOOL)
     Observable<HttpResultBody<SchoolListEntity>> getSchool(@FieldMap Map<String, String> paras);
-
 
 }
 

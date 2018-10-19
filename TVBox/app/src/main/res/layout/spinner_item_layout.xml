@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dp_43"
+    android:background="@drawable/bg_class_activity_item_selector"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dp_12"
+    android:paddingTop="@dimen/dp_12">
+
+    <TextView
+        android:id="@+id/spinnerTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14" />
+
+</LinearLayout>

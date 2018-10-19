@@ -48,13 +48,24 @@ public class NetUrl {
 
     public static final String USER_SCHOOL = BASE_URL + "user/getSchoolList";//根据省市区获取学校列表
 
+    public static final String USER_CLASS_SCHEDULE_INFO = BASE_URL + "user/getClassSchedule";//
+
+    public static final String USER_EXAMCLASSIFY_INFO = BASE_URL + "user/getExamClassifyList";//查询考试类别列表接口
+
+    public static final String USER_MARK_INFO = BASE_URL + "user/getMark";//查询考试类别列表接口
+
+    public static final String USER_SUBJECT_LIST_INFO = BASE_URL + "user/getSubjectList";//科目
+
+    public static final String USER_WORK_LIST_INFO = BASE_URL + "user/getSeatworkList";//作业列表
+
+    public static final String USER_CLASS_ACTIVITY_LIST_INFO = BASE_URL + "activity/receiveClassActivityList";//活动列表
+
+    public static final String USER_PHOTO_ALBUM_LIST_INFO = BASE_URL + "user/photoAlbumList";//活动列表
+
     //==============================个人中心接口========================================================
     public static final String INFORMATION_CLASSIFICAl = BASE_URL + "information/informationClassify";//获取咨询列表
 
     public static final String INFORMATION_LIST = BASE_URL + "information/informationList";//获取咨询列表
-
-
-
 
 
 }

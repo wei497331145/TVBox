@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 27
@@ -10,13 +11,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     /*android studio中使用Lambda*/
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -38,6 +37,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '28.0.2'
 }
 
 dependencies {
@@ -60,7 +60,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     /*加载图片框架*/
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     /*解析json*/
@@ -69,8 +69,15 @@ dependencies {
     implementation 'pub.devrel:easypermissions:1.1.1'
     /*适配器*/
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+    implementation 'com.android.support:leanback-v17:27.1.1'
     /*腾讯Bugly*/
     implementation 'com.tencent.bugly:crashreport:latest.release'
-    compile project(path: ':bdvideoplayer')
+    implementation project(path: ':bdvideoplayer')
     implementation project(':bdvideoplayer')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //    implementation 'com.android.support:recyclerview-v7:22.2.0'
+    api project(':addresslibrary')
+}
+repositories {
+    mavenCentral()
 }

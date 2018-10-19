@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="225dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_7"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:background="@drawable/bg_class_activity_item_selector"
+    android:paddingEnd="@dimen/dp_20"
+    android:paddingStart="@dimen/dp_20">
+
+    <TextView
+        android:id="@+id/activityTitleTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingBottom="@dimen/dp_6"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/activityTimeTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_14"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_14">
+
+        <ImageView
+            android:id="@+id/activityTypeIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/set1" />
+
+        <TextView
+            android:id="@+id/activityTypeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_6"
+            android:text="普通活动"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+
+    </LinearLayout>
+
+</LinearLayout>

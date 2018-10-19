@@ -1,8 +1,6 @@
 package com.apemoon.tvbox.ui.fragment;
 
 import android.os.Build;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IReceiveNoticeView;
 import com.apemoon.tvbox.presenter.NoticePresenter;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
-import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -29,7 +26,7 @@ import butterknife.BindView;
  * des：公告通知的碎片
  */
 
-public class  NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView {
+public class NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.web_view)

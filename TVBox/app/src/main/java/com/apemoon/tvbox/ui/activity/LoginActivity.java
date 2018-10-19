@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseActivity;
@@ -18,6 +17,7 @@ import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.MD5EncoderUtil;
 import com.apemoon.tvbox.utils.PreferenceUtil;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -40,7 +40,6 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     private String mPassword;
     private LoginPresenter mLoginPresenter;
 
-    ;
 
     @Override
     public int getLayoutRes() {
@@ -139,6 +138,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             PreferenceUtil.commitString(ConstantUtil.USER_TYPE,  userEntity.getUserType());
             PreferenceUtil.commitString(ConstantUtil.GRADED_ID,  String.valueOf(userEntity.getUserInfo().getGradeId()));
             PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID,  String.valueOf(userEntity.getUserInfo().getSchoolId()));
+            PreferenceUtil.commitString(ConstantUtil.CLASS_ID,  String.valueOf(userEntity.getUserInfo().getClassId()));
 
             AccountInfoUtil.saveAccount(userEntity,mAccount,mPassword);
             MainActivity.actionStart(this,userEntity);

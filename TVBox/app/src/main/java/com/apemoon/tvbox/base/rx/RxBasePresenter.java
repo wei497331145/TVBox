@@ -1,10 +1,12 @@
 package com.apemoon.tvbox.base.rx;
 
 import android.content.Context;
+
 import com.apemoon.tvbox.base.net.DataManager;
 import com.apemoon.tvbox.interfaces.app.IBaseRxPresenter;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -22,18 +24,22 @@ public abstract class RxBasePresenter implements IBaseRxPresenter {
 
     protected Context mContext;
 
+    public DataManager getmDataManager() {
+        return mDataManager;
+    }
+
     protected DataManager mDataManager;
 
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    public RxBasePresenter(Context context){
+    public RxBasePresenter(Context context) {
         mContext = context;
         mDataManager = DataManager.getInstance(context);
     }
 
     @Override
     public void subscribe(Disposable disposable) {
-        if(null != mCompositeDisposable){
+        if (null != mCompositeDisposable) {
             mCompositeDisposable.add(disposable);
         }
     }
@@ -43,25 +49,27 @@ public abstract class RxBasePresenter implements IBaseRxPresenter {
      */
     @Override
     public void unSubscribe() {
-        if(null != mCompositeDisposable){
+        if (null != mCompositeDisposable) {
             mCompositeDisposable.dispose();
             mCompositeDisposable.clear();
         }
     }
 
 
-    public <T> void addDisposable(Observable<T> observable, DisposableObserver<T> observer){
-        observable
-                .onTerminateDetach()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    public <T> void addDisposable(Observable<T> observable, DisposableObserver<T> observer) {
+        try {
+            observable
+                    .onTerminateDetach()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
 //                .compose(((RxAppCompatActivity)mContext).<T>bindToLifecycle())
-                .compose(((RxAppCompatActivity)mContext).<T>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(observer);
-        subscribe(observer);
+                    .compose(((RxAppCompatActivity) mContext).<T>bindUntilEvent(ActivityEvent.DESTROY))
+                    .subscribe(observer);
+            subscribe(observer);
+        } catch (Exception e) {
+
+        }
     }
-
-
 
 
 }

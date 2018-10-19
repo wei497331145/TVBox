@@ -10,6 +10,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseFragment;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
@@ -66,8 +67,6 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         mTvMyAchievement.setFocusable(true);
         mCvAlbum.setFocusable(true);
         mCvCurriculum.setFocusable(true);
-
-
     }
 
     @Override

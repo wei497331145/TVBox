@@ -6,12 +6,16 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.ImageView;
+
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
 import com.apemoon.tvbox.presenter.SplashPresenter;
+import com.apemoon.tvbox.utils.ConstantUtil;
+import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.MD5EncoderUtil;
+import com.apemoon.tvbox.utils.PreferenceUtil;
 
 import butterknife.BindView;
 
@@ -44,7 +48,7 @@ public class SplashActivity extends BaseActivity implements ILoginView {
     }
 
     /**
-     *  开始动画
+     * 开始动画
      */
     private void startAlphaAnim() {
         mAplha = ObjectAnimator.ofFloat(mIvSplash, "alpha", 0, 1).setDuration(3000);
@@ -70,10 +74,24 @@ public class SplashActivity extends BaseActivity implements ILoginView {
     }
 
     /*
-   *   用户登录成功
-   * */
+     *   用户登录成功
+     * */
     @Override
-    public void loginSuccess(UserEntity userEntity,String code) {
+    public void loginSuccess(UserEntity userEntity, String code) {
+        if (userEntity != null) {
+            if (!TextUtils.equals(userEntity.getUserType(), "2")) {//2 学生
+                GlobalUtil.showToast("只能登录学生的账号");
+                return;
+            }
+//            PreferenceUtil.commitString(ConstantUtil.USER_ACCOUNT, mAccount);
+//            PreferenceUtil.commitString(ConstantUtil.USER_PASSWORD, mPassword);
+            PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
+            PreferenceUtil.commitString(ConstantUtil.USER_TYPE, userEntity.getUserType());
+            PreferenceUtil.commitString(ConstantUtil.GRADED_ID, String.valueOf(userEntity.getUserInfo().getGradeId()));
+            PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID, String.valueOf(userEntity.getUserInfo().getSchoolId()));
+            PreferenceUtil.commitString(ConstantUtil.CLASS_ID, String.valueOf(userEntity.getUserInfo().getClassId()));
+        }
+
         MainActivity.actionStart(this, userEntity);
         finish();
     }
@@ -83,7 +101,7 @@ public class SplashActivity extends BaseActivity implements ILoginView {
      * */
     @Override
     public void loginFail() {
-        MainActivity.actionStart(this,null);
+        MainActivity.actionStart(this, null);
         finish();
     }
 

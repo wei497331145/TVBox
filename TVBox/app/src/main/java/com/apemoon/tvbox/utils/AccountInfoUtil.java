@@ -96,7 +96,7 @@ public class AccountInfoUtil {
 
     public static void showSelectAccountWindow(View view, Activity context, SettingPresenter presenter) {
         List<AccountListEntity.AccountInfoBean> accountInfoBeanList = AccountInfoUtil.getAccountList();
-        if(accountInfoBeanList.size()<1){
+        if (accountInfoBeanList.size() < 1) {
             return;
         }
         View popupView = context.getLayoutInflater().inflate(R.layout.layout_pop_select_account, null);

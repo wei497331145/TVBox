@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_root"
+    android:layout_width="720dp"
+    android:focusable="true"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bl_tv_info_selector"
+    android:orientation="horizontal"
+    android:weightSum="6">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_12"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_12"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_12"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_12"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_12"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_12"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+</LinearLayout>
