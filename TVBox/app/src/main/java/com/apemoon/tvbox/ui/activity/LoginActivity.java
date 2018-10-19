@@ -134,7 +134,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             }
             PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
             PreferenceUtil.commitString(ConstantUtil.USER_ACCOUNT, mAccount);
-            PreferenceUtil.commitString(ConstantUtil.USER_PASSWORD, mPassword);
+            PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
             PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
             PreferenceUtil.commitString(ConstantUtil.USER_TYPE,  userEntity.getUserType());
             PreferenceUtil.commitString(ConstantUtil.GRADED_ID,  String.valueOf(userEntity.getUserInfo().getGradeId()));

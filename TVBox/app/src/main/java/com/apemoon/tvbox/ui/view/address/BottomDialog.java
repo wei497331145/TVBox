@@ -25,24 +25,20 @@ public class BottomDialog extends Dialog {
 
     public BottomDialog(Activity context) {
         super(context, R.style.bottom_dialog);
-        this.context = context;
+        init(context);
     }
 
     public BottomDialog(Activity context, int themeResId) {
         super(context, themeResId);
-        this.context = context;
+        init(context);
     }
 
     public BottomDialog(Activity context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
-        this.context = context;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         init(context);
     }
+
+
 
     /**
      * 初始化

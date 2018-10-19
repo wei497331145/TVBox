@@ -17,11 +17,13 @@ import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.entity.AccountListEntity;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.presenter.SettingPresenter;
 import com.apemoon.tvbox.ui.adapter.AccountAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.SemestersAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.TeachersAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
+import com.smarttop.library.bean.School;
 
 import org.json.JSONObject;
 
@@ -49,9 +51,10 @@ public class AccountInfoUtil {
             AccountListEntity.AccountInfoBean bean = accountListEntity.new AccountInfoBean(mAccount, mPassword, userInfoBean.getName(), userInfoBean.getHeadImage());
             List<AccountListEntity.AccountInfoBean> accountInfoBeanList = AccountInfoUtil.getAccountList();
             accountInfoBeanList.add(bean);
+            accountListEntity.setAccountInfoBeanList(accountInfoBeanList);
             //保存本地
-            String json = new Gson().toJson(accountInfoBeanList);
-            PreferenceUtil.getString(ConstantUtil.ACCOUNT_LIST_STR, json);
+            String json = new Gson().toJson(accountListEntity);
+            PreferenceUtil.commitString(ConstantUtil.ACCOUNT_LIST_STR, json.toString());
         }
 
     }
@@ -66,8 +69,10 @@ public class AccountInfoUtil {
         AccountListEntity entity = new Gson().fromJson(accountStr, AccountListEntity.class);
         if (entity != null) {
             return entity.getAccountInfoBeanList();
+        }else {
+            List<AccountListEntity.AccountInfoBean> accountInfoBeanList = new ArrayList<>();
+            return accountInfoBeanList;
         }
-        return null;
     }
 
     /**
@@ -77,7 +82,9 @@ public class AccountInfoUtil {
      */
     public static boolean isExistsAccount(String mAccount) {
         List<AccountListEntity.AccountInfoBean> accountInfoBeanList = AccountInfoUtil.getAccountList();
-
+        if(accountInfoBeanList == null ||accountInfoBeanList.size()<0){
+            return false;
+        }
         for (AccountListEntity.AccountInfoBean bean : accountInfoBeanList) {
             if (mAccount.equals(bean.getAccountNo())) {
                 return true;
@@ -87,13 +94,19 @@ public class AccountInfoUtil {
         return false;
     }
 
-    public static void showSelectAccountWindow(View view, Activity context) {
+    public static void showSelectAccountWindow(View view, Activity context, SettingPresenter presenter) {
         List<AccountListEntity.AccountInfoBean> accountInfoBeanList = AccountInfoUtil.getAccountList();
         if(accountInfoBeanList.size()<1){
             return;
         }
         View popupView = context.getLayoutInflater().inflate(R.layout.layout_pop_select_account, null);
-        PopupWindow popView = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int width = manager.getDefaultDisplay().getWidth();
+        int height = manager.getDefaultDisplay().getHeight();
+
+
+        PopupWindow popView = new PopupWindow(popupView, width/2, height/2, true);
         popView.setTouchable(true);
         popView.setOutsideTouchable(false);
         // 设置背景为半透明灰色
@@ -109,8 +122,16 @@ public class AccountInfoUtil {
             }
         });
 
-        popView.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+        popView.showAtLocation(view, Gravity.CENTER, 0, 0);
         RecyclerView mRecyclerView = popupView.findViewById(R.id.recyclerView);
+
+        ((TextView)popupView.findViewById(R.id.tv_back_home)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popView.dismiss();
+                context.finish();
+            }
+        });
 
 
         AccountAdapter mTeachersAdapter = new AccountAdapter();
@@ -119,6 +140,13 @@ public class AccountInfoUtil {
         mRecyclerView.setLayoutManager(ms);
         mRecyclerView.setAdapter(mTeachersAdapter);
         mTeachersAdapter.setNewData(accountInfoBeanList);
+        mTeachersAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                AccountListEntity.AccountInfoBean bean = accountInfoBeanList.get(position);
+                presenter.login(bean.getAccountNo(),bean.getAccountPwd());
+            }
+        });
 
 
     }

@@ -131,7 +131,7 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
                 showSchoolPop();
                 break;
             case R.id.iv_setting://设置
-                Intent intent =  new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                Intent intent =  new Intent(Settings.ACTION_SETTINGS);
                 startActivity(intent);
                 break;
             case R.id.tv_back://返回
@@ -154,7 +154,7 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     private void showSchoolPop(){
         if (dialog != null) {
-            dialog.show();
+            dialog.show(this);
         } else {
             dialog = new BottomDialog(this);
             dialog.setOnAddressSelectedListener(this);
@@ -165,12 +165,12 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
             dialog.setTextUnSelectedColor(android.R.color.holo_blue_light);//设置字体没有获得焦点的颜色
 //            dialog.setDisplaySelectorArea("31",1,"2704",1,"2711",0,"15582",1);//设置已选中的地区
             dialog.setSelectorAreaPositionListener(this);
-            dialog.show();
+            dialog.show(this);
         }
     }
 
     private void showAccountPop(){
-        AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this);
+        AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this,mSettingPresenter);
 
     }
 
@@ -191,22 +191,8 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     @Override
     public void loginSuccess(UserEntity userEntity, String code) {
-        if (userEntity != null) {
-            if (!TextUtils.equals(userEntity.getUserType(),"2")) {//2 学生
-                GlobalUtil.showToast("只能登录学生的账号");
-                return;
-            }
-            PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
-            PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
-            PreferenceUtil.commitString(ConstantUtil.USER_TYPE,  userEntity.getUserType());
-            PreferenceUtil.commitString(ConstantUtil.GRADED_ID,  String.valueOf(userEntity.getUserInfo().getGradeId()));
-            PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID,  String.valueOf(userEntity.getUserInfo().getSchoolId()));
-
-            MainActivity.actionStart(this,userEntity);
-            finish();
-        } else {
-            GlobalUtil.showToast("用户为空");
-        }
+        MainActivity.actionStart(this, userEntity);
+        finish();
     }
 
     @Override

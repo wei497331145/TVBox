@@ -32,6 +32,7 @@ public class SchoolPresenter extends RxBasePresenter {
         mSchoolView = iSchoolView;
     }
 
+
     /**
      * 获取信息列表
      */
@@ -63,7 +64,11 @@ public class SchoolPresenter extends RxBasePresenter {
      */
     public void receiveSchool(String provience,String city,String area,String schoolTypeId){
         Map<String, String> paras = RequestUtil.createMap();
-        paras.put("province",provience+"省");
+        if(provience.equals("北京")|| provience.equals("天津") || provience.equals("上海") || provience.equals("重庆")) {
+            paras.put("province", provience + "市");
+        }else{
+            paras.put("province", provience + "省");
+        }
         paras.put("city",city);
         paras.put("area",area);
         paras.put("schoolTypeId",schoolTypeId);

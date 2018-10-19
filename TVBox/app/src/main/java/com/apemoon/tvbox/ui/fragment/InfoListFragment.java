@@ -63,7 +63,9 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     private InformationPresenter mInformaitonPresenter;
     private int currentTwoClassId;
-    private int currentSelectItemPosition;
+    private int currentSelectItemPosition = 0;
+    private int currentSelectItemId;
+    private int currentFragmetnId = 0;
     private InformationTvAdapter mInformationAdater;
     private List<InfoListEntity.InformationBean> informationBeanList;
 
@@ -90,17 +92,19 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     private static final String CURRENT_TWO_CLASSICAL_ID = "currnet_two_classical_id";
     private static final String CURRENT_INFO_ITEM_ID = "currnet_info_item_id";
+    private static final String CURRENT_FRAGMETN_ID = "currnet_fragment_id";
 
     private static final String TYPE_TEXT_ID = "1";
     private static final String TYPE_TURL_ID = "2";
     private static final String TYPE_VIDEO_ID = "3";
     private static final String TYPE_PAGES_ID = "4";
 
-    public static InfoListFragment getInstance(int currentTwoClassId,int selectInfoPosition){
+    public static InfoListFragment getInstance(int currentTwoClassId,int infoId,int frgmentId){
         InfoListFragment fragment = new InfoListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(CURRENT_TWO_CLASSICAL_ID,currentTwoClassId);//这里的values就是我们要传的值
-        bundle.putInt(CURRENT_INFO_ITEM_ID,selectInfoPosition);//
+        bundle.putInt(CURRENT_INFO_ITEM_ID,infoId);//
+        bundle.putInt(CURRENT_FRAGMETN_ID,frgmentId);//
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -253,6 +257,12 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     public void receiveInformationsSuccess(InfoListEntity entity) {
         if (entity != null) {
             informationBeanList = entity.getInformationList();
+            //获取选中位置
+            for(int i=0;i<informationBeanList.size();i++){
+                if(currentSelectItemId == informationBeanList.get(i).getId()){
+                    currentSelectItemPosition = i;
+                }
+            }
             if (informationBeanList != null && informationBeanList.size()>0) {
                 setPageInfo(informationBeanList.size());
                 setTvContent(informationBeanList.get(0));
@@ -305,7 +315,8 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         ((MainActivity)getActivity()).setMainTabVisiable(false);
         if(getArguments()!=null) {
             currentTwoClassId = getArguments().getInt(CURRENT_TWO_CLASSICAL_ID);
-            currentSelectItemPosition = getArguments().getInt(CURRENT_INFO_ITEM_ID);
+            currentSelectItemId = getArguments().getInt(CURRENT_INFO_ITEM_ID);
+            currentFragmetnId = getArguments().getInt(CURRENT_FRAGMETN_ID);
         }
 
     }
@@ -315,7 +326,7 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         InfoListFragment.this.setUserVisibleHint(false);
         transaction.hide(InfoListFragment.this);
-        Fragment fragment = FragmentFactory.getIntance().getFragment(5);
+        Fragment fragment = FragmentFactory.getIntance().getFragment(currentFragmetnId);
         fragment.setUserVisibleHint(true);
         transaction.show(fragment).commit();
         ((MainActivity)getActivity()).setMainTabVisiable(true);

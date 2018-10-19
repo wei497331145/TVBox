@@ -195,6 +195,9 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
         } else {
             callbackInternal();
         }
+        updateTabsVisibility();
+        updateProgressVisibility();
+        updateIndicator();
 
     }
 
@@ -213,6 +216,10 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
         } else {
             callbackInternal();
         }
+
+        updateTabsVisibility();
+        updateProgressVisibility();
+        updateIndicator();
 
     }
 
@@ -264,7 +271,8 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
         this.textViewCity.setOnClickListener(new OnCityTabClickListener());
         this.textViewCounty.setOnClickListener(new onCountyTabClickListener());
         this.textViewStreet.setOnClickListener(new OnStreetTabClickListener());
-
+        //TODO WXJ
+        this.textViewSchool.setOnClickListener(new OnSchoolTabClickListener());
 
         this.listView.setOnItemClickListener(this);
         this.iv_colse.setOnClickListener(new onCloseClickListener());
@@ -400,7 +408,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
         textViewCounty.setEnabled(tabIndex != INDEX_TAB_COUNTY);
         textViewStreet.setEnabled(tabIndex != INDEX_TAB_STREET);
         //TODO WXJ
-        textViewSchool.setEnabled(tabIndex != INDEX_TAB_STREET);
+        textViewSchool.setEnabled(tabIndex != INDEX_TAB_SCHOOL);
         if (selectedColor != 0 && unSelectedColor != 0) {
             updateTabTextColor();
         }
@@ -502,10 +510,29 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
         @Override
         public void onClick(View v) {
             tabIndex = INDEX_TAB_STREET;
-//            listView.setAdapter(streetAdapter);
+            listView.setAdapter(schoolTypeAdapter);
 
             if (streetIndex != INDEX_INVALID) {
                 listView.setSelection(streetIndex);
+            }
+
+            updateTabsVisibility();
+            updateIndicator();
+        }
+    }
+
+
+    /**
+     * 点击街道的监听
+     */
+    class OnSchoolTabClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            tabIndex = INDEX_TAB_STREET;
+            listView.setAdapter(schoolAdapter);
+
+            if (schoolIndex != INDEX_INVALID) {
+                listView.setSelection(schoolIndex);
             }
 
             updateTabsVisibility();
@@ -621,11 +648,12 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
             case INDEX_TAB_STREET:
                 mSchoolTypeBean = schoolTypeAdapter.getItem(position);
                 schoolIndex = position;
-                textViewSchool.setText(mSchoolTypeBean.getName());
+                textViewStreet.setText(mSchoolTypeBean.getName());
+
                 //TODO WJ
                 schools = null;
                 //TODO WXJ
-                textViewStreet.setText("请选择");
+                textViewSchool.setText("请选择");
 
                 this.streetIndex = position;
 
@@ -637,10 +665,10 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                 //TODO WXJ
                 schoolAdapter.notifyDataSetChanged();
                 callbackInternal();
-                if (selectorAreaPositionListener != null) {
-                    selectorAreaPositionListener.selectorAreaPosition(provincePostion, cityPosition, countyPosition, streetPosition);
-                }
-
+//                if (selectorAreaPositionListener != null) {
+//                    selectorAreaPositionListener.selectorAreaPosition(provincePostion, cityPosition, countyPosition, streetPosition);
+//                }
+                schoolTypeAdapter.notifyDataSetChanged();
 
                 break;
 
@@ -648,8 +676,6 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                 SchoolListEntity.SchoolBean school = schoolAdapter.getItem(position);
 
                 textViewSchool.setText(school.getName());
-                //TODO WXJ
-                textViewSchool.setText("请选择");
 
                 this.schoolIndex = position;
                 String otherSchoolId = ""+school.getId();
@@ -666,8 +692,9 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                 if (selectorAreaPositionListener != null) {
                     selectorAreaPositionListener.selectorAreaPosition(provincePostion, cityPosition, countyPosition, streetPosition);
                 }
-                GlobalUtil.showToast("选择成功");
-                dialogCloseListener.dialogclose();
+                if (dialogCloseListener != null) {
+                    dialogCloseListener.dialogclose();
+                }
 
                 break;
         }
@@ -726,9 +753,10 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
             Province province = provinces == null || provinceIndex == INDEX_INVALID ? null : provinces.get(provinceIndex);
             City city = cities == null || cityIndex == INDEX_INVALID ? null : cities.get(cityIndex);
             County county = counties == null || countyIndex == INDEX_INVALID ? null : counties.get(countyIndex);
-            Street street = streets == null || streetIndex == INDEX_INVALID ? null : streets.get(streetIndex);
+            SchoolTypeListEntity.SchoolTypeBean schoolType = schoolTypes == null || streetIndex == INDEX_INVALID ? null : schoolTypes.get(streetIndex);
+            SchoolListEntity.SchoolBean school = schools == null || schoolIndex == INDEX_INVALID ? null : schools.get(schoolIndex);
 
-            listener.onAddressSelected(province, city, county, street);
+//            listener.onAddressSelected(province, city, county, schoolType);
         }
     }
 

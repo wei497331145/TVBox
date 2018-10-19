@@ -1,5 +1,7 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,6 +19,8 @@ import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -77,6 +81,21 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         mInformationPresenter = new InformationPresenter(getActivity(),this);
         mNewAdapter = new NewAdapter();
         mRecyclerView.setAdapter(mNewAdapter);
+        mNewAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                InfoListEntity.InformationBean bean= mNewAdapter.getItem(position);
+                Fragment fragment = InfoListFragment.getInstance(bean.getTwoClassifyId(),bean.getId(),0);
+                fragment.setUserVisibleHint(true);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                if (!fragment.isAdded()) {
+                    transaction.add(R.id.fl_main, fragment);
+                }
+                transaction.hide(HomeFragment.this);
+                transaction.show(fragment).commit();
+            }
+        });
       }
 
 

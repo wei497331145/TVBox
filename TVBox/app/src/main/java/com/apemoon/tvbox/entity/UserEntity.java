@@ -119,6 +119,16 @@ public class UserEntity implements Serializable {
         private String type;
         private Object updateTime;
         private String updateUser;
+        private String token;
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
 
         public String getAddress() {
             return address;

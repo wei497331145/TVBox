@@ -22,4 +22,5 @@ public interface SchoolView {
 
     void receiveSchoolFail();
 
+
 }

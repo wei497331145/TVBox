@@ -24,6 +24,7 @@ import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
+import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.LogUtil;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
@@ -152,7 +153,9 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     }
 
     public void setTabFocusable(){
-        mMainTab.requestFocus();
+        if(mMainTab!=null) {
+            mMainTab.requestFocus();
+        }
     }
 
     @Override
@@ -176,6 +179,7 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     public void setMainTabVisiable(boolean isVisiable){
         if(isVisiable){
             mMainTab.setVisibility(View.VISIBLE);
+            mMainTab.requestFocus();
         }else{
             mMainTab.setVisibility(View.GONE);
         }
@@ -219,9 +223,11 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         }
     }
 
-
     @Override
     public void dialogclose() {
+        GlobalUtil.showToast("选择成功");
+        dialog.dismiss();
+        recreate();
 
     }
 
