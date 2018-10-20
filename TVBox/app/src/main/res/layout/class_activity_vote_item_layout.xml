@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/dp_5"
     android:layout_marginTop="@dimen/dp_5"
-    android:background="@drawable/bg_class_activity_item_selector"
     android:focusable="true"
     android:orientation="vertical"
     android:paddingBottom="@dimen/dp_6"

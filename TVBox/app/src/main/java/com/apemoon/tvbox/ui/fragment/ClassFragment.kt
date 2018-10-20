@@ -369,12 +369,16 @@ class ClassActivityDetailFragment : BaseFragment() {
                             val votes = httpResultBody.result?.voteActivityOptionList
                             if (null != votes && "2" == classActivityBean?.type && !votes.isEmpty()) {//投票活动
                                 voteLayout?.visibility = View.VISIBLE
-                                votes.sortedDescending()
-                                val maxNum = votes[0].pollNum + 100
-                                votes.forEachIndexed { index, voteActivityBean ->
+                                val votesSorted = votes.sortedDescending()
+                                val maxNum = votesSorted[0].pollNum + 50
+                                votesSorted.forEachIndexed { index, voteActivityBean ->
                                     val ll = LinearLayout(activity)
                                     ll.orientation = LinearLayout.VERTICAL
                                     val voteItemLayout = layoutInflater.inflate(R.layout.class_activity_vote_item_layout, ll, true)
+                                    voteItemLayout.isFocusable = true
+
+                                    voteItemLayout.setBackgroundResource(R.drawable.bg_class_activity_item_selector)
+
                                     voteItemLayout.findViewById<TextView>(R.id.numTv).text = (index + 1).toString()
 //                                    voteItemLayout.findViewById<TextView>(R.id.voteTitleTv).text = voteActivityBean.name
                                     voteItemLayout.findViewById<TextView>(R.id.voteNameTv).text = voteActivityBean.name
