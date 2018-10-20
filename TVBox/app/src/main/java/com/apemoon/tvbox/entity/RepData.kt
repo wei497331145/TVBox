@@ -189,8 +189,30 @@ data class ClassActivityBean(
 
 
 data class ClassActivityDetail(
-        var classActivity: ClassActivityDetailBean = ClassActivityDetailBean()
+        var classActivity: ClassActivityDetailBean = ClassActivityDetailBean(),
+        var voteActivityOptionList: ArrayList<VoteActivityBean> = ArrayList<VoteActivityBean>()
 ) : Serializable
+
+//"classActivityId": 101,
+//"id": 74,
+//"name": "ie10 投票活动",
+//"page": 1,
+//"pollNum": 0,
+//"rows": 10
+data class VoteActivityBean(var classActivityId: String = "",
+                            var id: String = "",
+                            var name: String = "",
+                            var page: String = "",
+                            var pollNum: Int = 0,
+                            var rows: String = ""
+
+) : Serializable,Comparable<VoteActivityBean>{
+    override fun compareTo(other: VoteActivityBean): Int {
+        return this.pollNum.compareTo(other.pollNum)
+    }
+
+}
+
 
 // "activityPeopleNum": 0,
 //"content": "<p>旅游景点</p>",

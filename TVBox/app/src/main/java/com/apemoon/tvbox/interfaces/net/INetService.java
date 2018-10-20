@@ -157,6 +157,14 @@ public interface INetService {
     @POST(NetUrl.USER_CLASS_ACTIVITY_DETAIL_INFO)
     Observable<HttpResultBody<ClassActivityDetail>> getClassActivityDetail(@FieldMap Map<String, String> paras);
 
+    /**
+     * 班级活动投票
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_CLASS_ACTIVITY_VOTE)
+    Observable<HttpResultBody<String>> activityVote(@FieldMap Map<String, String> paras);
+
+
 
     /**
      * 相册

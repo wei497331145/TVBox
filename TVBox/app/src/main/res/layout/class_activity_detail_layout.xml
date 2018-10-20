@@ -43,6 +43,7 @@
             android:layout_marginStart="@dimen/dp_15"
             android:layout_weight="1"
             android:background="#0078B5"
+            android:descendantFocusability="afterDescendants"
             android:focusable="true">
 
             <LinearLayout
@@ -82,6 +83,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
                     android:textColor="@color/white" />
+
+
+                <LinearLayout
+                    android:id="@+id/voteLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:focusable="true"
+                    android:descendantFocusability="afterDescendants"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/voteLabelTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="投票结果"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_15" />
+
+                    <LinearLayout
+                        android:id="@+id/voteListContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </LinearLayout>
+
 
             </LinearLayout>
 

@@ -5,10 +5,9 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.apemoon.tvbox.R
 import com.apemoon.tvbox.base.BaseFragment
 import com.apemoon.tvbox.base.net.HttpResultBody
@@ -24,7 +23,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 /**
  *TVBox
  * Created by mukry on 2018/10/19.
- * 深圳市伯尚科技有限公司
+ *
  */
 class ClassFragment : BaseFragment() {
     val headerList = listOf<String>("班级活动", "校本课", "学校相册", "班级相册", "个人相册")
@@ -168,7 +167,7 @@ class ClassActivityFragment : BaseFragment() {
                 tagFragment = ClassActivityDetailFragment()
                 transaction.add(R.id.fl_main, tagFragment, "ClassActivityDetailFragment")
             }
-            (tagFragment as ClassActivityDetailFragment).selcetId = position
+            (tagFragment as ClassActivityDetailFragment).selectId = position
             tagFragment.userVisibleHint = true
             transaction.commit()
         }
@@ -214,7 +213,7 @@ class ClassActivityFragment : BaseFragment() {
  */
 
 class ClassActivityDetailFragment : BaseFragment() {
-    var selcetId = 0
+    var selectId = 0
     override fun lazyLoadData() {
         loadData()
     }
@@ -228,19 +227,32 @@ class ClassActivityDetailFragment : BaseFragment() {
     var timeTv: TextView? = null
     var contentTv: TextView? = null
     var tv_back: TextView? = null
+
+    var voteLabelTv: TextView? = null
+
+    var voteLayout: LinearLayout? = null
+    var voteListContainer: LinearLayout? = null
+
+
     override fun initView() {
         headerRecyclerView = mView?.findViewById<RecyclerView>(R.id.headerRecyclerView)
         titleTv = mView?.findViewById<TextView>(R.id.titleTv)
         timeTv = mView?.findViewById<TextView>(R.id.timeTv)
         contentTv = mView?.findViewById<TextView>(R.id.contentTv)
+        voteLabelTv = mView?.findViewById<TextView>(R.id.voteLabelTv)
+        voteLayout = mView?.findViewById<LinearLayout>(R.id.voteLayout)
+        voteListContainer = mView?.findViewById<LinearLayout>(R.id.voteListContainer)
 
         tv_back = mView?.findViewById<TextView>(R.id.tv_back)
+
     }
 
     private fun resetViews() {
         titleTv?.text = ""
         timeTv?.text = ""
         contentTv?.text = ""
+        voteLayout?.visibility = View.GONE
+        voteListContainer?.removeAllViewsInLayout()
     }
 
 
@@ -347,18 +359,73 @@ class ClassActivityDetailFragment : BaseFragment() {
                     override fun doNext(httpResultBody: HttpResultBody<ClassActivityDetail>) {
                         resetViews()
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
-                            titleTv?.text = httpResultBody.result?.classActivity?.title
-                            val timeStr = httpResultBody.result?.classActivity?.createTime
+                            val classActivityBean = httpResultBody.result?.classActivity
+                            titleTv?.text = classActivityBean?.title
+                            val timeStr = classActivityBean?.createTime
                             if (!TextUtils.isEmpty(timeStr)) {
                                 timeTv?.text = DateTimeUtil.getStrTime(timeStr?.toLong()!!)
                             }
-                            contentTv?.text = httpResultBody.result?.classActivity?.content
+                            contentTv?.text = classActivityBean?.content
+                            val votes = httpResultBody.result?.voteActivityOptionList
+                            if (null != votes && "2" == classActivityBean?.type && !votes.isEmpty()) {//投票活动
+                                voteLayout?.visibility = View.VISIBLE
+                                votes.sortedDescending()
+                                val maxNum = votes[0].pollNum + 100
+                                votes.forEachIndexed { index, voteActivityBean ->
+                                    val ll = LinearLayout(activity)
+                                    ll.orientation = LinearLayout.VERTICAL
+                                    val voteItemLayout = layoutInflater.inflate(R.layout.class_activity_vote_item_layout, ll, true)
+                                    voteItemLayout.findViewById<TextView>(R.id.numTv).text = (index + 1).toString()
+//                                    voteItemLayout.findViewById<TextView>(R.id.voteTitleTv).text = voteActivityBean.name
+                                    voteItemLayout.findViewById<TextView>(R.id.voteNameTv).text = voteActivityBean.name
+                                    voteItemLayout.findViewById<TextView>(R.id.voteNumTv).text = voteActivityBean.pollNum.toString()
+                                    val progressBar = voteItemLayout.findViewById<ProgressBar>(R.id.voteProgressBar)
+                                    progressBar.max = maxNum
+                                    progressBar.progress = voteActivityBean.pollNum
+                                    voteItemLayout.setOnClickListener {
+                                        voteClick(voteActivityBean.classActivityId, voteActivityBean.id)
+                                    }
+                                    voteListContainer?.addView(voteItemLayout)
+
+                                }
+                            }
                         }
                     }
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
                         resetViews()
+                    }
+                })
+    }
+
+    //    userId 	是 	string 	用户id
+//    userType 	是 	string 	用户类型
+//    activityId 	是 	string 	活动id
+//    optionId 	是 	string 	活动选项id
+    fun voteClick(id: String, voteId: String) {
+        val userId = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
+        val userType = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
+        val paras = RequestUtil.createMap()
+        paras["userId"] = userId
+        paras["userType"] = userType
+        paras["activityId"] = id
+        paras["optionId"] = voteId
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<String>>(rxP.getmDataManager().netService.activityVote(paras),
+                object : ProgressObserver<HttpResultBody<String>>(activity, true) {
+                    override fun doNext(httpResultBody: HttpResultBody<String>) {
+                        if (TextUtils.equals(httpResultBody.code, "0000")) {//投票成功
+                            Toast.makeText(activity, "投票成功", Toast.LENGTH_SHORT).show()
+                            loadDetailData(id)
+                        } else {
+                            Toast.makeText(activity, httpResultBody.result, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+                        Toast.makeText(activity, "未知错误", Toast.LENGTH_SHORT).show()
                     }
                 })
     }

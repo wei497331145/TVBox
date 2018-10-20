@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp_5"
+    android:layout_marginTop="@dimen/dp_5"
+    android:background="@drawable/bg_class_activity_item_selector"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dp_6"
+    android:paddingEnd="@dimen/dp_24"
+    android:paddingStart="@dimen/dp_24"
+    android:paddingTop="@dimen/dp_6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/numTv"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:gravity="center"
+            android:background="@drawable/bg_cor_s"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/voteTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:id="@+id/voteNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <ProgressBar
+            android:id="@+id/voteProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="300dp"
+            android:layout_height="@dimen/dp_18"
+            android:layout_marginStart="@dimen/dp_10"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_bar_layer_list"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/voteNumTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
+    </LinearLayout>
+
+</LinearLayout>

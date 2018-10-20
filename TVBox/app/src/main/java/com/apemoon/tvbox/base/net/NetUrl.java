@@ -62,6 +62,8 @@ public class NetUrl {
     public static final String USER_CLASS_ACTIVITY_LIST_INFO = BASE_URL + "activity/receiveClassActivityList";//活动列表
     public static final String USER_CLASS_ACTIVITY_DETAIL_INFO = BASE_URL + "activity/classActivityDetails";//活动详情
 
+    public static final String USER_CLASS_ACTIVITY_VOTE = BASE_URL + "activity/vote";//活动投票
+
     public static final String USER_PHOTO_ALBUM_LIST_INFO = BASE_URL + "user/photoAlbumList";//相册列表
 
     public static final String USER_PHOTO_LIST_INFO = BASE_URL + "user/getPhotoList";//相片列表

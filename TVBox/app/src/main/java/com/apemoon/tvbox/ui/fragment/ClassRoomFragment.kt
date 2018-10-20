@@ -32,7 +32,7 @@ import com.google.gson.JsonParser
 /**
  *TVBox
  * Created by mukry on 2018/10/19.
- * 深圳市伯尚科技有限公司
+ *
  */
 class ClassRoomFragment : BaseFragment() {
 
