@@ -2,15 +2,18 @@ package com.apemoon.tvbox.interfaces.net;
 
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.NetUrl;
+import com.apemoon.tvbox.entity.ClassActivityDetail;
 import com.apemoon.tvbox.entity.ClassActivityList;
 import com.apemoon.tvbox.entity.ClassSchedule;
 import com.apemoon.tvbox.entity.ExamClassifyList;
 import com.apemoon.tvbox.entity.PhotoAlbumList;
+import com.apemoon.tvbox.entity.PhotoList;
 import com.apemoon.tvbox.entity.SchoolListEntity;
 import com.apemoon.tvbox.entity.SchoolTypeListEntity;
 import com.apemoon.tvbox.entity.SubjectList;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.entity.UserMark;
+import com.apemoon.tvbox.entity.WorkDetail;
 import com.apemoon.tvbox.entity.WorkList;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
@@ -132,11 +135,28 @@ public interface INetService {
 
 
     /**
+     * 获取作业详情
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_WORK_DETAIL_INFO)
+    Observable<HttpResultBody<WorkDetail>> getWorkDetail(@FieldMap Map<String, String> paras);
+
+
+    /**
      * 班级活动
      */
     @FormUrlEncoded
     @POST(NetUrl.USER_CLASS_ACTIVITY_LIST_INFO)
     Observable<HttpResultBody<ClassActivityList>> getClassActivityList(@FieldMap Map<String, String> paras);
+
+
+    /**
+     * 班级活动详情
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_CLASS_ACTIVITY_DETAIL_INFO)
+    Observable<HttpResultBody<ClassActivityDetail>> getClassActivityDetail(@FieldMap Map<String, String> paras);
+
 
     /**
      * 相册
@@ -145,6 +165,13 @@ public interface INetService {
     @POST(NetUrl.USER_PHOTO_ALBUM_LIST_INFO)
     Observable<HttpResultBody<PhotoAlbumList>> getPhotoAlbumList(@FieldMap Map<String, String> paras);
 
+
+    /**
+     * 相片列表
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.USER_PHOTO_LIST_INFO)
+    Observable<HttpResultBody<PhotoList>> getPhotoList(@FieldMap Map<String, String> paras);
 
 
     //=========================== 咨询列表的接口 ==================================

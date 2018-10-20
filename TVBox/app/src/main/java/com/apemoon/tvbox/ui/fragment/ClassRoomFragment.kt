@@ -1,254 +1,172 @@
 package com.apemoon.tvbox.ui.fragment
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.support.v17.leanback.app.BackgroundManager
-import android.support.v17.leanback.app.BrowseSupportFragment
-import android.support.v17.leanback.widget.*
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.FrameLayout
+import android.widget.Spinner
 import android.widget.TextView
 import com.apemoon.tvbox.R
-import com.apemoon.tvbox.base.GridFragment
-import com.apemoon.tvbox.base.SpinnerGridFragment
+import com.apemoon.tvbox.base.BaseFragment
 import com.apemoon.tvbox.base.net.HttpResultBody
 import com.apemoon.tvbox.base.rx.ProgressObserver
 import com.apemoon.tvbox.base.rx.RxBasePresenter
 import com.apemoon.tvbox.entity.*
 import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity
+import com.apemoon.tvbox.ui.activity.MainActivity
 import com.apemoon.tvbox.ui.adapter.BaseSpinnerAdapter
-import com.apemoon.tvbox.ui.view.CHeaderPresenter
-import com.apemoon.tvbox.ui.view.CHeaderPresenterSelector
 import com.apemoon.tvbox.utils.ConstantUtil
+import com.apemoon.tvbox.utils.DateTimeUtil
 import com.apemoon.tvbox.utils.PreferenceUtil
 import com.apemoon.tvbox.utils.RequestUtil
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.JsonParser
+
+/**
+ *TVBox
+ * Created by mukry on 2018/10/19.
+ * 深圳市伯尚科技有限公司
+ */
+class ClassRoomFragment : BaseFragment() {
+
+    val headerList = listOf<String>("班级课表", "课堂表现", "我的作业", "我的成绩", "名师导学")
+    override fun lazyLoadData() {
+    }
+
+    private fun addFragment(fragment: Fragment, tag: String) {
+        val manager = childFragmentManager
+        val transaction = manager.beginTransaction()
+        transaction.add(R.id.fragmentsContainer, fragment, tag)
+        transaction.commit()
+    }
+
+
+    private fun replaceFragment(fragment: Fragment) {
+        val manager = childFragmentManager
+        val transaction = manager.beginTransaction()
+        transaction.replace(R.id.fragmentsContainer, fragment)
+        transaction.commit()
+    }
+
+
+    override fun getLayoutRes(): Int {
+        return R.layout.class_room_fragment
+    }
+
+    var fragmentsContainer: FrameLayout? = null
+    var headerRecyclerView: RecyclerView? = null
+    override fun initView() {
+        fragmentsContainer = mView?.findViewById<FrameLayout>(R.id.fragmentsContainer)
+        headerRecyclerView = mView?.findViewById<RecyclerView>(R.id.headerRecyclerView)
+    }
+
+    override fun initData() {
+        headerRecyclerView?.adapter = object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
+            override fun convert(helper: BaseViewHolder?, item: String?) {
+                helper?.getView<TextView>(R.id.headTv)?.text = item
+            }
+
+            override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+                super.onBindViewHolder(holder, position)
+                holder?.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
+                    if (hasFocus) {
+                        val fr = FragmentFactory.createFragment(position)
+                        replaceFragment(fr!!)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun initListener() {
+        (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            val fr = FragmentFactory.createFragment(position = position)
+            replaceFragment(fr!!)
+        }
+    }
+
+
+    private object FragmentFactory {
+        fun createFragment(position: Int): Fragment? {
+            when (position) {
+                0 -> {
+                    return SampleFragmentA()
+                }
+                1 -> {
+                    return EmptyFragment()
+                }
+                2 -> {
+                    return SchoolAssignmentFragment()
+                }
+                3 -> {
+                    return ScoreFragment()
+                }
+                4 -> {
+                    return EmptyFragment()
+                }
+                else -> return null
+            }
+
+        }
+    }
+
+}
+
+/**
+ *空白内容
+ *
+ */
+class EmptyFragment : BaseFragment() {
+    override fun lazyLoadData() {
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.curriculum_list_layout
+    }
+
+    override fun initView() {
+    }
+
+    override fun initData() {
+    }
+
+    override fun initListener() {
+    }
+
+
+}
 
 
 /**
- * Created by water on 2018/8/31/031.
- * des：我的课堂
+ * 课表
  */
-class ClassRoomFragment : BrowseSupportFragment() {
-    private var mBackgroundManager: BackgroundManager? = null
+class SampleFragmentA : BaseFragment() {
+    var contentRecyclerView: RecyclerView? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        loadRows()
-        setHeaderPresenterSelector(CHeaderPresenterSelector(CHeaderPresenter()))
-        brandColor = Color.parseColor("#00000000")
-
-//        headersSupportFragment.b
-
-        //lb_focus_zoom_factor_xsmall
-
-        mBackgroundManager = BackgroundManager.getInstance(activity)
-        mBackgroundManager?.drawable = ColorDrawable(Color.parseColor("#00000000"))
-        mBackgroundManager?.attach(activity?.window)
-        mainFragmentRegistry.registerFragment(PageRow::class.java,
-                PageRowFragmentFactory(mBackgroundManager!!))
+    override fun lazyLoadData() {
+        loadData()
     }
 
-    //
-//    override fun onCreateHeadersSupportFragment(): HeadersSupportFragment {
-//        return HeadersSupportFragment()
-//    }
-
-
-    private var mRowsAdapter: ArrayObjectAdapter? = null
-    private fun loadRows() {
-        mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
-        val presenterHeader0 = HeaderItem(0, "班级课表")
-        val presenterHeader1 = HeaderItem(1, "课堂表现")
-        val presenterHeader2 = HeaderItem(2, "我的作业")
-        val presenterHeader3 = HeaderItem(3, "我的成绩")
-        val presenterHeader4 = HeaderItem(4, "名师导学")
-        //课表
-//        val mGridPresenter0 = CurriculumItemPresenter()
-//        val gridRowAdapter0 = ArrayObjectAdapter(mGridPresenter0)
-        mRowsAdapter?.add(PageRow(presenterHeader0))
-        mRowsAdapter?.add(PageRow(presenterHeader1))
-        mRowsAdapter?.add(PageRow(presenterHeader2))
-        mRowsAdapter?.add(PageRow(presenterHeader3))
-        mRowsAdapter?.add(PageRow(presenterHeader4))
-
-        /* set */
-        adapter = mRowsAdapter
+    override fun getLayoutRes(): Int {
+        return R.layout.curriculum_list_layout
     }
 
-    private class PageRowFragmentFactory internal constructor(private val mBackgroundManager: BackgroundManager) : BrowseSupportFragment.FragmentFactory<Fragment>() {
-
-        override fun createFragment(rowObj: Any): Fragment? {
-            val row = rowObj as Row
-            mBackgroundManager.drawable = ColorDrawable(Color.parseColor("#00000000"))
-            when (row.headerItem.id) {
-                0L -> {
-                    return SampleFragmentA()
-                }
-                1L -> {
-                    return EmptyFragment()
-                }
-                2L -> {
-                    return SchoolAssignmentFragment()
-                }
-                3L -> {
-                    return ScoreFragment()
-                }
-                4L -> {
-                    return EmptyFragment()
-                }
-                else -> throw IllegalArgumentException(String.format("Invalid row %s", rowObj))
-            }
-
-        }
+    override fun initView() {
+        contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
-    /**
-     * 课表
-     */
-    class SampleFragmentA : GridFragment() {
-
-//        {
-//            "code": "0000",
-//            "message": "操作成功",
-//            "result": {
-//            "classSchedule": {
-//            "classId": 2,——》班级id
-//            "contentType": "2",——》内容类型：1图片、2json字符串
-//            "gradeId": 2,——》班级id
-//            "id": 15,
-//            "scheduleJson": "",——》课表json
-//            "schedulePhoto": "",——》课表图片
-//            "schoolId": 3,——》学校id
-//        }
-//        }
-//        }
-
-//
-//        "classSchedule": {
-//            "classId": 1,
-//            "contentType": "2",
-//            "createTime": null,
-//            "createUser": "",
-//            "gradeId": 90,
-//            "id": 116,
-//            "page": 1,
-//            "rows": 10,
-//            "scheduleJson": "[[\"empty\",\"\",\"\",\"\",\"\",\"马克思主义原理\"],[\"empty\",\"马克思主义原理\",\"\",\"\",\"马克思主义原理\",\"\"],[\"empty\",\"\",\"\",\"\",\"马克思主义原理\",\"\"],[\"empty\",\"马克思主义原理\",\"\",\"马克思主义原理\",\"\",\"\"],[\"empty\",\"\",\"马克思主义原理\",\"\",\"\",\"\"],[\"empty\",\"\",\"\",\"\",\"\",\"\"],[\"empty\",\"\",\"\",\"\",\"\",\"\"]]",
-//            "schedulePhoto": "",
-//            "schoolId": 37,
-//            "updateTime": null,
-//            "updateUser": ""
-//        }
-
-        private val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL
-        private var mAdapter: ArrayObjectAdapter? = null
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setupAdapter()
-            // mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
-
-        }
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            loadData()
-        }
-
-        private fun setupAdapter() {
-            val presenter = VerticalGridPresenter(ZOOM_FACTOR)
-            presenter.numberOfColumns = 1
-
-            gridPresenter = presenter
-            mAdapter = ArrayObjectAdapter(CurriculumPresenter(this))
-            adapter = mAdapter
-            onItemViewClickedListener = OnItemViewClickedListener { itemViewHolder, item, rowViewHolder, row ->
-            }
-        }
-
-        //gradeId 	是 	int 	班级id
-        private fun loadData() {
-            val id = PreferenceUtil.getString(ConstantUtil.GRADED_ID, "")
-            val paras = RequestUtil.createMap()
-            paras["gradeId"] = id
-            val rxP = object : RxBasePresenter(activity) {}
-            rxP.addDisposable<HttpResultBody<ClassSchedule>>(rxP.getmDataManager().netService.getClassSchedule(paras),
-                    object : ProgressObserver<HttpResultBody<ClassSchedule>>(activity, false) {
-                        override fun doNext(httpResultBody: HttpResultBody<ClassSchedule>) {
-                            try {
-                                if (TextUtils.equals(httpResultBody.code, "0000")) {
-                                    //  CurriculumRowsBean
-                                    mAdapter?.clear()
-                                    val weekArr = ArrayList<String>()
-                                    weekArr.add("")
-                                    weekArr.add("星期一")
-                                    weekArr.add("星期二")
-                                    weekArr.add("星期三")
-                                    weekArr.add("星期四")
-                                    weekArr.add("星期五")
-                                    mAdapter?.add(weekArr)
-                                    if ("2" == httpResultBody.result?.classSchedule?.contentType) {
-                                        val scheduleJsonStr = httpResultBody.result.classSchedule?.scheduleJson
-                                        val jar = JsonParser().parse(scheduleJsonStr).asJsonArray
-                                        jar.forEachIndexed { index, jsonElement ->
-                                            val rowJ = ArrayList<String>()
-                                            rowJ.addAll(listOf("", "", "", "", "", ""))
-                                            val jb = jsonElement.asJsonObject
-                                            val keys = jb.keySet()
-                                            keys.forEachIndexed { index, s ->
-                                                when (s) {
-                                                    "" -> {
-                                                        rowJ[0] = jb.get("").asString
-                                                    }
-                                                    "星期一" -> {
-                                                        rowJ[1] = jb.get("星期一").asString
-                                                    }
-                                                    "星期二" -> {
-                                                        rowJ[2] = jb.get("星期二").asString
-                                                    }
-                                                    "星期三" -> {
-                                                        rowJ[3] = jb.get("星期三").asString
-                                                    }
-                                                    "星期四" -> {
-                                                        rowJ[4] = jb.get("星期四").asString
-                                                    }
-                                                    "星期五" -> {
-                                                        rowJ[5] = jb.get("星期五").asString
-                                                    }
-                                                }
-                                            }
-                                            mAdapter?.add(rowJ)
-                                        }
-                                    }
-                                    mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
-                                }
-                            } catch (e: Exception) {
-
-                            }
-                        }
-
-                        override fun onError(e: Throwable) {
-                            super.onError(e)
-                        }
-                    })
-        }
-
-
-        class CurriculumPresenter(private var mFragment: Fragment?) : Presenter() {
-            override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-                val rootView = LayoutInflater.from(parent?.context).inflate(R.layout.curriculum_layout, parent, false)
-                // val rootView = mFragment?.layoutInflater?.inflate(R.layout.curriculum_layout, null)
-                return ViewHolder(rootView)
-            }
-
-            override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
-                val viewGroup = viewHolder?.view?.findViewById<ViewGroup>(R.id.row_root)
+    override fun initData() {
+        contentRecyclerView?.layoutManager = GridLayoutManager(activity, 6)
+        contentRecyclerView?.adapter = object : BaseQuickAdapter<ArrayList<String>, BaseViewHolder>(R.layout.curriculum_layout) {
+            override fun convert(helper: BaseViewHolder?, item: ArrayList<String>?) {
+                val viewGroup = helper?.getView<ViewGroup>(R.id.row_root)
                 val arr = item as ArrayList<String>
                 arr.forEachIndexed { index, s ->
                     if (index <= viewGroup?.childCount!!) {
@@ -256,140 +174,221 @@ class ClassRoomFragment : BrowseSupportFragment() {
                     }
                 }
             }
-
-            override fun onUnbindViewHolder(viewHolder: ViewHolder?) {
-            }
         }
+    }
+
+    override fun initListener() {
 
     }
 
 
-    /**我的成绩
-     *
-     */
-    class ScoreFragment : SpinnerGridFragment() {
-        private val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL
-        private var mAdapter: ArrayObjectAdapter? = null
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setupAdapter()
-            // loadData()
-        }
+    //gradeId 	是 	int 	班级id
+    private fun loadData() {
+        val id = PreferenceUtil.getString(ConstantUtil.GRADED_ID, "")
+        val paras = RequestUtil.createMap()
+        paras["gradeId"] = id
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<ClassSchedule>>(rxP.getmDataManager().netService.getClassSchedule(paras),
+                object : ProgressObserver<HttpResultBody<ClassSchedule>>(activity, false) {
+                    override fun doNext(httpResultBody: HttpResultBody<ClassSchedule>) {
+                        try {
+                            if (TextUtils.equals(httpResultBody.code, "0000")) {
+                                //  CurriculumRowsBean
+                                val data = ArrayList<ArrayList<String>>()
+                                val weekArr = ArrayList<String>()
+                                weekArr.add("")
+                                weekArr.add("星期一")
+                                weekArr.add("星期二")
+                                weekArr.add("星期三")
+                                weekArr.add("星期四")
+                                weekArr.add("星期五")
+                                data.add(weekArr)
+                                if ("2" == httpResultBody.result?.classSchedule?.contentType) {
+                                    val scheduleJsonStr = httpResultBody.result.classSchedule?.scheduleJson
+                                    val jar = JsonParser().parse(scheduleJsonStr).asJsonArray
+                                    jar.forEachIndexed { index, jsonElement ->
+                                        val rowJ = ArrayList<String>()
+                                        rowJ.addAll(listOf("", "", "", "", "", ""))
+                                        val jb = jsonElement.asJsonObject
+                                        val keys = jb.keySet()
+                                        keys.forEachIndexed { index, s ->
+                                            when (s) {
+                                                "" -> {
+                                                    rowJ[0] = jb.get("").asString
+                                                }
+                                                "星期一" -> {
+                                                    rowJ[1] = jb.get("星期一").asString
+                                                }
+                                                "星期二" -> {
+                                                    rowJ[2] = jb.get("星期二").asString
+                                                }
+                                                "星期三" -> {
+                                                    rowJ[3] = jb.get("星期三").asString
+                                                }
+                                                "星期四" -> {
+                                                    rowJ[4] = jb.get("星期四").asString
+                                                }
+                                                "星期五" -> {
+                                                    rowJ[5] = jb.get("星期五").asString
+                                                }
+                                            }
+                                        }
+                                        data.add(rowJ)
+                                    }
+                                }
+                                (contentRecyclerView?.adapter as BaseQuickAdapter<ArrayList<String>, BaseViewHolder>).replaceData(data)
+                            }
+                        } catch (e: Exception) {
+
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+                    }
+                })
+    }
 
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            receiveSemseterList()
-        }
+}
 
-        private fun setupAdapter() {
-            val presenter = VerticalGridPresenter(ZOOM_FACTOR)
-            presenter.numberOfColumns = 6
+/**我的成绩
+ *
+ */
+class ScoreFragment : BaseFragment() {
+    override fun lazyLoadData() {
+        receiveSemseterList()
+    }
 
-            gridPresenter = presenter
-            mAdapter = ArrayObjectAdapter(MarkPresenter(this))
-            adapter = mAdapter
-            onItemViewClickedListener = OnItemViewClickedListener { itemViewHolder, item, rowViewHolder, row ->
+    override fun getLayoutRes(): Int {
+        return R.layout.curriculum_list_layout
+    }
+
+    var contentRecyclerView: RecyclerView? = null
+    var spinner1: Spinner? = null
+
+    var spinner2: Spinner? = null
+    override fun initView() {
+        spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
+        spinner2 = mView?.findViewById<Spinner>(R.id.spinner2)
+        spinner1?.visibility = View.VISIBLE
+        spinner2?.visibility = View.VISIBLE
+        contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
+    }
+
+    override fun initData() {
+        contentRecyclerView?.layoutManager = GridLayoutManager(activity, 6)
+        contentRecyclerView?.adapter = object : BaseQuickAdapter<MarkBean, BaseViewHolder>(R.layout.curriculum_layout) {
+            override fun convert(helper: BaseViewHolder?, item: MarkBean?) {
+                val markNameTv = helper?.getView<TextView>(R.id.markNameTv)
+                val markValueTv = helper?.getView<TextView>(R.id.markValueTv)
+                val mark = (item as MarkBean)
+                markNameTv?.text = mark.key
+                markValueTv?.text = mark.vaule
             }
         }
+    }
 
+    override fun initListener() {
 
-        private lateinit var examClassifyList: ExamClassifyList
-        /**
-         * 获取考试类型
-         */
-        fun examClassifyListList() {
-            val paras = RequestUtil.createMap()
-            paras["schoolId"] = PreferenceUtil.getString(ConstantUtil.SCHOOL_ID, "")
-            val rxP = object : RxBasePresenter(activity) {}
-            rxP.addDisposable<HttpResultBody<ExamClassifyList>>(rxP.getmDataManager().netService.getExamClassifyList(paras),
-                    object : ProgressObserver<HttpResultBody<ExamClassifyList>>(activity, true) {
-                        override fun doNext(httpResultBody: HttpResultBody<ExamClassifyList>) {
-                            if (TextUtils.equals(httpResultBody.code, "0000")) {
-                                examClassifyList = httpResultBody.result
-                                spinner2?.adapter = object : BaseSpinnerAdapter<ExamClassifyBean>(examClassifyList.examClassifyList) {
-                                    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                                        val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
-                                        rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
-                                        return rootView
-                                    }
+    }
+
+    private lateinit var examClassifyList: ExamClassifyList
+    /**
+     * 获取考试类型
+     */
+    fun examClassifyListList() {
+        val paras = RequestUtil.createMap()
+        paras["schoolId"] = PreferenceUtil.getString(ConstantUtil.SCHOOL_ID, "")
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<ExamClassifyList>>(rxP.getmDataManager().netService.getExamClassifyList(paras),
+                object : ProgressObserver<HttpResultBody<ExamClassifyList>>(activity, true) {
+                    override fun doNext(httpResultBody: HttpResultBody<ExamClassifyList>) {
+                        if (TextUtils.equals(httpResultBody.code, "0000")) {
+                            examClassifyList = httpResultBody.result
+                            spinner2?.adapter = object : BaseSpinnerAdapter<ExamClassifyBean>(examClassifyList.examClassifyList) {
+                                override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                                    val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
+                                    return rootView
+                                }
+                            }
+
+                            spinner2?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                                override fun onNothingSelected(parent: AdapterView<*>?) {
                                 }
 
-                                spinner2?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                    examinationClassifyId = (spinner2?.adapter as BaseSpinnerAdapter<ExamClassifyBean>).getItem(position).id
+                                    if (!TextUtils.isEmpty(semesterId) && !TextUtils.isEmpty(examinationClassifyId)) {
+                                        loadData()
                                     }
-
-                                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                        examinationClassifyId = (spinner2.adapter as BaseSpinnerAdapter<ExamClassifyBean>).getItem(position).id
-                                        if (!TextUtils.isEmpty(semesterId) && !TextUtils.isEmpty(examinationClassifyId)) {
-                                            loadData()
-                                        }
-                                    }
-
-                                }
-
-                                if (!examClassifyList.examClassifyList.isEmpty()) {
-                                    spinner2.setSelection(0)
                                 }
 
                             }
-                        }
 
-                        override fun onError(e: Throwable) {
-                            super.onError(e)
-
-                        }
-                    })
-        }
-
-
-        private lateinit var semstersEntity: UserSemstersEntity
-        /**
-         * 获取学期信息
-         */
-        private fun receiveSemseterList() {
-            val paras = RequestUtil.createMap()
-            paras["userId"] = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
-            paras["userType"] = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
-            val rxP = object : RxBasePresenter(activity) {}
-            rxP.addDisposable<HttpResultBody<UserSemstersEntity>>(rxP.getmDataManager().netService.getSemstersInfo(paras),
-                    object : ProgressObserver<HttpResultBody<UserSemstersEntity>>(activity, true) {
-
-                        override fun doNext(httpResultBody: HttpResultBody<UserSemstersEntity>) {
-                            if (TextUtils.equals(httpResultBody.code, "0000")) {
-                                semstersEntity = httpResultBody.result
-                                spinner1?.adapter = object : BaseSpinnerAdapter<UserSemstersEntity.SemstersBean>(semstersEntity.semesterList) {
-                                    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                                        val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
-                                        rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
-                                        return rootView
-                                    }
-                                }
-                                spinner1?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                                    }
-
-                                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                        semesterId = (spinner1.adapter as BaseSpinnerAdapter<UserSemstersEntity.SemstersBean>).getItem(position).id.toString()
-                                        if (!TextUtils.isEmpty(semesterId) && !TextUtils.isEmpty(examinationClassifyId)) {
-                                            loadData()
-                                        }
-                                    }
-
-                                }
-                                if (!semstersEntity.semesterList.isEmpty()) {
-                                    spinner1.setSelection(0)
-                                }
-                                examClassifyListList()
+                            if (!examClassifyList.examClassifyList.isEmpty()) {
+                                spinner2?.setSelection(0)
                             }
-                        }
-
-                        override fun onError(e: Throwable) {
-                            super.onError(e)
 
                         }
-                    })
-        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+
+                    }
+                })
+    }
+
+
+    private lateinit var semstersEntity: UserSemstersEntity
+    /**
+     * 获取学期信息
+     */
+    private fun receiveSemseterList() {
+        val paras = RequestUtil.createMap()
+        paras["userId"] = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
+        paras["userType"] = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<UserSemstersEntity>>(rxP.getmDataManager().netService.getSemstersInfo(paras),
+                object : ProgressObserver<HttpResultBody<UserSemstersEntity>>(activity, true) {
+
+                    override fun doNext(httpResultBody: HttpResultBody<UserSemstersEntity>) {
+                        if (TextUtils.equals(httpResultBody.code, "0000")) {
+                            semstersEntity = httpResultBody.result
+                            spinner1?.adapter = object : BaseSpinnerAdapter<UserSemstersEntity.SemstersBean>(semstersEntity.semesterList) {
+                                override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                                    val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
+                                    return rootView
+                                }
+                            }
+                            spinner1?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                                override fun onNothingSelected(parent: AdapterView<*>?) {
+                                }
+
+                                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                    semesterId = (spinner1?.adapter as BaseSpinnerAdapter<UserSemstersEntity.SemstersBean>).getItem(position).id.toString()
+                                    if (!TextUtils.isEmpty(semesterId) && !TextUtils.isEmpty(examinationClassifyId)) {
+                                        loadData()
+                                    }
+                                }
+
+                            }
+                            if (!semstersEntity.semesterList.isEmpty()) {
+                                spinner1?.setSelection(0)
+                            }
+                            examClassifyListList()
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+
+                    }
+                })
+    }
 
 //        userId 	是 	int 	用户id ，教师查看成绩填写教师id，学生和家长查看成绩都是填写学生id
 //        userType 	是 	int 	用户类型 ，教师查看成绩填写教师类型，学生和家长查看成绩都是填写学生的类型
@@ -397,229 +396,274 @@ class ClassRoomFragment : BrowseSupportFragment() {
 //        examinationClassifyId 	是 	int 	考试类型id
 //        gradeId 	是 	int 	班级id
 
-        private var semesterId = ""
-        private var examinationClassifyId = ""
+    private var semesterId = ""
+    private var examinationClassifyId = ""
 
-        private fun loadData() {
-            val id = PreferenceUtil.getString(ConstantUtil.GRADED_ID, "")
-            val userId = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
-            val userType = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
-            val paras = RequestUtil.createMap()
-            paras["userId"] = userId
-            paras["userType"] = userType
-            paras["semesterId"] = semesterId
-            paras["examinationClassifyId"] = examinationClassifyId
-            paras["gradeId"] = id
-            val rxP = object : RxBasePresenter(activity) {}
-            rxP.addDisposable<HttpResultBody<UserMark>>(rxP.getmDataManager().netService.getMark(paras),
-                    object : ProgressObserver<HttpResultBody<UserMark>>(activity, false) {
-                        override fun doNext(httpResultBody: HttpResultBody<UserMark>) {
-                            if (TextUtils.equals(httpResultBody.code, "0000")) {
-                                mAdapter?.clear()
-                                val list = httpResultBody.result.mark
-                                if (!list.isEmpty()) {
-                                    val jo = list[0]
-                                    val keys = jo.keySet()
-                                    keys?.forEachIndexed { index, s ->
-                                        mAdapter?.add(MarkBean(s, jo.get(s).asString))
-                                    }
+    private fun loadData() {
+        val id = PreferenceUtil.getString(ConstantUtil.GRADED_ID, "")
+        val userId = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
+        val userType = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
+        val paras = RequestUtil.createMap()
+        paras["userId"] = userId
+        paras["userType"] = userType
+        paras["semesterId"] = semesterId
+        paras["examinationClassifyId"] = examinationClassifyId
+        paras["gradeId"] = id
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<UserMark>>(rxP.getmDataManager().netService.getMark(paras),
+                object : ProgressObserver<HttpResultBody<UserMark>>(activity, false) {
+                    override fun doNext(httpResultBody: HttpResultBody<UserMark>) {
+                        if (TextUtils.equals(httpResultBody.code, "0000")) {
+                            val markList = ArrayList<MarkBean>()
+                            val list = httpResultBody.result.mark
+                            if (!list.isEmpty()) {
+                                val jo = list[0]
+                                val keys = jo.keySet()
+                                keys?.forEachIndexed { index, s ->
+                                    markList.add(MarkBean(s, jo.get(s).asString))
                                 }
-                                mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
                             }
+                            (contentRecyclerView?.adapter as BaseQuickAdapter<MarkBean, BaseViewHolder>).replaceData(markList)
                         }
+                    }
 
-                        override fun onError(e: Throwable) {
-                            super.onError(e)
-                        }
-                    })
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+                    }
+                })
+    }
+}
+
+
+/**
+ * 作业
+ */
+class SchoolAssignmentFragment : BaseFragment() {
+    override fun lazyLoadData() {
+        getSubjectList()
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.curriculum_list_layout
+    }
+
+    var contentRecyclerView: RecyclerView? = null
+    var spinner1: Spinner? = null
+    override fun initView() {
+        spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
+        spinner1?.visibility = View.VISIBLE
+        contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
+    }
+
+    override fun initData() {
+        contentRecyclerView?.layoutManager = LinearLayoutManager(activity)
+        contentRecyclerView?.adapter = object : BaseQuickAdapter<WorkBean, BaseViewHolder>(R.layout.user_work_layout) {
+            override fun convert(helper: BaseViewHolder?, item: WorkBean?) {
+                val titleTv = helper?.getView<TextView>(R.id.titleTv)
+                val contentTv = helper?.getView<TextView>(R.id.contentTv)
+                val timeTv = helper?.getView<TextView>(R.id.timeTv)
+                titleTv?.text = item?.title
+                contentTv?.text = item?.content
+                if (!TextUtils.isEmpty(item?.createTime)) {
+                    timeTv?.text = DateTimeUtil.getStrTime(item?.createTime?.toLong()!!)
+                }
+            }
         }
-
-
-        class MarkPresenter(private var mFragment: Fragment?) : Presenter() {
-            override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-                val rootView = LayoutInflater.from(parent?.context).inflate(R.layout.user_mark_layout, parent, false)
-                // val rootView = mFragment?.layoutInflater?.inflate(R.layout.curriculum_layout, null)
-                return ViewHolder(rootView)
+        (contentRecyclerView?.adapter as BaseQuickAdapter<WorkBean, BaseViewHolder>).setOnItemClickListener { adapter, view, position ->
+            val manager = activity.supportFragmentManager
+            val fragments = manager.fragments
+            fragments.forEachIndexed { index, fragment ->
+                if (fragment is ClassRoomFragment) {
+                    val transaction = manager.beginTransaction()
+                    transaction.hide(fragment)
+                    transaction.commit()
+                    (activity as MainActivity).setMainTabVisiable(false)
+                }
             }
-
-            override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
-                val markNameTv = viewHolder?.view?.findViewById<TextView>(R.id.markNameTv)
-                val markValueTv = viewHolder?.view?.findViewById<TextView>(R.id.markValueTv)
-                val mark = (item as MarkBean)
-                markNameTv?.text = mark.key
-                markValueTv?.text = mark.vaule
+            var tagFragment = manager.findFragmentByTag("SchoolAssignmentDetailFragment")
+            val transaction = manager.beginTransaction()
+            if (null == tagFragment) {
+                tagFragment = SchoolAssignmentDetailFragment()
+                transaction.add(R.id.fl_main, tagFragment, "SchoolAssignmentDetailFragment")
             }
-
-            override fun onUnbindViewHolder(viewHolder: ViewHolder?) {
-            }
+            (tagFragment as SchoolAssignmentDetailFragment).seatworkId = (adapter.getItem(position) as WorkBean).id
+            tagFragment.userVisibleHint = true
+            transaction.commit()
         }
 
     }
 
-     /**
-     * 作业
+    override fun initListener() {
+    }
+
+    /**
+     * 获取科目信息 getSubjectList
      */
-    class SchoolAssignmentFragment : SpinnerGridFragment() {
-        private val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL
-        private var mAdapter: ArrayObjectAdapter? = null
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setupAdapter()
-        }
-
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            getSubjectList()
-            spinner2?.visibility = View.GONE
-        }
-
-        private fun setupAdapter() {
-            val presenter = VerticalGridPresenter(ZOOM_FACTOR)
-
-            presenter.numberOfColumns = 1
-            gridPresenter = presenter
-            mAdapter = ArrayObjectAdapter(WorkPresenter(this))
-            adapter = mAdapter
-            onItemViewClickedListener = OnItemViewClickedListener { itemViewHolder, item, rowViewHolder, row ->
-
-            }
-        }
-
-
-        /**
-         * 获取科目信息 getSubjectList
-         */
 //        userId 	是 	int 	用户id
 //        userType 	是 	int 	用户类型：1教师、2学生（家长查看的时候也是填写对应学生的id和类型）
 //        schoolId 	是 	int 	学校id
 //        classId 	是 	int 	年级id
-        var subs = ArrayList<SubjectBean>()
-        var subjectId = ""
-        private fun getSubjectList() {
-            val paras = RequestUtil.createMap()
-            paras["userId"] = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
-            paras["userType"] = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
-            paras["schoolId"] = PreferenceUtil.getString(ConstantUtil.SCHOOL_ID, "")
-            paras["classId"] = PreferenceUtil.getString(ConstantUtil.CLASS_ID, "")
-            val rxP = object : RxBasePresenter(activity) {}
-            rxP.addDisposable<HttpResultBody<SubjectList>>(rxP.getmDataManager().netService.getSubjectList(paras),
-                    object : ProgressObserver<HttpResultBody<SubjectList>>(activity, true) {
-                        override fun doNext(httpResultBody: HttpResultBody<SubjectList>) {
-                            if (TextUtils.equals(httpResultBody.code, "0000")) {
-                                subs.clear()
-                                val list = httpResultBody.result.subjectList
-                                if (!list.isEmpty()) {
-                                    subs.addAll(list)
-                                }
-                                spinner1?.adapter = object : BaseSpinnerAdapter<SubjectBean>(subs) {
-                                    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                                        val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
-                                        rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
-                                        return rootView
-                                    }
-                                }
-                                spinner1?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                                    }
-
-                                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                        subjectId = (spinner1.adapter as BaseSpinnerAdapter<SubjectBean>).getItem(position).id
-                                        if (!TextUtils.isEmpty(subjectId)) {
-                                            loadData(subjectId)
-                                        }
-                                    }
-                                }
-                                if (!subs.isEmpty()) {
-                                    spinner1.setSelection(0)
+    var subs = ArrayList<SubjectBean>()
+    var subjectId = ""
+    private fun getSubjectList() {
+        val paras = RequestUtil.createMap()
+        paras["userId"] = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
+        paras["userType"] = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
+        paras["schoolId"] = PreferenceUtil.getString(ConstantUtil.SCHOOL_ID, "")
+        paras["classId"] = PreferenceUtil.getString(ConstantUtil.CLASS_ID, "")
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<SubjectList>>(rxP.getmDataManager().netService.getSubjectList(paras),
+                object : ProgressObserver<HttpResultBody<SubjectList>>(activity, true) {
+                    override fun doNext(httpResultBody: HttpResultBody<SubjectList>) {
+                        if (TextUtils.equals(httpResultBody.code, "0000")) {
+                            subs.clear()
+                            val list = httpResultBody.result.subjectList
+                            if (!list.isEmpty()) {
+                                subs.addAll(list)
+                            }
+                            spinner1?.adapter = object : BaseSpinnerAdapter<SubjectBean>(subs) {
+                                override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                                    val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
+                                    return rootView
                                 }
                             }
+                            spinner1?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                                override fun onNothingSelected(parent: AdapterView<*>?) {
+                                }
+
+                                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                    subjectId = (spinner1?.adapter as BaseSpinnerAdapter<SubjectBean>).getItem(position).id
+                                    if (!TextUtils.isEmpty(subjectId)) {
+                                        loadData(subjectId)
+                                    }
+                                }
+                            }
+                            if (!subs.isEmpty()) {
+                                spinner1?.setSelection(0)
+                            }
                         }
+                    }
 
-                        override fun onError(e: Throwable) {
-                            super.onError(e)
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
 
-                        }
-                    })
-        }
+                    }
+                })
+    }
 
 
-        //        userId 	是 	int 	用户id
+    //        userId 	是 	int 	用户id
 //        userType 	是 	int 	用户类型：1教师、2学生（家长查看的时候也是填写对应学生的id和类型）
 //        subjectId 	是 	int 	科目id
 //        pageNo 	是 	int 	页码
 //        pageSize 	是 	int 	每页显示记录数
 //        gradeId 	是 	int 	班级id
-        private fun loadData(subjectId: String) {
-            val id = PreferenceUtil.getString(ConstantUtil.GRADED_ID, "")
-            val userId = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
-            val userType = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
-            val paras = RequestUtil.createMap()
-            paras["userId"] = userId
-            paras["userType"] = userType
-            paras["subjectId"] = subjectId
-            paras["pageNo"] = "1"
-            paras["pageSize"] = "100"
-            paras["gradeId"] = id
-            val rxP = object : RxBasePresenter(activity) {}
-            rxP.addDisposable<HttpResultBody<WorkList>>(rxP.getmDataManager().netService.getWorkList(paras),
-                    object : ProgressObserver<HttpResultBody<WorkList>>(activity, false) {
-                        override fun doNext(httpResultBody: HttpResultBody<WorkList>) {
-                            if (TextUtils.equals(httpResultBody.code, "0000")) {
-                                mAdapter?.clear()
-                                val jo = httpResultBody.result.seatworkList
-                                if (null != jo && !jo.isEmpty()) {
-                                    jo.forEach {
-                                        mAdapter?.add(it)
-                                    }
-                                }
-                                mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
+    private fun loadData(subjectId: String) {
+        val id = PreferenceUtil.getString(ConstantUtil.GRADED_ID, "")
+        val userId = PreferenceUtil.getString(ConstantUtil.USER_ID, "")
+        val userType = PreferenceUtil.getString(ConstantUtil.USER_TYPE, "")
+        val paras = RequestUtil.createMap()
+        paras["userId"] = userId
+        paras["userType"] = userType
+        paras["subjectId"] = subjectId
+        paras["pageNo"] = "1"
+        paras["pageSize"] = "100"
+        paras["gradeId"] = id
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<WorkList>>(rxP.getmDataManager().netService.getWorkList(paras),
+                object : ProgressObserver<HttpResultBody<WorkList>>(activity, false) {
+                    override fun doNext(httpResultBody: HttpResultBody<WorkList>) {
+                        if (TextUtils.equals(httpResultBody.code, "0000")) {
+                            val jo = httpResultBody.result.seatworkList
+                            if (null != jo) {
+                                (contentRecyclerView?.adapter as BaseQuickAdapter<WorkBean, BaseViewHolder>).replaceData(jo)
                             }
                         }
+                    }
 
-                        override fun onError(e: Throwable) {
-                            super.onError(e)
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+                    }
+                })
+    }
+
+
+}
+
+
+/**
+ * 作业详情
+ */
+class SchoolAssignmentDetailFragment : BaseFragment() {
+
+    var seatworkId: String = ""
+
+    override fun lazyLoadData() {
+        loadData(seatworkId)
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.school_assignment_detail_layout
+    }
+
+    private var contentTv: TextView? = null
+    private var titleTv: TextView? = null
+    private var tv_back: TextView? = null
+    override fun initView() {
+        contentTv = mView.findViewById<TextView>(R.id.contentTv)
+        titleTv = mView.findViewById<TextView>(R.id.titleTv)
+        tv_back = mView.findViewById<TextView>(R.id.tv_back)
+    }
+
+    override fun initData() {
+    }
+
+    override fun initListener() {
+        tv_back?.setOnClickListener {
+            val manager = activity.supportFragmentManager
+            val fragments = manager.fragments
+            fragments.forEachIndexed { index, fragment ->
+                if (fragment is ClassRoomFragment) {
+                    val transaction = manager.beginTransaction()
+                    transaction.show(fragment)
+                    transaction.commit()
+                }
+            }
+            val tagFragment = manager.findFragmentByTag("SchoolAssignmentDetailFragment")
+            if (null != tagFragment) {
+                tagFragment.userVisibleHint = true
+                val transaction = manager.beginTransaction()
+                transaction.remove(tagFragment)
+                transaction.commit()
+            }
+            (activity as MainActivity).setMainTabVisiable(true)
+        }
+    }
+
+
+    private fun loadData(seatworkId: String) {
+        val id = PreferenceUtil.getString(ConstantUtil.GRADED_ID, "")
+        val paras = RequestUtil.createMap()
+        paras["seatworkId"] = seatworkId
+        val rxP = object : RxBasePresenter(activity) {}
+        rxP.addDisposable<HttpResultBody<WorkDetail>>(rxP.getmDataManager().netService.getWorkDetail(paras),
+                object : ProgressObserver<HttpResultBody<WorkDetail>>(activity, false) {
+                    override fun doNext(httpResultBody: HttpResultBody<WorkDetail>) {
+                        try {
+                            if (TextUtils.equals(httpResultBody.code, "0000")) {
+                                titleTv?.text = httpResultBody.result.seatwork.title
+                                contentTv?.text = httpResultBody.result.seatwork.content
+                            }
+                        } catch (e: Exception) {
+
                         }
-                    })
-        }
+                    }
 
-
-        class WorkPresenter(private var mFragment: Fragment?) : Presenter() {
-            override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-                val rootView = LayoutInflater.from(parent?.context).inflate(R.layout.user_work_layout, parent, false)
-                // val rootView = mFragment?.layoutInflater?.inflate(R.layout.curriculum_layout, null)
-                return ViewHolder(rootView)
-            }
-
-            override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
-                val titleTv = viewHolder?.view?.findViewById<TextView>(R.id.titleTv)
-                val contentTv = viewHolder?.view?.findViewById<TextView>(R.id.contentTv)
-                val timeTv = viewHolder?.view?.findViewById<TextView>(R.id.timeTv)
-                val workBean = (item as WorkBean)
-                titleTv?.text = workBean.title
-                contentTv?.text = workBean.content
-                timeTv?.text = workBean.createTime
-            }
-
-            override fun onUnbindViewHolder(viewHolder: ViewHolder?) {
-            }
-        }
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
+                    }
+                })
     }
-
-    /**
-     *空白内容
-     *
-     */
-    class EmptyFragment : GridFragment() {
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            val presenter = VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_SMALL)
-            presenter.numberOfColumns = 1
-            gridPresenter = presenter
-        }
-
-    }
-
 
 }

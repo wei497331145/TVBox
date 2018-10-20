@@ -3,8 +3,8 @@ package com.apemoon.tvbox.factory.main;
 
 import android.support.v4.app.Fragment;
 
-import com.apemoon.tvbox.ui.fragment.ClassFragment1;
-import com.apemoon.tvbox.ui.fragment.ClassRoomFragment1;
+import com.apemoon.tvbox.ui.fragment.ClassFragment;
+import com.apemoon.tvbox.ui.fragment.ClassRoomFragment;
 import com.apemoon.tvbox.ui.fragment.ElegantDemeanorFragment;
 import com.apemoon.tvbox.ui.fragment.HomeFragment;
 import com.apemoon.tvbox.ui.fragment.NoticeFragment;
@@ -18,8 +18,8 @@ public class FragmentFactory {
 
     private HomeFragment mHomeFragment;
     private NoticeFragment mNoticeFragment;
-    private ClassRoomFragment1 mClassRoomFragment;
-    private ClassFragment1 mClassFragment;
+    private ClassRoomFragment mClassRoomFragment;
+    private ClassFragment mClassFragment;
     private ElegantDemeanorFragment mElegantDemeanorFragment;
     private TraditionalFragment mTraditionalFragment;
     private PersonalFragment mPersonalFragment;
@@ -57,13 +57,13 @@ public class FragmentFactory {
                 break;
             case 2://我的课堂
                 if (mClassRoomFragment == null) {
-                    mClassRoomFragment = new ClassRoomFragment1();
+                    mClassRoomFragment = new ClassRoomFragment();
                 }
                 baseFragment = mClassRoomFragment;
                 break;
             case 3://我的班级
                 if (mClassFragment == null) {
-                    mClassFragment = new ClassFragment1();
+                    mClassFragment = new ClassFragment();
                 }
                 baseFragment = mClassFragment;
                 break;
