@@ -34,7 +34,7 @@
         <item name="android:background">@drawable/bg_text_select</item>
         <item name="android:enabled">false</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textSize">@dimen/sp_20</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_width">@dimen/dp_0</item>
         <item name="android:layout_height">match_parent</item>

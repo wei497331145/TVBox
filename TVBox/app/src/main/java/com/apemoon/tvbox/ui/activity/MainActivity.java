@@ -106,13 +106,12 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
             @Override
             public void tabSelected(int position) {
                 onTabSelected(position - 1);
-                onRequestMainTabFocus();
+
             }
 
             @Override
             public void tabUnselected(int position) {
                 onTabUnselected(position - 1);
-                onRequestMainTabFocus();
             }
         });
 
@@ -195,18 +194,18 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     }
 
 
-    public void onRequestMainTabFocus() {
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mMainTab == null) {
-                        return;
-                    }
-                    mMainTab.rqFocus();
-                }
-            }, 1000);
-    }
+//    public void onRequestMainTabFocus() {
+//
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (mMainTab == null) {
+//                        return;
+//                    }
+//                    mMainTab.rqFocus();
+//                }
+//            }, 1000);
+//    }
 
     @Override
     public void onDestroy() {
