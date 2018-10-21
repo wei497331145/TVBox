@@ -270,10 +270,28 @@ class ClassActivityDetailFragment : BaseFragment() {
         voteListContainer?.removeAllViewsInLayout()
     }
 
+    fun initSelectedPosition(position: Int) {//数据不满一屏幕
+        if (headerRecyclerView != null && position >= 0 && null != headerRecyclerView?.adapter) {
+            val adapter = (headerRecyclerView?.adapter as BaseQuickAdapter<ClassActivityBean, BaseViewHolder>)
+            if (position < adapter.data.size) {
+                headerRecyclerView?.scrollToPosition(position)
+                headerRecyclerView?.postDelayed({
+                    headerRecyclerView?.findViewHolderForAdapterPosition(position)?.itemView?.requestFocus()
+                }, 50)
+            }
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        initSelectedPosition(selectId)
+    }
+
 
     override fun initData() {
         headerRecyclerView?.layoutManager = LinearLayoutManager(activity)
-        headerRecyclerView?.adapter = object : BaseQuickAdapter<ClassActivityBean, BaseViewHolder>(R.layout.class_activity_layout) {
+        /*  headerRecyclerView?.adapter = */object : BaseQuickAdapter<ClassActivityBean, BaseViewHolder>(R.layout.class_activity_layout) {
             override fun convert(helper: BaseViewHolder?, item: ClassActivityBean?) {
                 helper?.getView<TextView>(R.id.activityTitleTv)?.text = item?.title
                 if (!TextUtils.isEmpty(item?.createTime)) {
@@ -302,7 +320,7 @@ class ClassActivityDetailFragment : BaseFragment() {
                     }
                 }
             }
-        }
+        }.bindToRecyclerView(headerRecyclerView)
     }
 
     override fun initListener() {
@@ -345,6 +363,8 @@ class ClassActivityDetailFragment : BaseFragment() {
                     override fun doNext(httpResultBody: HttpResultBody<ClassActivityList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             (headerRecyclerView?.adapter as BaseQuickAdapter<ClassActivityBean, BaseViewHolder>).replaceData(httpResultBody.result.classActivityList)
+
+                            initSelectedPosition(selectId)
                         }
                     }
 
