@@ -4,7 +4,9 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +24,7 @@ import com.apemoon.tvbox.entity.*
 import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity
 import com.apemoon.tvbox.ui.activity.MainActivity
 import com.apemoon.tvbox.ui.adapter.BaseSpinnerAdapter
-import com.apemoon.tvbox.utils.ConstantUtil
-import com.apemoon.tvbox.utils.DateTimeUtil
-import com.apemoon.tvbox.utils.PreferenceUtil
-import com.apemoon.tvbox.utils.RequestUtil
+import com.apemoon.tvbox.utils.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.JsonParser
@@ -75,11 +74,16 @@ class ClassRoomFragment : BaseFragment() {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
                             headerRecyclerView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
                         } else {
-                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this);
+                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
                         }
                     }
                     val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
                     recyclerViewItem?.requestFocus()
+                    if (null != recyclerViewItem) {
+                        LogUtil.d("" + recyclerViewItem.toString())
+                    } else {
+                        LogUtil.d("requestFocus  null")
+                    }
                 }
             })
         }
@@ -92,7 +96,7 @@ class ClassRoomFragment : BaseFragment() {
         fragmentsContainer = mView?.findViewById<FrameLayout>(R.id.fragmentsContainer)
         headerRecyclerView = mView?.findViewById<RecyclerView>(R.id.headerRecyclerView)
 
-        headerRecyclerView?.nextFocusUpId=R.id.main_tab
+        // headerRecyclerView?.nextFocusUpId = R.id.main_tab
     }
 
     override fun initData() {
@@ -103,7 +107,7 @@ class ClassRoomFragment : BaseFragment() {
 
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
-                holder?.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
+                holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
@@ -193,12 +197,11 @@ class SampleFragmentA : BaseFragment() {
     }
 
     override fun initData() {
-        contentRecyclerView?.layoutManager = GridLayoutManager(activity, 6)
+        contentRecyclerView?.layoutManager = android.support.v7.widget.GridLayoutManager(activity, 6)
         contentRecyclerView?.adapter = object : BaseQuickAdapter<ArrayList<String>, BaseViewHolder>(R.layout.curriculum_layout) {
             override fun convert(helper: BaseViewHolder?, item: ArrayList<String>?) {
                 val viewGroup = helper?.getView<ViewGroup>(R.id.row_root)
-                val arr = item as ArrayList<String>
-                arr.forEachIndexed { index, s ->
+                item?.forEachIndexed { index, s ->
                     if (index <= viewGroup?.childCount!!) {
                         (viewGroup.getChildAt(index) as TextView).text = s
                     }
@@ -227,49 +230,40 @@ class SampleFragmentA : BaseFragment() {
                                 val data = ArrayList<ArrayList<String>>()
                                 val weekArr = ArrayList<String>()
                                 weekArr.add("")
-                                weekArr.add("星期一")
-                                weekArr.add("星期二")
-                                weekArr.add("星期三")
-                                weekArr.add("星期四")
-                                weekArr.add("星期五")
+                                weekArr.add("第一节")
+                                weekArr.add("第二节")
+                                weekArr.add("第三节")
+                                weekArr.add("第四节")
+                                weekArr.add("第五节")
+                                weekArr.add("第六节")
+                                weekArr.add("第七节")
                                 data.add(weekArr)
+
+                                data.add(initArr("星期一"))
+                                data.add(initArr("星期二"))
+                                data.add(initArr("星期三"))
+                                data.add(initArr("星期四"))
+                                data.add(initArr("星期五"))
                                 if ("2" == httpResultBody.result?.classSchedule?.contentType) {
                                     val scheduleJsonStr = httpResultBody.result.classSchedule?.scheduleJson
                                     val jar = JsonParser().parse(scheduleJsonStr).asJsonArray
                                     jar.forEachIndexed { index, jsonElement ->
-                                        val rowJ = ArrayList<String>()
-                                        rowJ.addAll(listOf("", "", "", "", "", ""))
-                                        val jb = jsonElement.asJsonObject
-                                        val keys = jb.keySet()
-                                        keys.forEachIndexed { index, s ->
-                                            when (s) {
-                                                "" -> {
-                                                    rowJ[0] = jb.get("").asString
-                                                }
-                                                "星期一" -> {
-                                                    rowJ[1] = jb.get("星期一").asString
-                                                }
-                                                "星期二" -> {
-                                                    rowJ[2] = jb.get("星期二").asString
-                                                }
-                                                "星期三" -> {
-                                                    rowJ[3] = jb.get("星期三").asString
-                                                }
-                                                "星期四" -> {
-                                                    rowJ[4] = jb.get("星期四").asString
-                                                }
-                                                "星期五" -> {
-                                                    rowJ[5] = jb.get("星期五").asString
-                                                }
+                                        //7
+                                        val jb = jsonElement.asJsonArray
+                                        jb.forEachIndexed { _index, jsonElement ->
+                                            //6
+                                            if (_index != 0) {
+                                                data[_index][index + 1] = jsonElement.asString
                                             }
                                         }
-                                        data.add(rowJ)
                                     }
                                 }
                                 (contentRecyclerView?.adapter as BaseQuickAdapter<ArrayList<String>, BaseViewHolder>).replaceData(data)
                             }
                         } catch (e: Exception) {
 
+                            Log.e("ee", e.toString())
+                            // LogUtil.d(e.toString())
                         }
                     }
 
@@ -277,8 +271,22 @@ class SampleFragmentA : BaseFragment() {
                         super.onError(e)
                     }
                 })
+
     }
 
+    fun initArr(week: String): ArrayList<String> {
+        val arr = ArrayList<String>()
+        arr.add(week)
+        arr.add("")
+        arr.add("")
+        arr.add("")
+        arr.add("")
+        arr.add("")
+        arr.add("")
+        arr.add("")
+        return arr
+
+    }
 
 }
 
@@ -303,12 +311,15 @@ class ScoreFragment : BaseFragment() {
         spinner2 = mView?.findViewById<Spinner>(R.id.spinner2)
         spinner1?.visibility = View.VISIBLE
         spinner2?.visibility = View.VISIBLE
+        spinner1?.isFocusable=true
+        spinner2?.isFocusable=true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
+
     override fun initData() {
         contentRecyclerView?.layoutManager = GridLayoutManager(activity, 6)
-        contentRecyclerView?.adapter = object : BaseQuickAdapter<MarkBean, BaseViewHolder>(R.layout.curriculum_layout) {
+        contentRecyclerView?.adapter = object : BaseQuickAdapter<MarkBean, BaseViewHolder>(R.layout.user_mark_layout) {
             override fun convert(helper: BaseViewHolder?, item: MarkBean?) {
                 val markNameTv = helper?.getView<TextView>(R.id.markNameTv)
                 val markValueTv = helper?.getView<TextView>(R.id.markValueTv)
@@ -450,7 +461,11 @@ class ScoreFragment : BaseFragment() {
                                 val jo = list[0]
                                 val keys = jo.keySet()
                                 keys?.forEachIndexed { index, s ->
-                                    markList.add(MarkBean(s, jo.get(s).asString))
+                                    if (s == "姓名" || s == "学号") {
+                                        //todo
+                                    } else {
+                                        markList.add(MarkBean(s, jo.get(s).asString))
+                                    }
                                 }
                             }
                             (contentRecyclerView?.adapter as BaseQuickAdapter<MarkBean, BaseViewHolder>).replaceData(markList)
@@ -482,6 +497,7 @@ class SchoolAssignmentFragment : BaseFragment() {
     override fun initView() {
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
         spinner1?.visibility = View.VISIBLE
+        spinner1?.isFocusable=true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
@@ -493,7 +509,7 @@ class SchoolAssignmentFragment : BaseFragment() {
                 val contentTv = helper?.getView<TextView>(R.id.contentTv)
                 val timeTv = helper?.getView<TextView>(R.id.timeTv)
                 titleTv?.text = item?.title
-                contentTv?.text = item?.content
+                contentTv?.text = Html.fromHtml(item?.content)
                 if (!TextUtils.isEmpty(item?.createTime)) {
                     timeTv?.text = DateTimeUtil.getStrTime(item?.createTime?.toLong()!!)
                 }
@@ -683,7 +699,8 @@ class SchoolAssignmentDetailFragment : BaseFragment() {
                         try {
                             if (TextUtils.equals(httpResultBody.code, "0000")) {
                                 titleTv?.text = httpResultBody.result.seatwork.title
-                                contentTv?.text = httpResultBody.result.seatwork.content
+                                // contentTv?.text = httpResultBody.result.seatwork.content
+                                contentTv?.text = Html.fromHtml(httpResultBody.result.seatwork.content)
                             }
                         } catch (e: Exception) {
 
