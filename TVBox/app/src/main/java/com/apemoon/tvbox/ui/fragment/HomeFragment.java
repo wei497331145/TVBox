@@ -1,5 +1,6 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -98,8 +99,14 @@ public class HomeFragment extends BaseFragment implements IInformationView {
                 transaction.show(fragment).commit();
             }
         });
+
+        FragmentActivity ac = getActivity();
+        if (null != ac) {
+            fManager = ac.getSupportFragmentManager();
+        }
     }
 
+    private FragmentManager fManager;
 
     @Override
     public void initListener() {
@@ -146,41 +153,32 @@ public class HomeFragment extends BaseFragment implements IInformationView {
     }
 
     private void selectedClassRoomFragment(int position) {
-        new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
-            FragmentActivity ac = getActivity();
-            if (null != ac) {
-                FragmentManager fm = ac.getSupportFragmentManager();
-                List<Fragment> fragments = fm.getFragments();
-                for (int i = 0; i < fragments.size(); i++) {
-                    Fragment fragment = fragments.get(i);
-                    if (fragment instanceof ClassRoomFragment) {
-                        ((ClassRoomFragment) fragment).initSelectedPosition(position);
-                        LogUtil.d("requestFocus1    " + position);
-                        //((ClassRoomFragment) fragment).setSelectedPosition(position);
-                    }
+        if (null != fManager) {
+            List<Fragment> fragments = fManager.getFragments();
+            for (int i = 0; i < fragments.size(); i++) {
+                Fragment fragment = fragments.get(i);
+                if (fragment instanceof ClassRoomFragment) {
+                    ((ClassRoomFragment) fragment).initSelectedPosition(position);
+                    LogUtil.d("requestFocus1    " + position);
+                    //((ClassRoomFragment) fragment).setSelectedPosition(position);
                 }
             }
-        }, 200);
+        }
     }
 
 
     private void selectedClassFragment(int position) {
-
-        new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
-            FragmentActivity ac = getActivity();
-            if (null != ac) {
-                FragmentManager fm = ac.getSupportFragmentManager();
-                List<Fragment> fragments = fm.getFragments();
-                for (int i = 0; i < fragments.size(); i++) {
-                    Fragment fragment = fragments.get(i);
-                    if (fragment instanceof ClassFragment) {
-                        ((ClassFragment) fragment).initSelectedPosition(position);
-                        LogUtil.d("requestFocus1    " + position);
-//                    ((ClassFragment) fragment).setSelectedPosition(position);
-                    }
+        if (null != fManager) {
+            List<Fragment> fragments = fManager.getFragments();
+            for (int i = 0; i < fragments.size(); i++) {
+                Fragment fragment = fragments.get(i);
+                if (fragment instanceof ClassFragment) {
+                    ((ClassFragment) fragment).initSelectedPosition(position);
+                    LogUtil.d("requestFocus1    " + position);
+                    //((ClassRoomFragment) fragment).setSelectedPosition(position);
                 }
             }
-        }, 200);
+        }
     }
 
 
@@ -189,25 +187,27 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         switch (view.getId()) {
             case R.id.tv_class_schedule://班级课表
                 changeTab(3);
-               // selectedClassRoomFragment(0);
+                // selectedClassRoomFragment(0);
 
                 break;
             case R.id.tv_class_performance://课堂表现
                 changeTab(3);
-                selectedClassRoomFragment(1);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassRoomFragment(1), 200);
                 break;
             case R.id.tv_class_task://课堂作业
                 changeTab(3);
-                selectedClassRoomFragment(2);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassRoomFragment(2), 200);
+
                 break;
             case R.id.tv_my_achievement://我的成绩
                 changeTab(3);
-                selectedClassRoomFragment(3);
+
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassRoomFragment(3), 200);
                 break;
             case R.id.cv_album://班级相册
                 changeTab(4);
-
-                selectedClassFragment(3);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassFragment(3), 200);
 
                 break;
             case R.id.cv_curriculum://精品课程

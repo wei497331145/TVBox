@@ -90,22 +90,10 @@ class ClassRoomFragment : BaseFragment() {
 
     fun initSelectedPosition(position: Int) {
         if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
-            headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val width = headerRecyclerView?.width!!
-                    val height = headerRecyclerView?.height!!
-                    if (width > 0 && height > 0) {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            headerRecyclerView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                        } else {
-                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
-                        }
-                    }
-
-                    val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
-                    recyclerViewItem?.requestFocus()
-                }
-            })
+            headerRecyclerView?.post {
+                val itemView = headerRecyclerView?.layoutManager?.findViewByPosition(position)
+                itemView?.requestFocus()
+            }
         }
     }
 
@@ -143,7 +131,7 @@ class ClassRoomFragment : BaseFragment() {
             val fr = FragmentFactory.createFragment(position = position)
             replaceFragment(fr!!)
         }
-        initFirstPosition(0)
+        initSelectedPosition(0)
     }
 
 
@@ -333,6 +321,9 @@ class ScoreFragment : BaseFragment() {
         spinner1?.isFocusable = true
         spinner2?.isFocusable = true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
+
+        contentRecyclerView?.nextFocusUpId = R.id.spinner1
+        contentRecyclerView?.nextFocusLeftId = R.id.headerRecyclerView
     }
 
 
