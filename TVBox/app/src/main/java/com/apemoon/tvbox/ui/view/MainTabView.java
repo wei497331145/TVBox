@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.interfaces.IMainTabView;
-import com.apemoon.tvbox.interfaces.IMainView;
 
 /**
  * Created by water on 2018/8/29/029.
@@ -33,7 +33,15 @@ public class MainTabView extends LinearLayout {
     }
 
     public void setPosition(int position) {
-        mPosition = position;
+        if (position > 7 || position < 1) {
+            return;
+        }
+        if (mPosition > 0 && mIMainTabView != null) {
+            mIMainTabView.tabUnselected(mPosition);
+            mIMainTabView.tabSelected(position);
+            mPosition = position;
+            setTab();
+        }
     }
 
     private IMainTabView mIMainTabView;
@@ -53,8 +61,8 @@ public class MainTabView extends LinearLayout {
         init(context);
     }
 
-    public void rqFocus(){
-        if(view!=null){
+    public void rqFocus() {
+        if (view != null) {
             view.requestFocus();
         }
     }
@@ -70,20 +78,21 @@ public class MainTabView extends LinearLayout {
         mTvPersonal = view.findViewById(R.id.tv_personal);
     }
 
+
     public void setTabChange(int keyCode) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT://你按左方向键
-                if (mPosition >1 && mIMainTabView != null) {
+                if (mPosition > 1 && mIMainTabView != null) {
                     mIMainTabView.tabUnselected(mPosition);
-                    mIMainTabView.tabSelected( mPosition- 1);
+                    mIMainTabView.tabSelected(mPosition - 1);
                     mPosition--;
                     setTab();
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT://你按右方向键
                 if (mPosition < 7 && mIMainTabView != null) {
-                    mIMainTabView.tabUnselected( mPosition);
-                    mIMainTabView.tabSelected( mPosition+ 1);
+                    mIMainTabView.tabUnselected(mPosition);
+                    mIMainTabView.tabSelected(mPosition + 1);
                     mPosition++;
                     setTab();
                 }
@@ -93,25 +102,25 @@ public class MainTabView extends LinearLayout {
 
     public void setTab() {
         switch (mPosition) {
-            case 1 :
+            case 1:
                 setTabChange(mTvMain);
                 break;
-            case 2 :
+            case 2:
                 setTabChange(mTvNotice);
                 break;
             case 3:
                 setTabChange(mTvClass);
                 break;
-            case 4 :
+            case 4:
                 setTabChange(mTvClassClass);
                 break;
-            case 5 :
+            case 5:
                 setTabChange(mTvElegantDemeanor);
                 break;
-            case 6 :
+            case 6:
                 setTabChange(mTvTraditionalCulture);
                 break;
-            case 7 :
+            case 7:
                 setTabChange(mTvPersonal);
                 break;
         }
@@ -128,19 +137,6 @@ public class MainTabView extends LinearLayout {
         mTvPersonal.setEnabled(false);
         view.setEnabled(true);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -2,7 +2,6 @@ package com.apemoon.tvbox.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,20 +24,16 @@ import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
-import com.apemoon.tvbox.utils.LogUtil;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
 import com.smarttop.library.bean.Street;
 import com.smarttop.library.widget.OnAddressSelectedListener;
 
-import java.io.Serializable;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener  {
+public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
     @BindView(R.id.tv_school_name)
     TextView mTvSchoolName;
     @BindView(R.id.iv_switch_school)
@@ -51,6 +46,11 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     TextView mTvGradeName;
     @BindView(R.id.iv_setting)
     ImageView mIvSetting;
+
+    public MainTabView getMainTab() {
+        return mMainTab;
+    }
+
     @BindView(R.id.main_tab)
     MainTabView mMainTab;
     @BindView(R.id.fl_main)
@@ -91,8 +91,8 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         mMainPresenter = new MainPresenter(this, this);
     }
 
-    private void setUserData( UserEntity.UserInfoBean userInfo) {
-        GlideUtil.imageCircleLocal(this,userInfo.getHeadImage(),mIvHead);
+    private void setUserData(UserEntity.UserInfoBean userInfo) {
+        GlideUtil.imageCircleLocal(this, userInfo.getHeadImage(), mIvHead);
         mTvSchoolName.setText(userInfo.getSchoolName());
         mTvName.setText(userInfo.getName());
         mTvGradeName.setText(userInfo.getGradeName());
@@ -113,7 +113,10 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
                 onTabUnselected(position - 1);
             }
         });
+
+
     }
+
 
     @OnClick({R.id.iv_switch_school, R.id.iv_setting})
     public void onViewClicked(View view) {
@@ -122,7 +125,7 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
                 showSchoolPop();
                 break;
             case R.id.iv_setting://设置
-                SettingActivity.actionStart(this,mUserEntity);
+                SettingActivity.actionStart(this, mUserEntity);
                 break;
         }
     }
@@ -152,8 +155,8 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         getSupportFragmentManager().beginTransaction().hide(fragment).commit();
     }
 
-    public void setTabFocusable(){
-        if(mMainTab!=null) {
+    public void setTabFocusable() {
+        if (mMainTab != null) {
             mMainTab.requestFocus();
         }
     }
@@ -176,18 +179,18 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         return super.onKeyDown(keyCode, event);
     }
 
-    public void setMainTabVisiable(boolean isVisiable){
-        if(isVisiable){
+    public void setMainTabVisiable(boolean isVisiable) {
+        if (isVisiable) {
             mMainTab.setVisibility(View.VISIBLE);
             mMainTab.requestFocus();
-        }else{
+        } else {
             mMainTab.setVisibility(View.GONE);
         }
     }
 
 
-    public void onRequestMainTabFocus(){
-        if(mMainTab == null){
+    public void onRequestMainTabFocus() {
+        if (mMainTab == null) {
             return;
         }
 
@@ -206,7 +209,8 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         FragmentFactory.getIntance().clearFragment();
         super.onDestroy();
     }
-    private void showSchoolPop(){
+
+    private void showSchoolPop() {
         if (dialog != null) {
             dialog.show();
         } else {

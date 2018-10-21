@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.Spinner
@@ -40,6 +41,7 @@ class ClassRoomFragment : BaseFragment() {
     override fun lazyLoadData() {
     }
 
+
     private fun addFragment(fragment: Fragment, tag: String) {
         val manager = childFragmentManager
         val transaction = manager.beginTransaction()
@@ -60,15 +62,41 @@ class ClassRoomFragment : BaseFragment() {
         return R.layout.class_room_fragment
     }
 
+    private var selectedPosition: Int = 0
+
+    fun initSelectedPosition(position: Int) {
+        selectedPosition = position
+        if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
+            headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val width = headerRecyclerView?.width!!
+                    val height = headerRecyclerView?.height!!
+                    if (width > 0 && height > 0) {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            headerRecyclerView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                        } else {
+                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this);
+                        }
+                    }
+                    val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
+                    recyclerViewItem?.requestFocus()
+                }
+            })
+        }
+    }
+
+
     var fragmentsContainer: FrameLayout? = null
     var headerRecyclerView: RecyclerView? = null
     override fun initView() {
         fragmentsContainer = mView?.findViewById<FrameLayout>(R.id.fragmentsContainer)
         headerRecyclerView = mView?.findViewById<RecyclerView>(R.id.headerRecyclerView)
+
+        headerRecyclerView?.nextFocusUpId=R.id.main_tab
     }
 
     override fun initData() {
-        headerRecyclerView?.adapter = object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
+        /*   headerRecyclerView?.adapter =*/object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
             override fun convert(helper: BaseViewHolder?, item: String?) {
                 helper?.getView<TextView>(R.id.headTv)?.text = item
             }
@@ -82,7 +110,8 @@ class ClassRoomFragment : BaseFragment() {
                     }
                 }
             }
-        }
+        }.bindToRecyclerView(headerRecyclerView)
+
     }
 
     override fun initListener() {
@@ -90,6 +119,7 @@ class ClassRoomFragment : BaseFragment() {
             val fr = FragmentFactory.createFragment(position = position)
             replaceFragment(fr!!)
         }
+        initSelectedPosition(selectedPosition)
     }
 
 
