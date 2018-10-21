@@ -69,6 +69,7 @@ class ClassFragment : BaseFragment() {
                 super.onBindViewHolder(holder, position)
                 holder?.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
+                        if (position == 1 || position == 2) return@setOnFocusChangeListener
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
                     }
@@ -90,11 +91,12 @@ class ClassFragment : BaseFragment() {
     }
 
     override fun initListener() {
-        (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            val fr = FragmentFactory.createFragment(position = position)
-            replaceFragment(fr!!)
-        }
+//        (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+//            val fr = FragmentFactory.createFragment(position = position)
+//            replaceFragment(fr!!)
+//        }
         initSelectedPosition(0)
+        headerRecyclerView?.nextFocusUpId = (activity as MainActivity).mainTab.id
     }
 
 
@@ -145,6 +147,26 @@ class ClassActivityFragment : BaseFragment() {
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        initSelectedPosition(selectId)
+    }
+
+    private fun initSelectedPosition(position: Int) {
+        if (contentRecyclerView != null && position >= 0 && null != contentRecyclerView?.adapter) {
+            val adapter = contentRecyclerView?.adapter as BaseQuickAdapter<ClassActivityBean, BaseViewHolder>
+            if (position < adapter.data.size) {
+                contentRecyclerView?.scrollToPosition(position)
+                contentRecyclerView?.postDelayed({
+                    contentRecyclerView?.findViewHolderForAdapterPosition(position)?.itemView?.requestFocus()
+                }, 50)
+            }
+        }
+    }
+
+
+    private var selectId = 0
     override fun initData() {
         contentRecyclerView?.layoutManager = android.support.v7.widget.GridLayoutManager(activity, 3)
         contentRecyclerView?.adapter = object : BaseQuickAdapter<ClassActivityBean, BaseViewHolder>(R.layout.class_activity_layout) {
@@ -182,6 +204,7 @@ class ClassActivityFragment : BaseFragment() {
                 tagFragment = ClassActivityDetailFragment()
                 transaction.add(R.id.fl_main, tagFragment, "ClassActivityDetailFragment")
             }
+            selectId = position
             (tagFragment as ClassActivityDetailFragment).selectId = position
             tagFragment.userVisibleHint = true
             transaction.commit()

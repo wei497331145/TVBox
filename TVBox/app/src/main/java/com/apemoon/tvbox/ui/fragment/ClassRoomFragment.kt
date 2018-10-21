@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.Spinner
@@ -66,27 +65,6 @@ class ClassRoomFragment : BaseFragment() {
 
     private var selectedPosition: Int = 0
 
-    private fun initFirstPosition(position: Int) {
-        if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
-            headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val width = headerRecyclerView?.width!!
-                    val height = headerRecyclerView?.height!!
-                    if (width > 0 && height > 0) {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            headerRecyclerView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                        } else {
-                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
-                        }
-                    }
-
-                    val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
-                    recyclerViewItem?.requestFocus()
-                }
-            })
-        }
-    }
-
 
     fun initSelectedPosition(position: Int) {
         if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
@@ -117,6 +95,7 @@ class ClassRoomFragment : BaseFragment() {
                 super.onBindViewHolder(holder, position)
                 holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
+                        if (position == 1 || position == 4) return@setOnFocusChangeListener
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
                     }
@@ -127,11 +106,13 @@ class ClassRoomFragment : BaseFragment() {
     }
 
     override fun initListener() {
-        (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            val fr = FragmentFactory.createFragment(position = position)
-            replaceFragment(fr!!)
-        }
+//        (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+//
+//            val fr = FragmentFactory.createFragment(position = position)
+//            replaceFragment(fr!!)
+//        }
         initSelectedPosition(0)
+        headerRecyclerView?.nextFocusUpId = (activity as MainActivity).mainTab.id
     }
 
 
