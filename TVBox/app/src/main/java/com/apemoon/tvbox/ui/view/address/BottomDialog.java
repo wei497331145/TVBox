@@ -55,8 +55,8 @@ public class BottomDialog extends Dialog {
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         int width = manager.getDefaultDisplay().getWidth();
         int height = manager.getDefaultDisplay().getHeight();
-        params.width = width/2;
-        params.height = height/2;
+        params.width = width*2/3;
+        params.height = height*2/3;
         window.setAttributes(params);
 
         window.setGravity(Gravity.CENTER);

@@ -17,10 +17,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
  */
 
 public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.NoticeListBean,BaseViewHolder> {
+    private NoticeRecyclerViewItemSelectListener listener;
 
-    public NoticeAdapter() {
+    public NoticeAdapter(NoticeRecyclerViewItemSelectListener listener ) {
         super(R.layout.item_notice_news);
+        this.listener = listener;
     }
+
+
 
     @Override
     protected void convert(BaseViewHolder helper, ReceiveNoticeListEntity.NoticeListBean item) {
@@ -34,15 +38,15 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-//                if(hasFocus){
-//                    view.setBackgroundResource(R.drawable.bg_notice_normal);
-//                }else{
-//                    view.setBackgroundResource(R.drawable.bg_notice_selected);
-//                }
-//                AnimationUtil.setTextAnimation(view,hasFocus,1.01f,1.01f,1.0f,1.0f);
-
+                if(view !=null && listener!=null) {
+                    listener.onItemSelectListner(helper.getLayoutPosition());
+                }
             }
         });
+    }
+
+    public interface NoticeRecyclerViewItemSelectListener{
+        void onItemSelectListner(int position);
     }
 
 }

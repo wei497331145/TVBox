@@ -70,5 +70,12 @@ public abstract class BaseFragment extends RxFragment implements IBaseView {
     }
 
 
+    public void setCacheViewFromContent(View view){
+        view.requestFocus();
+    }
+
+    public void setmCacheViewFromTab(View view){
+        view.requestFocus();
+    }
 
 }

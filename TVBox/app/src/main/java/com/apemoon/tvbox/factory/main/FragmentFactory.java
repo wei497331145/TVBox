@@ -44,6 +44,10 @@ public class FragmentFactory {
         Fragment baseFragment = null;
         switch (position) {
             case 0://首页
+//                if (mHomeFragment == null) {
+//                    mHomeFragment = new HomeFragment();
+//                }
+//                baseFragment = mHomeFragment;
                 if (mHomeFragment == null) {
                     mHomeFragment = new HomeFragment();
                 }

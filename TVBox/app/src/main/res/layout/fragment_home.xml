@@ -20,6 +20,7 @@
             android:layout_height="@dimen/dp_0"
             android:layout_weight="1"
             android:background="@drawable/bg_yellow_selector"
+            android:nextFocusUp="@id/main_tab"
             android:gravity="center"
             android:text="@string/class_schedule"
             android:textColor="@color/white"
@@ -79,6 +80,7 @@
             <RelativeLayout
                 android:id="@+id/cv_album"
                 android:nextFocusLeft="@id/tv_class_schedule"
+                android:nextFocusRight="@id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_0"
                 android:layout_marginTop="@dimen/dp_0"
@@ -109,6 +111,7 @@
         <RelativeLayout
             android:id="@+id/cv_curriculum"
             android:nextFocusLeft="@id/tv_class_schedule"
+            android:nextFocusRight="@id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0"
             android:layout_marginTop="@dimen/dp_10"
@@ -176,6 +179,7 @@
                 android:layout_marginBottom="@dimen/dp_5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/transparent"
                 android:descendantFocusability="afterDescendants"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 

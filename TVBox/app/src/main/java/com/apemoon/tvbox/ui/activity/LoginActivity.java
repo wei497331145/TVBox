@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                 login();
                 break;
             case R.id.iv_setting:
-                Intent intent =  new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                Intent intent =  new Intent(Settings.ACTION_SETTINGS);
                 startActivity(intent);
                 break;
         }
@@ -116,7 +116,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             GlobalUtil.showToast("请先输入密码");
             return;
         }
-        mLoginPresenter.login(mAccount, MD5EncoderUtil.encodeByMd5(mPassword));
+        mLoginPresenter.login(mAccount, mPassword);
     }
 
 
@@ -125,22 +125,13 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     *   用户登录成功
     * */
     @Override
-    public void loginSuccess(UserEntity userEntity,String code) {
+    public void loginSuccess(UserEntity userEntity,String code,String mAccount,String mPassword) {
         if (userEntity != null) {
             if (!TextUtils.equals(userEntity.getUserType(),"2")) {//2 学生
                 GlobalUtil.showToast("只能登录学生的账号");
                 return;
             }
-            PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
-            PreferenceUtil.commitString(ConstantUtil.USER_ACCOUNT, mAccount);
-            PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
-            PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
-            PreferenceUtil.commitString(ConstantUtil.USER_TYPE,  userEntity.getUserType());
-            PreferenceUtil.commitString(ConstantUtil.GRADED_ID,  String.valueOf(userEntity.getUserInfo().getGradeId()));
-            PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID,  String.valueOf(userEntity.getUserInfo().getSchoolId()));
-            PreferenceUtil.commitString(ConstantUtil.CLASS_ID,  String.valueOf(userEntity.getUserInfo().getClassId()));
-
-            AccountInfoUtil.saveAccount(userEntity,mAccount,mPassword);
+            PreferenceUtil.saveAccountDdata(userEntity,mAccount,mPassword);
             MainActivity.actionStart(this,userEntity);
             finish();
         } else {

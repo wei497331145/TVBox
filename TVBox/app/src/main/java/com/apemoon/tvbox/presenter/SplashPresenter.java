@@ -8,6 +8,7 @@ import com.apemoon.tvbox.base.rx.RxBasePresenter;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
 import com.apemoon.tvbox.utils.ConstantUtil;
+import com.apemoon.tvbox.utils.MD5EncoderUtil;
 import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.apemoon.tvbox.utils.RequestUtil;
 
@@ -33,14 +34,15 @@ public class SplashPresenter extends RxBasePresenter {
     public void login(String account,String password){
         Map<String, String> paras = RequestUtil.createMap();
         paras.put("account", account);
-        paras.put("password",password);
+        paras.put("password", MD5EncoderUtil.encodeByMd5(password));//jiaoyu888
+
         addDisposable(mDataManager.getNetService().loginCall(paras),
                 new ProgressObserver<HttpResultBody<UserEntity>>(mContext, true) {
 
                     @Override
                     public void doNext(HttpResultBody<UserEntity> httpResultBody) {
                         if (mILoginView != null ) {
-                            mILoginView.loginSuccess(httpResultBody.result,httpResultBody.code);
+                            mILoginView.loginSuccess(httpResultBody.result,httpResultBody.code,account,password);
                             //wxj 清除其他学校信息
                             PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOO_ID, "");
                         }

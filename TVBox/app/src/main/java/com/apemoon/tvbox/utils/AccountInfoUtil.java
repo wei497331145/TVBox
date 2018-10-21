@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.entity.AccountListEntity;
 import com.apemoon.tvbox.entity.UserEntity;
+import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.presenter.SettingPresenter;
 import com.apemoon.tvbox.ui.adapter.AccountAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.SemestersAdapter;
@@ -96,7 +97,7 @@ public class AccountInfoUtil {
 
     public static void showSelectAccountWindow(View view, Activity context, SettingPresenter presenter) {
         List<AccountListEntity.AccountInfoBean> accountInfoBeanList = AccountInfoUtil.getAccountList();
-        if (accountInfoBeanList.size() < 1) {
+        if(accountInfoBeanList.size()<1){
             return;
         }
         View popupView = context.getLayoutInflater().inflate(R.layout.layout_pop_select_account, null);
@@ -106,7 +107,7 @@ public class AccountInfoUtil {
         int height = manager.getDefaultDisplay().getHeight();
 
 
-        PopupWindow popView = new PopupWindow(popupView, width/2, height/2, true);
+        PopupWindow popView = new PopupWindow(popupView, width*2/3, height*2/3, true);
         popView.setTouchable(true);
         popView.setOutsideTouchable(false);
         // 设置背景为半透明灰色
@@ -125,7 +126,8 @@ public class AccountInfoUtil {
         popView.showAtLocation(view, Gravity.CENTER, 0, 0);
         RecyclerView mRecyclerView = popupView.findViewById(R.id.recyclerView);
 
-        ((TextView)popupView.findViewById(R.id.tv_back_home)).setOnClickListener(new View.OnClickListener() {
+        TextView tv_home = popupView.findViewById(R.id.tv_back_home);
+        tv_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popView.dismiss();
@@ -134,20 +136,27 @@ public class AccountInfoUtil {
         });
 
 
-        AccountAdapter mTeachersAdapter = new AccountAdapter();
+        AccountAdapter mAccountAdapter = new AccountAdapter(new RecyclerViewItemSelectListener() {
+            @Override
+            public void onItemSelectListner(int position) {
+                if (position == 0){
+                    tv_home.setFocusable(true);
+                }
+            }
+        });
         LinearLayoutManager ms = new LinearLayoutManager(context);
         ms.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(ms);
-        mRecyclerView.setAdapter(mTeachersAdapter);
-        mTeachersAdapter.setNewData(accountInfoBeanList);
-        mTeachersAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mRecyclerView.setAdapter(mAccountAdapter);
+        mAccountAdapter.setNewData(accountInfoBeanList);
+
+        mAccountAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 AccountListEntity.AccountInfoBean bean = accountInfoBeanList.get(position);
                 presenter.login(bean.getAccountNo(),bean.getAccountPwd());
             }
         });
-
 
     }
 }

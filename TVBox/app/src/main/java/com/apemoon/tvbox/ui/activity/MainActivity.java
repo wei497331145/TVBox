@@ -106,11 +106,13 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
             @Override
             public void tabSelected(int position) {
                 onTabSelected(position - 1);
+                onRequestMainTabFocus();
             }
 
             @Override
             public void tabUnselected(int position) {
                 onTabUnselected(position - 1);
+                onRequestMainTabFocus();
             }
         });
 
@@ -142,24 +144,25 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     public void onTabSelected(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment = FragmentFactory.getIntance().getFragment(position);
+        if(fragment == null){
+            return;
+        }
         fragment.setUserVisibleHint(true);
         if (!fragment.isAdded()) {
-            transaction.add(R.id.fl_main, fragment, String.valueOf(position));
+            transaction.replace(R.id.fl_main, fragment, String.valueOf(position));
         }
         transaction.show(fragment).commit();
     }
 
     public void onTabUnselected(int position) {
         Fragment fragment = FragmentFactory.getIntance().getFragment(position);
+        if(fragment==null){
+            return;
+        }
         fragment.setUserVisibleHint(false);
         getSupportFragmentManager().beginTransaction().hide(fragment).commit();
     }
 
-    public void setTabFocusable() {
-        if (mMainTab != null) {
-            mMainTab.requestFocus();
-        }
-    }
 
     @Override
     public void success() {
@@ -190,18 +193,16 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
 
     public void onRequestMainTabFocus() {
-        if (mMainTab == null) {
-            return;
-        }
 
-        runOnUiThread(() -> {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    if (mMainTab == null) {
+                        return;
+                    }
                     mMainTab.rqFocus();
                 }
-            }, 500);
-        });
+            }, 1000);
     }
 
     @Override

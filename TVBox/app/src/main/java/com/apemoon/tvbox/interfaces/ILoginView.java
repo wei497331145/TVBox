@@ -9,7 +9,7 @@ import com.apemoon.tvbox.entity.UserEntity;
 
 public interface ILoginView {
 
-    void loginSuccess(UserEntity userEntity,String code);
+    void loginSuccess(UserEntity userEntity,String code,String account,String password);
 
     void loginFail();
 }

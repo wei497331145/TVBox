@@ -88,12 +88,13 @@
 
                         <Button
                             android:id="@+id/tv_login"
-                            android:background="@drawable/bg_login_selected"
+                            android:background="@drawable/bg_bl_tv_info_selector_2"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_40"
                             android:layout_marginTop="@dimen/dp_40"
                             android:layout_marginLeft="@dimen/dp_28"
                             android:layout_marginRight="@dimen/dp_28"
+                            android:layout_marginBottom="@dimen/dp_28"
                             android:gravity="center"
                             android:text="@string/login"
                             android:textColor="@color/white"

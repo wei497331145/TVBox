@@ -3,7 +3,7 @@
     android:id="@+id/ll_notice"
     android:orientation="vertical"
     android:focusable="true"
-    android:background="@drawable/bg_bl_tv_info_selector"
+    android:background="@drawable/bg_bl_notice_selector"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <RelativeLayout
@@ -11,10 +11,10 @@
         android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_title"
-        android:layout_marginTop="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
-        android:layout_marginLeft="@dimen/dp_15"
-        android:textSize="@dimen/sp_15"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:textSize="@dimen/sp_16"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:singleLine="true"
@@ -33,9 +33,9 @@
     <TextView
         android:id="@+id/tv_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
-        android:textSize="@dimen/sp_12"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:textSize="@dimen/sp_14"
         android:textColor="@color/white"
         android:maxLines="2"
         android:ellipsize="end"
@@ -45,10 +45,10 @@
     <TextView
         android:id="@+id/tv_time"
         android:layout_marginTop="@dimen/dp_5"
-        android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginBottom="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
-        android:textSize="@dimen/sp_10"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:textSize="@dimen/sp_12"
         android:textColor="@color/font_CCFFFFFF"
         android:maxLines="2"
         android:ellipsize="end"

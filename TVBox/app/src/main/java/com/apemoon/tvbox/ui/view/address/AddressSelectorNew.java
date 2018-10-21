@@ -193,6 +193,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
             tabIndex = INDEX_TAB_STREET;
 
         } else {
+            GlobalUtil.showToast("没有数据");
             callbackInternal();
         }
         updateTabsVisibility();
@@ -204,6 +205,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
     @Override
     public void receiveSchoolTypFail() {
 
+
     }
 
     @Override
@@ -214,6 +216,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
             listView.setAdapter(schoolAdapter);
             tabIndex = INDEX_TAB_SCHOOL;
         } else {
+            GlobalUtil.showToast("没有数据");
             callbackInternal();
         }
 

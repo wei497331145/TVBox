@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/dp_10"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,7 +34,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_30"
-            android:background="@drawable/bg_bl_tv_info_selector"
+            android:background="@color/transparent"
             android:layout_weight="14"
             android:descendantFocusability="afterDescendants"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />

@@ -1,7 +1,11 @@
 package com.apemoon.tvbox.ui.fragment;
 
 import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -13,8 +17,11 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IReceiveNoticeView;
+import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.presenter.NoticePresenter;
+import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
+import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -26,7 +33,7 @@ import butterknife.BindView;
  * des：公告通知的碎片
  */
 
-public class NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView {
+public class NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView,NoticeAdapter.NoticeRecyclerViewItemSelectListener {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.web_view)
@@ -49,12 +56,15 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     @Override
     public BaseQuickAdapter<?, ?> getAdapter() {
-        mNoticeAdapter = new NoticeAdapter();
+        mNoticeAdapter = new NoticeAdapter(this);
         return mNoticeAdapter;
     }
 
     @Override
     public RecyclerView getRecyclerView() {
+        mRecyclerView.addItemDecoration(new RecycleViewDivider(
+                getActivity(), LinearLayoutManager.VERTICAL, 15, getResources().getColor(R.color.transparent)));
+
         return mRecyclerView;
     }
 
@@ -67,10 +77,17 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     public void init() {
         mWebView.setBackgroundColor(0);
         mWebView.getBackground().setAlpha(0);
-//        mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
 
         configWebView(mWebView);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity)getActivity()).onRequestMainTabFocus();
+    }
+
+
 
     @Override
     public void initData() {
@@ -93,33 +110,36 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
         mNoticePresenter.receiveNoticeList(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void initListener() {
         mNoticeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ReceiveNoticeListEntity.NoticeListBean noticeListBean = mNoticeAdapter.getData().get(position);
-                if (noticeListBean != null) {
-                    mTvTitle.setText(noticeListBean.getTitle());
-                    mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
+                if("0".endsWith(noticeListBean.getIsRead())) {
                     mNoticePresenter.setNoteReaded("" + noticeListBean.getId());
                     noticeListBean.setIsRead("1");
                     noticeList.remove(position);
                     noticeList.add(position, noticeListBean);
                     mNoticeAdapter.addData(noticeList);
+
+                    mRecyclerView.scrollToPosition(position);
                 }
             }
         });
-//        mWebView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if (hasFocus) {
-//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
-//                } else {
-//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_normal);
-//                }
+
+    }
+
+    private void setContent(ReceiveNoticeListEntity.NoticeListBean noticeListBean){
+        if (noticeListBean != null) {
+            mTvTitle.setText(noticeListBean.getTitle());
+            mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
+//            if("0".endsWith(noticeListBean.getIsRead())) {
+//                mNoticePresenter.setNoteReaded("" + noticeListBean.getId());
 //            }
-//        });
+
+        }
     }
 
     @Override
@@ -180,7 +200,7 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                             if (noticeList != null) {
                                 mTvTitle.setText(noticeListBean.getTitle());
                                 mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
-                                mRecyclerView.setSelected(true);
+                                mRecyclerView.scrollToPosition(0);
                             }
                         }
                         mNoticeAdapter.setNewData(noticeList);
@@ -208,5 +228,13 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 //        requestNew();
     }
 
+
+    @Override
+    public void onItemSelectListner(int position) {
+        if(noticeList == null || noticeList.size()<1 ){
+            return ;
+        }
+        setContent(noticeList.get(position));
+    }
 
 }

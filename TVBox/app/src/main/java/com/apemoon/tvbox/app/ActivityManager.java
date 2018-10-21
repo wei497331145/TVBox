@@ -5,6 +5,7 @@ package com.apemoon.tvbox.app;
  */
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import com.apemoon.tvbox.ui.activity.LoginActivity;
 
@@ -66,7 +67,7 @@ public class ActivityManager {
         }
     }
 
-    public void logout(Activity activity) {//退出登录
+    public void logout(Context activity) {//退出登录
         //结束所有Activity
         finishAllActivity();
         //跳到登录界面

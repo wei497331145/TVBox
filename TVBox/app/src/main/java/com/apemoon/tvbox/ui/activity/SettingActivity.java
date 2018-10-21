@@ -190,9 +190,11 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
     }
 
     @Override
-    public void loginSuccess(UserEntity userEntity, String code) {
+    public void loginSuccess(UserEntity userEntity, String code,String mAccount,String mPassword) {
+        ActivityManager.getIntence().finishAllActivity();
+
+        PreferenceUtil.saveAccountDdata(userEntity,mAccount,mPassword);
         MainActivity.actionStart(this, userEntity);
-        finish();
     }
 
     @Override

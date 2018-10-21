@@ -25,7 +25,9 @@
             android:focusable="true"
             android:text="基本信息"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_15" >
+            <requestFocus/>
+        </TextView>
         <TextView
             android:id="@+id/tv_sanction_info"
             android:layout_marginTop="@dimen/dp_4"
@@ -37,6 +39,7 @@
             android:background="@drawable/bg_bl_tv_selector"
             android:gravity="center"
             android:focusable="true"
+            android:nextFocusRight="@id/spinner_md2"
             android:text="奖罚信息"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15" />
@@ -52,6 +55,7 @@
             android:background="@drawable/bg_bl_tv_selector"
             android:gravity="center"
             android:focusable="true"
+            android:nextFocusRight="@id/spinner_md3"
             android:text="评价信息"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15" />
@@ -67,8 +71,10 @@
             android:layout_marginRight="@dimen/dp_30"
             android:layout_marginLeft="@dimen/dp_10"
             android:padding="@dimen/dp_15"
+            android:focusable="true"
             android:orientation="vertical"
             android:background="@drawable/bg_bl_tv_info_selector"
+            android:descendantFocusability="afterDescendants"
             android:layout_height="match_parent"
             android:layout_weight="14">
             <include layout="@layout/view_personal_md1"/>

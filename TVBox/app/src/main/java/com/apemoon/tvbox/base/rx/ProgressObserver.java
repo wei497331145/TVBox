@@ -4,8 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+
+import com.apemoon.tvbox.app.ActivityManager;
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.HttpResultListBody;
+import com.apemoon.tvbox.ui.activity.SettingActivity;
 import com.apemoon.tvbox.ui.view.LoadingDialog;
 import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.NetworkUtils;
@@ -100,12 +103,17 @@ public abstract class ProgressObserver<T> extends DisposableObserver<T> {
                 doNext(t);
 
                 break;
+            case "10000":
+                ActivityManager.getIntence().logout(mContext);
+                showToast(msg);
+                break;
             default:
                 doNext(t);
                 showToast(msg);
                 break;
         }
     }
+
 
     public abstract void doNext(T t);
 

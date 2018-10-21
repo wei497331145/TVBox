@@ -6,6 +6,7 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.entity.AccountListEntity;
 import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
+import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -18,8 +19,11 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountInfoBean,BaseViewHolder> {
 
-    public AccountAdapter() {
-        super(R.layout.item_personl_teachers);
+    private RecyclerViewItemSelectListener recyclerViewItemSelectListener;
+
+    public AccountAdapter(RecyclerViewItemSelectListener listener) {
+        super(R.layout.item_personl_accounts);
+        recyclerViewItemSelectListener = listener;
     }
 
     @Override
@@ -34,8 +38,8 @@ public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountIn
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                AnimationUtil.setTextAnimation(view,hasFocus,1.01f,1.01f,1.0f,1.0f);
-
+                AnimationUtil.setTextAnimation(view,hasFocus,1.1f,1.1f,1.0f,1.0f);
+                recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
             }
         });
     }

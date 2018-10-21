@@ -30,4 +30,20 @@ public class RequestUtil {
         return map;
     }
 
+
+
+    /**
+     * 创建Map数据结构
+     *
+     * @return
+     */
+    public static Map<String, String> createMapWithoutToen() {
+        Map<String, String> map;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            map = new ArrayMap<>();
+        } else {
+            map = new HashMap<>();
+        }
+        return map;
+    }
 }

@@ -23,7 +23,7 @@
             android:nextFocusDown="@id/fl_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            <requestFocus/>
         </com.apemoon.tvbox.ui.view.MainTabView>
 
         <FrameLayout

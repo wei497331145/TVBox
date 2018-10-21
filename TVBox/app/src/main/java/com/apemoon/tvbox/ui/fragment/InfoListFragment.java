@@ -182,16 +182,6 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
             }
         });
 
-//        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if (hasFocus) {
-//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_selected);
-//                } else {
-//                    mLlWeb.setBackgroundResource(R.drawable.bg_web_normal);
-//                }
-//            }
-//        });
     }
 
     private void setTextChangeListener(View view) {

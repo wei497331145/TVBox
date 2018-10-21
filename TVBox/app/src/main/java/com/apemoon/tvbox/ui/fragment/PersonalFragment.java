@@ -3,6 +3,7 @@ package com.apemoon.tvbox.ui.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.apemoon.tvbox.R;
@@ -32,6 +35,7 @@ import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.presenter.PersonalPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
+import com.apemoon.tvbox.ui.adapter.BaseSpinnerAdapter;
 import com.apemoon.tvbox.ui.adapter.MyTeacherAdapter;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.JudegeAdapter;
@@ -53,7 +57,7 @@ import butterknife.OnClick;
  * Created by water on 2018/8/31/031.
  * des：
  */
-public class PersonalFragment extends BaseFragment implements IPersonalView {
+public class PersonalFragment extends BaseFragment implements IPersonalView ,View.OnFocusChangeListener {
 
     private PersonalPresenter mPersonalPresenter;
 
@@ -106,23 +110,13 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     @BindView(R.id.tv_judge_info)
     TextView mTvJudgeInfo;
 
-    /**
-     *  奖罚模块
-     */
-    @BindView(R.id.md2_tv_semester_select)
-    Button md2TvSemesterSelect;
-    private PopupWindow md2_popView;
-
-    /**
-     *  评价模块
-     */
-    @BindView(R.id.md3_tv_semester_select)
-    Button md3TvSemesterSelect;
-    private PopupWindow md3_popView;
-
-
-
     private MyTeacherAdapter mMyTeacheradapter;
+
+    @BindView(R.id.spinner_md2)
+    Spinner md2Spiner;
+
+    @BindView(R.id.spinner_md3)
+    Spinner md3Spiner;
 
 
     @Override
@@ -132,6 +126,11 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
     @Override
     public void initView() {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         ((MainActivity)getActivity()).onRequestMainTabFocus();
     }
 
@@ -142,11 +141,17 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
 
     @Override
     public void initListener() {
+        mTvBaseInfo.setOnFocusChangeListener(this);
+        mTvSanctionInfo.setOnFocusChangeListener(this);
+        mTvJudgeInfo.setOnFocusChangeListener(this);
+
 
     }
 
 
-    @OnClick({R.id.tv_base_info, R.id.tv_judge_info, R.id.tv_sanction_info,R.id.md2_tv_semester_select,R.id.md3_tv_semester_select})
+
+
+    @OnClick({R.id.tv_base_info, R.id.tv_judge_info, R.id.tv_sanction_info})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_base_info://个人信息
@@ -165,54 +170,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
                 llPersonalMd2.setVisibility(View.GONE);
                 llPersonalMd3.setVisibility(View.VISIBLE);
                 break;
-            case R.id.md2_tv_semester_select: {
-                initPopWindow(md2TvSemesterSelect,"2");
-                break;
-            }
-            case R.id.md3_tv_semester_select: {
-                initPopWindow(md3TvSemesterSelect,"4");
 
-
-                break;
             }
 
-        }
-    }
-
-    private void initPopWindow(Button selectView, String type){
-        View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
-        md2_popView = new PopupWindow(popupView,selectView.getWidth(), WindowManager.LayoutParams.WRAP_CONTENT, true);
-        md2_popView.setTouchable(true);
-        md2_popView.setOutsideTouchable(false);
-        md2_popView.setFocusable(true);
-        // 设置背景为半透明灰色
-        md2_popView.setBackgroundDrawable(new BitmapDrawable(null,""));
-        // 设置动画
-//        md2_popView.setAnimationStyle(R.style.invitation_anim);
-
-        RecyclerView rates_lst = (RecyclerView) popupView.findViewById(R.id.rates_lst);
-        SemestersAdapter mAdapter = new SemestersAdapter();
-        rates_lst.setAdapter(mAdapter);
-        mAdapter.setNewData(semstersBeanList);
-        rates_lst.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                return imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-            }
-        });
-
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                selectView.setText(semstersBeanList.get(position).getName());
-                mPersonalPresenter.receiveRecords(type, "" + semstersBeanList.get(position).getId());
-                md2_popView.dismiss();
-            }
-        });
-
-
-        md2_popView.showAsDropDown(md2TvSemesterSelect);
     }
 
 
@@ -227,7 +187,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
         mTvSchool.setText(userInfo.getSchoolName());
         mTvClass.setText(userInfo.getGradeName());
         if(userInfo.getSex().equals("女")){
-
+            mIvSex.setImageDrawable(getResources().getDrawable(R.drawable.nan));
+        }else{
+            mIvSex.setImageDrawable(getResources().getDrawable(R.drawable.nv));
         }
     }
 
@@ -305,8 +267,33 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     public void receiveRemstersSuccess(UserSemstersEntity entity) {
         semstersBeanList = entity.getSemesterList();
         mUserSemsterEntity = entity;
-        md2TvSemesterSelect.setText(entity.getCurrentSemesterName());
-        md3TvSemesterSelect.setText(entity.getCurrentSemesterName());
+        md2Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()) );
+        md2Spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mPersonalPresenter.receiveRecords("2", "" + semstersBeanList.get(i).getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        md2Spiner.setVisibility(View.VISIBLE);
+
+        md3Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()) );
+        md3Spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mPersonalPresenter.receiveRecords("4", "" + semstersBeanList.get(i).getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        md3Spiner.setVisibility(View.VISIBLE);
         mPersonalPresenter.receiveRecords("2", entity.getCurrentSemesterId());
         mPersonalPresenter.receiveRecords("3", entity.getCurrentSemesterId());
         mPersonalPresenter.receiveRecords("4", entity.getCurrentSemesterId());
@@ -315,5 +302,43 @@ public class PersonalFragment extends BaseFragment implements IPersonalView {
     @Override
     public void receiveRemseFail() {
 
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        switch (view.getId()) {
+            case R.id.tv_base_info://个人信息
+                llPersonalMd1.setVisibility(View.VISIBLE);
+                llPersonalMd2.setVisibility(View.GONE);
+                llPersonalMd3.setVisibility(View.GONE);
+                break;
+
+            case R.id.tv_sanction_info://奖罚信息
+                llPersonalMd1.setVisibility(View.GONE);
+                llPersonalMd2.setVisibility(View.VISIBLE);
+                llPersonalMd3.setVisibility(View.GONE);
+                break;
+            case R.id.tv_judge_info://评价信息
+                llPersonalMd1.setVisibility(View.GONE);
+                llPersonalMd2.setVisibility(View.GONE);
+                llPersonalMd3.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    class SmsAdapter<UserSemstersEntity> extends BaseSpinnerAdapter{
+        List<com.apemoon.tvbox.entity.userCenter.UserSemstersEntity.SemstersBean> smstersList;
+
+        public SmsAdapter(List<com.apemoon.tvbox.entity.userCenter.UserSemstersEntity.SemstersBean> list) {
+            super(list);
+            this.smstersList = list;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false);
+            ((TextView)rootView.findViewById(R.id.spinnerTv)).setText(smstersList.get(position).getName());
+            return rootView;
+        }
     }
 }

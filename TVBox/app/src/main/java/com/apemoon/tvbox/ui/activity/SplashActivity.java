@@ -62,7 +62,7 @@ public class SplashActivity extends BaseActivity implements ILoginView {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
                 } else {
-                    mSplashPresenter.login(userName, MD5EncoderUtil.encodeByMd5(password));
+                    mSplashPresenter.login(userName, password);
                 }
             }
         });
@@ -77,19 +77,13 @@ public class SplashActivity extends BaseActivity implements ILoginView {
      *   用户登录成功
      * */
     @Override
-    public void loginSuccess(UserEntity userEntity, String code) {
+    public void loginSuccess(UserEntity userEntity, String code,String mAccount,String mPassword) {
         if (userEntity != null) {
             if (!TextUtils.equals(userEntity.getUserType(), "2")) {//2 学生
                 GlobalUtil.showToast("只能登录学生的账号");
                 return;
             }
-//            PreferenceUtil.commitString(ConstantUtil.USER_ACCOUNT, mAccount);
-//            PreferenceUtil.commitString(ConstantUtil.USER_PASSWORD, mPassword);
-            PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
-            PreferenceUtil.commitString(ConstantUtil.USER_TYPE, userEntity.getUserType());
-            PreferenceUtil.commitString(ConstantUtil.GRADED_ID, String.valueOf(userEntity.getUserInfo().getGradeId()));
-            PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID, String.valueOf(userEntity.getUserInfo().getSchoolId()));
-            PreferenceUtil.commitString(ConstantUtil.CLASS_ID, String.valueOf(userEntity.getUserInfo().getClassId()));
+            PreferenceUtil.saveAccountDdata(userEntity,mAccount,mPassword);
         }
 
         MainActivity.actionStart(this, userEntity);

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.apemoon.tvbox.entity.UserEntity;
+
 /**
  * Description：SharedPreferences的管理类
  */
@@ -79,5 +81,20 @@ public class PreferenceUtil {
 
     public static double getDouble(String key, double failValue) {
         return Double.longBitsToDouble(mSharedPreferences.getLong(key, Double.doubleToLongBits(failValue)));
+    }
+
+
+    public static void saveAccountDdata(UserEntity userEntity,String mAccount,String mPassword){
+        PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
+        PreferenceUtil.commitString(ConstantUtil.USER_ACCOUNT, mAccount);
+        PreferenceUtil.commitString(ConstantUtil.USER_PASSWORD, mPassword);
+        PreferenceUtil.commitString(ConstantUtil.TOKEN, userEntity.getToken());
+        PreferenceUtil.commitString(ConstantUtil.USER_ID, String.valueOf(userEntity.getUserId()));
+        PreferenceUtil.commitString(ConstantUtil.USER_TYPE,  userEntity.getUserType());
+        PreferenceUtil.commitString(ConstantUtil.GRADED_ID,  String.valueOf(userEntity.getUserInfo().getGradeId()));
+        PreferenceUtil.commitString(ConstantUtil.SCHOOL_ID,  String.valueOf(userEntity.getUserInfo().getSchoolId()));
+        PreferenceUtil.commitString(ConstantUtil.CLASS_ID,  String.valueOf(userEntity.getUserInfo().getClassId()));
+
+        AccountInfoUtil.saveAccount(userEntity,mAccount,mPassword);
     }
 }
