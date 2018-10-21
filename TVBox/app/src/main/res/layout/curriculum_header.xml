@@ -3,6 +3,7 @@
 <android.support.v17.leanback.widget.NonOverlappingLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootHeadLayout"
     android:layout_width="@dimen/dp_150"
+    android:focusable="true"
     android:layout_height="71dp"
     android:background="@drawable/bg_bl_tv_info_selector"
     android:gravity="center"
