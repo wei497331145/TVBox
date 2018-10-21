@@ -54,10 +54,6 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return super.onKeyDown(keyCode, event);
-    }
 
     private IMainTabView mIMainTabView;
 
@@ -77,9 +73,17 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
     }
 
     public void rqFocus() {
-        if (view != null) {
-            view.requestFocus();
-        }
+
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (view != null) {
+                        view.requestFocus();
+                    }
+                }
+            },500);
+
+
     }
 
 
@@ -128,7 +132,7 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
 
 
 
-    public void setTabChange(int keyCode) {
+    public boolean setTabChange(int keyCode) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT://你按左方向键
                 if (mPosition > 1 && mIMainTabView != null) {
@@ -136,6 +140,7 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
 //                    mIMainTabView.tabSelected(mPosition - 1);
                     mPosition--;
                     setTab();
+                    return true;
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT://你按右方向键
@@ -144,10 +149,12 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
 //                    mIMainTabView.tabSelected(mPosition + 1);
                     mPosition++;
                     setTab();
+                    return true;
                 }
                 rqFocus();
                 break;
         }
+        return false;
     }
 
     public void setTab() {

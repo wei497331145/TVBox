@@ -177,7 +177,10 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (mMainTab.hasFocus()) {
-            mMainTab.setTabChange(keyCode);
+            boolean flag = mMainTab.setTabChange(keyCode);
+            if(flag){
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
