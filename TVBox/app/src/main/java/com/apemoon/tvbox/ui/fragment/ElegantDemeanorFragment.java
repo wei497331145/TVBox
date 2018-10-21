@@ -12,6 +12,7 @@ import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
+import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
@@ -133,7 +134,16 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
         twoClasscialList = entity.getSchoollTwoClassical();
         currentTwoClassId = twoClasscialList.get(0).getId();
-        InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter();
+        InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
+            @Override
+            public void onItemSelectListner(int position) {
+                InfoClassicalEntity.TwoClassicalBean bean = twoClasscialList.get(position);
+                if(bean != null) {
+                    currentTwoClassId = bean.getId();
+                    requestNew();
+                }
+            }
+        });
         lvTwoClassical.setAdapter(twoClassicaladapter);
         twoClassicaladapter.setNewData(twoClasscialList);
         twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

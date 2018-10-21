@@ -114,6 +114,18 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
                 onTabUnselected(position - 1);
             }
         });
+        mMainTab.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(view!=null){
+                    if(b) {
+                        mMainTab.setTab();
+                    }else{
+                        mMainTab.setTabUnable();
+                    }
+                }
+            }
+        });
 
 
     }

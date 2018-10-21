@@ -77,8 +77,6 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     LinearLayout llTv;
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.item_autor)
-    ItemLinearLayout itemAuthor;
     @BindView(R.id.tv_time)
     TextView tvTime;
     @BindView(R.id.web_view)

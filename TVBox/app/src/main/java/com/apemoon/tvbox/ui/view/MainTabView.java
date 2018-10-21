@@ -23,7 +23,7 @@ import java.util.logging.Handler;
  * des：主界面的TabLayout
  */
 
-public class MainTabView extends LinearLayout implements View.OnClickListener {
+public class MainTabView extends LinearLayout {
     View view;
     TextView mTvMain;
     TextView mTvNotice;
@@ -99,7 +99,7 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
         mTvPersonal = view.findViewById(R.id.tv_personal);
         mTvStore = view.findViewById(R.id.tv_store);
         this.indicator = view.findViewById(R.id.indicator); //指示器
-        view.setOnClickListener(this);
+
 
     }
 
@@ -136,8 +136,8 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT://你按左方向键
                 if (mPosition > 1 && mIMainTabView != null) {
-//                    mIMainTabView.tabUnselected(mPosition);
-//                    mIMainTabView.tabSelected(mPosition - 1);
+                    mIMainTabView.tabUnselected(mPosition);
+                    mIMainTabView.tabSelected(mPosition - 1);
                     mPosition--;
                     setTab();
                     return true;
@@ -145,8 +145,8 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT://你按右方向键
                 if (mPosition < 8 && mIMainTabView != null) {
-//                    mIMainTabView.tabUnselected(mPosition);
-//                    mIMainTabView.tabSelected(mPosition + 1);
+                    mIMainTabView.tabUnselected(mPosition);
+                    mIMainTabView.tabSelected(mPosition + 1);
                     mPosition++;
                     setTab();
                     return true;
@@ -183,6 +183,7 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
             case 8:
                 setTabChange(mTvStore);
                 break;
+
         }
     }
 
@@ -198,49 +199,20 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
         mTvPersonal.setEnabled(false);
         mTvStore.setEnabled(false);
         view.setEnabled(true);
+        buildIndicatorAnimatorTowards(view).start();
 
     }
 
+    public void setTabUnable(){
+        mTvMain.setEnabled(false);
+        mTvNotice.setEnabled(false);
+        mTvClass.setEnabled(false);
+        mTvClassClass.setEnabled(false);
+        mTvElegantDemeanor.setEnabled(false);
+        mTvTraditionalCulture.setEnabled(false);
+        mTvPersonal.setEnabled(false);
+        mTvStore.setEnabled(false);
 
-    @Override
-    public void onClick(View view) {
-        TextView cView = null;
-        switch (mPosition) {
-            case 1:
-                cView = mTvMain;
-                mIMainTabView.tabSelected(1);
-                setTabChange(mTvMain);
-                break;
-            case 2:
-                cView = mTvNotice;
-                mIMainTabView.tabSelected(2);
-                break;
-            case 3:
-                cView = mTvClass;
-                mIMainTabView.tabSelected(3);
-                break;
-            case 4:
-                cView = mTvClassClass;
-                mIMainTabView.tabSelected(4);
-                break;
-            case 5:
-                cView = mTvElegantDemeanor;
-                mIMainTabView.tabSelected(5);
-                break;
-            case 6:
-                cView = mTvTraditionalCulture;
-                mIMainTabView.tabSelected(6);
-                break;
-            case 7:
-                cView = mTvPersonal;
-                mIMainTabView.tabSelected(7);
-                break;
-            case 8:
-                cView = mTvStore;
-                mIMainTabView.tabSelected(8);
-                break;
-        }
-        setTabChange(cView);
-        buildIndicatorAnimatorTowards(cView).start();
     }
+
 }

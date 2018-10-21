@@ -19,7 +19,7 @@
     <color name="red">#FFFF0000</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="view_line">#FFE6E6E6</color>
-
+    <color name="font_FF00C6FF">#FF00C6FF</color>
     <color name="font_FF999999">#FF999999</color>
     <color name="font_FF006599">#FF006599</color>
     <color name="font_FF0072AC">#FF0072AC</color>

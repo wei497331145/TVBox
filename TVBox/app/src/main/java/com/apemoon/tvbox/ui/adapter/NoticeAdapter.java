@@ -8,6 +8,7 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
+import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -38,8 +39,9 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if(view !=null && listener!=null) {
+                if(view !=null && listener!=null && hasFocus) {
                     listener.onItemSelectListner(helper.getLayoutPosition());
+
                 }
             }
         });

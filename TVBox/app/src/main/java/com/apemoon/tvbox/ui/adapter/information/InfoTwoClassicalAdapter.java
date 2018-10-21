@@ -6,6 +6,7 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
+import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
@@ -20,9 +21,10 @@ import java.util.List;
  */
 
 public class InfoTwoClassicalAdapter extends BaseQuickAdapter<InfoClassicalEntity.TwoClassicalBean,BaseViewHolder> {
-
-    public InfoTwoClassicalAdapter() {
+    private RecyclerViewItemSelectListener recyclerViewItemSelectListener;
+    public InfoTwoClassicalAdapter(RecyclerViewItemSelectListener listener) {
         super(R.layout.item_info_two_classical);
+        recyclerViewItemSelectListener = listener;
     }
 
     @Override
@@ -34,12 +36,9 @@ public class InfoTwoClassicalAdapter extends BaseQuickAdapter<InfoClassicalEntit
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-//                if(hasFocus){
-//                    view.setBackgroundResource(R.drawable.bg_notice_normal);
-//                }else{
-//                    view.setBackgroundResource(R.drawable.bg_notice_selected);
-//                }
-//                AnimationUtil.setTextAnimation(view,hasFocus,1.01f,1.01f,1.0f,1.0f);
+                if(hasFocus) {
+                    recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
+                }
 
             }
         });

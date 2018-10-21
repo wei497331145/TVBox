@@ -178,7 +178,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
 
     private void setUserData(UserInfoEntity userEntity) {
         UserEntity.UserInfoBean userInfo = userEntity.getUserInfo();
-        GlideUtil.imageCircleLocal(getActivity(), userInfo.getHeadImage(), mIvHead);
+        if(getActivity()!=null) {
+            GlideUtil.imageCircleLocal(getActivity(), userInfo.getHeadImage(), mIvHead);
+        }
         mTvName.setText(userInfo.getName());
         mTvSign.setText(userInfo.getAutograph());
         mTvPoliticsStatus.setText(userInfo.getPoliticsStatus());
@@ -236,10 +238,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
     @Override
     public void receiveRecords2Success(UserRecordInfoEntity entity) {
 
-        SanctionAdapter mSanctionAdapter = new SanctionAdapter();
-        mRecyclerViewMd2.setAdapter(mSanctionAdapter);
-        mSanctionAdapter.setNewData(entity.getInfoRecordsList());
-
+        JudegeAdapter mJudegeAdapter = new JudegeAdapter();
+        mRecyclerViewMd3.setAdapter(mJudegeAdapter);
+        mJudegeAdapter.setNewData(entity.getInfoRecordsList());
 
     }
 
@@ -252,9 +253,11 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
     @Override
     public void receiveRecords4Success(UserRecordInfoEntity entity) {
 
-        JudegeAdapter mJudegeAdapter = new JudegeAdapter();
-        mRecyclerViewMd3.setAdapter(mJudegeAdapter);
-        mJudegeAdapter.setNewData(entity.getInfoRecordsList());
+
+        SanctionAdapter mSanctionAdapter = new SanctionAdapter();
+        mRecyclerViewMd2.setAdapter(mSanctionAdapter);
+        mSanctionAdapter.setNewData(entity.getInfoRecordsList());
+
 
     }
 
