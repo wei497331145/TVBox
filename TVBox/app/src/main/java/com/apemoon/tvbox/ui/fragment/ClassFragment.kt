@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
@@ -79,13 +80,8 @@ class ClassFragment : BaseFragment() {
     private var selectedPosition: Int = 0
 
     fun initSelectedPosition(position: Int) {
+        selectedPosition = position
         if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
-            // (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).setOnItemClick(headerRecyclerView, position)
-            // (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).getViewByPosition(position, R.id.rootHeadLayout)?.requestFocus()
-            //    val view = (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).getViewByPosition(position, R.id.rootHeadLayout)
-//
-//            view?.requestFocus()
-
             headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val width = headerRecyclerView?.width!!
@@ -94,14 +90,18 @@ class ClassFragment : BaseFragment() {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
                             headerRecyclerView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
                         } else {
-                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this);
+                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
                         }
                     }
                     val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
                     recyclerViewItem?.requestFocus()
+                    if (null != recyclerViewItem) {
+                        LogUtil.d("" + recyclerViewItem.toString())
+                    } else {
+                        LogUtil.d("requestFocus  null")
+                    }
                 }
             })
-
         }
     }
 
@@ -357,7 +357,7 @@ class ClassActivityDetailFragment : BaseFragment() {
         paras["pageSize"] = "100"
         val rxP = object : RxBasePresenter(activity) {}
         rxP.addDisposable<HttpResultBody<ClassActivityList>>(rxP.getmDataManager().netService.getClassActivityList(paras),
-                object : ProgressObserver<HttpResultBody<ClassActivityList>>(activity, false) {
+                object : ProgressObserver<HttpResultBody<ClassActivityList>>(activity, true) {
                     override fun doNext(httpResultBody: HttpResultBody<ClassActivityList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             (headerRecyclerView?.adapter as BaseQuickAdapter<ClassActivityBean, BaseViewHolder>).replaceData(httpResultBody.result.classActivityList)
@@ -396,7 +396,9 @@ class ClassActivityDetailFragment : BaseFragment() {
                             if (!TextUtils.isEmpty(timeStr)) {
                                 timeTv?.text = DateTimeUtil.getStrTime(timeStr?.toLong()!!)
                             }
-                            contentTv?.text = classActivityBean?.content
+                            //  contentTv?.text = classActivityBean?.content
+                            contentTv?.text = Html.fromHtml(classActivityBean?.content)
+
                             val votes = httpResultBody.result?.voteActivityOptionList
                             if (null != votes && "2" == classActivityBean?.type && !votes.isEmpty()) {//投票活动
                                 voteLayout?.visibility = View.VISIBLE
@@ -546,7 +548,7 @@ class PhotoAlbumFragment : BaseFragment() {
         paras["pageSize"] = "100"
         val rxP = object : RxBasePresenter(activity) {}
         rxP.addDisposable<HttpResultBody<PhotoAlbumList>>(rxP.getmDataManager().netService.getPhotoAlbumList(paras),
-                object : ProgressObserver<HttpResultBody<PhotoAlbumList>>(activity, false) {
+                object : ProgressObserver<HttpResultBody<PhotoAlbumList>>(activity, true) {
                     override fun doNext(httpResultBody: HttpResultBody<PhotoAlbumList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             val list = httpResultBody.result.photoAlbumList
@@ -636,7 +638,7 @@ class PhotoListFragment : BaseFragment() {
         paras["pageSize"] = "1000"
         val rxP = object : RxBasePresenter(activity) {}
         rxP.addDisposable<HttpResultBody<PhotoList>>(rxP.getmDataManager().netService.getPhotoList(paras),
-                object : ProgressObserver<HttpResultBody<PhotoList>>(activity, false) {
+                object : ProgressObserver<HttpResultBody<PhotoList>>(activity, true) {
                     override fun doNext(httpResultBody: HttpResultBody<PhotoList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             val list = httpResultBody.result.photoList

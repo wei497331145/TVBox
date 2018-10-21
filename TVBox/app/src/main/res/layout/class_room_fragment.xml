@@ -16,7 +16,6 @@
         android:focusable="false"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-
     <FrameLayout
         android:id="@+id/fragmentsContainer"
         android:layout_width="0dp"
