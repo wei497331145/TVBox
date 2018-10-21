@@ -67,7 +67,6 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
         GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mManagerLayout);
-        ((MainActivity)getActivity()).onRequestMainTabFocus();
     }
 
     @Override

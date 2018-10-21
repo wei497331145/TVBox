@@ -26,7 +26,7 @@
         android:background="@drawable/bg_bl_tv_selector"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_16" />
 
     <TextView
         android:id="@+id/tv_time"

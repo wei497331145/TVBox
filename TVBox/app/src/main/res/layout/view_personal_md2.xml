@@ -9,30 +9,22 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:showIn="@layout/fragment_personal">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_border_shape">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_border_shape">
 
         <Spinner
-                    android:id="@+id/spinner_md2"
-                    android:layout_width="@dimen/dp_100"
-                    android:layout_height="45dp"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:layout_margin="@dimen/dp_5"
-                    android:nextFocusDown="@null"
-                    android:nextFocusLeft="@null"
-                    android:spinnerMode="dropdown"
-                    android:background="@drawable/bg_bl_tv_selector"
-                    android:nextFocusUp="@null"
-                    android:visibility="gone" />
-                 />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/down"/>
-        </LinearLayout>
+            android:id="@+id/spinner_md2"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:nextFocusDown="@null"
+            android:nextFocusLeft="@id/tv_sanction_info"
+            android:nextFocusUp="@null"
+            android:visibility="gone" />
+    </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_md2"
             android:layout_marginTop="@dimen/dp_5"

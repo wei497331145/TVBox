@@ -131,7 +131,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity)getActivity()).onRequestMainTabFocus();
+
     }
 
     @Override
