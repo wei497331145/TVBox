@@ -12,6 +12,7 @@ import com.apemoon.tvbox.entity.userCenter.UserInfoEntity;
 import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.utils.ConstantUtil;
+import com.apemoon.tvbox.utils.LogUtil;
 import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.apemoon.tvbox.utils.RequestUtil;
 
@@ -86,6 +87,7 @@ public class InformationPresenter extends RxBasePresenter {
         }else {
             paras.put("selectType", "1");
         }
+        LogUtil.d("发送数据：" + paras.toString());
 
         addDisposable(mDataManager.getNetService().getInfoList(paras),
                 new ProgressObserver<HttpResultBody<InfoListEntity>>(mContext, true) {

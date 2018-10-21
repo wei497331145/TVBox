@@ -66,7 +66,6 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity)getActivity()).onRequestMainTabFocus();
     }
 
 
@@ -156,7 +155,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
                 }
             }
         });
-        mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
+        requestNew();
     }
 
     @Override

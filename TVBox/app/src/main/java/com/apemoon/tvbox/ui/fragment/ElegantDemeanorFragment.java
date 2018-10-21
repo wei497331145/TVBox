@@ -147,7 +147,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                 }
             }
         });
-        mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
+       requestNew();
     }
 
     @Override

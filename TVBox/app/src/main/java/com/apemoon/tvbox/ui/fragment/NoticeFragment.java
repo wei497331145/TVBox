@@ -84,7 +84,6 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity)getActivity()).onRequestMainTabFocus();
     }
 
 
@@ -149,7 +148,7 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     private void configWebView(WebView webView) {
         if (null != webView) {
-            webView.requestFocus();
+//            webView.requestFocus();
             webView.setHorizontalScrollBarEnabled(true);
             webView.setVerticalScrollBarEnabled(true);
             WebSettings settings = webView.getSettings();
@@ -200,7 +199,7 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                             if (noticeList != null) {
                                 mTvTitle.setText(noticeListBean.getTitle());
                                 mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
-                                mRecyclerView.scrollToPosition(0);
+//                                mRecyclerView.scrollToPosition(0);
                             }
                         }
                         mNoticeAdapter.setNewData(noticeList);

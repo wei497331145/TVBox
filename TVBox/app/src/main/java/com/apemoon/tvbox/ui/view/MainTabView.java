@@ -151,7 +151,7 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
                     setTab();
                     return true;
                 }
-                rqFocus();
+//                rqFocus();
                 break;
         }
         return false;
@@ -242,12 +242,5 @@ public class MainTabView extends LinearLayout implements View.OnClickListener {
         }
         setTabChange(cView);
         buildIndicatorAnimatorTowards(cView).start();
-
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                rqFocus();
-            }
-        }, 1000);
     }
 }

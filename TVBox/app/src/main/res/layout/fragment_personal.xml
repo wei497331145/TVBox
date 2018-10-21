@@ -26,7 +26,6 @@
             android:text="基本信息"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15" >
-            <requestFocus/>
         </TextView>
         <TextView
             android:id="@+id/tv_sanction_info"
