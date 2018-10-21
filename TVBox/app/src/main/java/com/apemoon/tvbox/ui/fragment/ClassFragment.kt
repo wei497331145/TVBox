@@ -67,6 +67,9 @@ class ClassFragment : BaseFragment() {
 
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
+                if (position == 0) {
+                    holder.getView<View>(R.id.rootHeadLayout)?.nextFocusUpId = (activity as MainActivity).mainTab.id
+                }
                 holder?.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
                         if (position == 1 || position == 2) return@setOnFocusChangeListener

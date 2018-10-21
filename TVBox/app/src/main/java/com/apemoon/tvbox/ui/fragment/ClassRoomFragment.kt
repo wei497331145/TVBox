@@ -93,6 +93,9 @@ class ClassRoomFragment : BaseFragment() {
 
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
+                if (position == 0) {
+                    holder.getView<View>(R.id.rootHeadLayout)?.nextFocusUpId = (activity as MainActivity).mainTab.id
+                }
                 holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
                         if (position == 1 || position == 4) return@setOnFocusChangeListener
@@ -106,13 +109,7 @@ class ClassRoomFragment : BaseFragment() {
     }
 
     override fun initListener() {
-//        (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-//
-//            val fr = FragmentFactory.createFragment(position = position)
-//            replaceFragment(fr!!)
-//        }
         initSelectedPosition(0)
-        headerRecyclerView?.nextFocusUpId = (activity as MainActivity).mainTab.id
     }
 
 
@@ -292,25 +289,34 @@ class ScoreFragment : BaseFragment() {
 
     var contentRecyclerView: RecyclerView? = null
     var spinner1: Spinner? = null
+    var spinner1Layout: View? = null
 
     var spinner2: Spinner? = null
+    var spinner2Layout: View? = null
+
+
     override fun initView() {
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
+        spinner1Layout = mView?.findViewById(R.id.spinner1Layout)
         spinner2 = mView?.findViewById<Spinner>(R.id.spinner2)
-        spinner1?.visibility = View.VISIBLE
-        spinner2?.visibility = View.VISIBLE
+        spinner2Layout = mView?.findViewById(R.id.spinner2Layout)
+
+        spinner1Layout?.visibility = View.VISIBLE
+        spinner2Layout?.visibility = View.VISIBLE
+
         spinner1?.isFocusable = true
         spinner2?.isFocusable = true
+
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
 
-        contentRecyclerView?.nextFocusUpId = R.id.spinner1
+
         contentRecyclerView?.nextFocusLeftId = R.id.headerRecyclerView
     }
 
 
     override fun initData() {
         contentRecyclerView?.layoutManager = GridLayoutManager(activity, 6)
-        contentRecyclerView?.adapter = object : BaseQuickAdapter<MarkBean, BaseViewHolder>(R.layout.user_mark_layout) {
+        /*contentRecyclerView?.adapter =*/ object : BaseQuickAdapter<MarkBean, BaseViewHolder>(R.layout.user_mark_layout) {
             override fun convert(helper: BaseViewHolder?, item: MarkBean?) {
                 val markNameTv = helper?.getView<TextView>(R.id.markNameTv)
                 val markValueTv = helper?.getView<TextView>(R.id.markValueTv)
@@ -318,7 +324,14 @@ class ScoreFragment : BaseFragment() {
                 markNameTv?.text = mark.key
                 markValueTv?.text = mark.vaule
             }
-        }
+
+            override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+                super.onBindViewHolder(holder, position)
+                if (position == 0) {
+                    holder.getView<View>(R.id.row_root)?.nextFocusUpId = spinner1?.id!!
+                }
+            }
+        }.bindToRecyclerView(contentRecyclerView)
     }
 
     override fun initListener() {
@@ -485,16 +498,19 @@ class SchoolAssignmentFragment : BaseFragment() {
 
     var contentRecyclerView: RecyclerView? = null
     var spinner1: Spinner? = null
+    var spinner1Layout: View? = null
     override fun initView() {
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
-        spinner1?.visibility = View.VISIBLE
+        spinner1Layout = mView?.findViewById(R.id.spinner1Layout)
+        spinner1Layout?.visibility = View.VISIBLE
+
         spinner1?.isFocusable = true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
     override fun initData() {
         contentRecyclerView?.layoutManager = LinearLayoutManager(activity)
-        contentRecyclerView?.adapter = object : BaseQuickAdapter<WorkBean, BaseViewHolder>(R.layout.user_work_layout) {
+        /*  contentRecyclerView?.adapter =*/ object : BaseQuickAdapter<WorkBean, BaseViewHolder>(R.layout.user_work_layout) {
             override fun convert(helper: BaseViewHolder?, item: WorkBean?) {
                 val titleTv = helper?.getView<TextView>(R.id.titleTv)
                 val contentTv = helper?.getView<TextView>(R.id.contentTv)
@@ -505,7 +521,16 @@ class SchoolAssignmentFragment : BaseFragment() {
                     timeTv?.text = DateTimeUtil.getStrTime(item?.createTime?.toLong()!!)
                 }
             }
-        }
+
+            override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+                super.onBindViewHolder(holder, position)
+                if (position == 0) {
+                    holder.getView<View>(R.id.itemRootLayout)?.nextFocusUpId = spinner1?.id!!
+                }
+            }
+        }.bindToRecyclerView(contentRecyclerView)
+
+
         (contentRecyclerView?.adapter as BaseQuickAdapter<WorkBean, BaseViewHolder>).setOnItemClickListener { adapter, view, position ->
             val manager = activity.supportFragmentManager
             val fragments = manager.fragments
