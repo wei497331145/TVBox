@@ -25,6 +25,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 /**
  *TVBox
  * Created by mukry on 2018/10/19.
+ *我的班级
  *
  */
 class ClassFragment : BaseFragment() {
@@ -79,8 +80,28 @@ class ClassFragment : BaseFragment() {
 
     private var selectedPosition: Int = 0
 
+    private fun initFirstPosition(position: Int) {
+        if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
+            headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val width = headerRecyclerView?.width!!
+                    val height = headerRecyclerView?.height!!
+                    if (width > 0 && height > 0) {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            headerRecyclerView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                        } else {
+                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
+                        }
+                    }
+
+                    val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
+                    recyclerViewItem?.requestFocus()
+                }
+            })
+        }
+    }
+
     fun initSelectedPosition(position: Int) {
-        selectedPosition = position
         if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
             headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -95,11 +116,6 @@ class ClassFragment : BaseFragment() {
                     }
                     val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
                     recyclerViewItem?.requestFocus()
-                    if (null != recyclerViewItem) {
-                        LogUtil.d("" + recyclerViewItem.toString())
-                    } else {
-                        LogUtil.d("requestFocus  null")
-                    }
                 }
             })
         }
@@ -110,7 +126,7 @@ class ClassFragment : BaseFragment() {
             val fr = FragmentFactory.createFragment(position = position)
             replaceFragment(fr!!)
         }
-        initSelectedPosition(selectedPosition)
+        initFirstPosition(0)
     }
 
 
@@ -162,7 +178,7 @@ class ClassActivityFragment : BaseFragment() {
     }
 
     override fun initData() {
-        contentRecyclerView?.layoutManager = GridLayoutManager(activity, 3)
+        contentRecyclerView?.layoutManager = android.support.v7.widget.GridLayoutManager(activity, 3)
         contentRecyclerView?.adapter = object : BaseQuickAdapter<ClassActivityBean, BaseViewHolder>(R.layout.class_activity_layout) {
             override fun convert(helper: BaseViewHolder?, item: ClassActivityBean?) {
                 helper?.getView<TextView>(R.id.activityTitleTv)?.text = item?.title

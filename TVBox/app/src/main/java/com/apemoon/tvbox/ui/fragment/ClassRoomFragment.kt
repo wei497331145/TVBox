@@ -24,7 +24,10 @@ import com.apemoon.tvbox.entity.*
 import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity
 import com.apemoon.tvbox.ui.activity.MainActivity
 import com.apemoon.tvbox.ui.adapter.BaseSpinnerAdapter
-import com.apemoon.tvbox.utils.*
+import com.apemoon.tvbox.utils.ConstantUtil
+import com.apemoon.tvbox.utils.DateTimeUtil
+import com.apemoon.tvbox.utils.PreferenceUtil
+import com.apemoon.tvbox.utils.RequestUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.JsonParser
@@ -32,7 +35,7 @@ import com.google.gson.JsonParser
 /**
  *TVBox
  * Created by mukry on 2018/10/19.
- *
+ * 我的课堂
  */
 class ClassRoomFragment : BaseFragment() {
 
@@ -63,8 +66,7 @@ class ClassRoomFragment : BaseFragment() {
 
     private var selectedPosition: Int = 0
 
-    fun initSelectedPosition(position: Int) {
-        selectedPosition = position
+    private fun initFirstPosition(position: Int) {
         if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
             headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -77,13 +79,31 @@ class ClassRoomFragment : BaseFragment() {
                             headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
                         }
                     }
+
                     val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
                     recyclerViewItem?.requestFocus()
-                    if (null != recyclerViewItem) {
-                        LogUtil.d("" + recyclerViewItem.toString())
-                    } else {
-                        LogUtil.d("requestFocus  null")
+                }
+            })
+        }
+    }
+
+
+    fun initSelectedPosition(position: Int) {
+        if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
+            headerRecyclerView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val width = headerRecyclerView?.width!!
+                    val height = headerRecyclerView?.height!!
+                    if (width > 0 && height > 0) {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            headerRecyclerView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                        } else {
+                            headerRecyclerView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
+                        }
                     }
+
+                    val recyclerViewItem = headerRecyclerView?.layoutManager?.findViewByPosition(position)
+                    recyclerViewItem?.requestFocus()
                 }
             })
         }
@@ -123,7 +143,7 @@ class ClassRoomFragment : BaseFragment() {
             val fr = FragmentFactory.createFragment(position = position)
             replaceFragment(fr!!)
         }
-        initSelectedPosition(selectedPosition)
+        initFirstPosition(0)
     }
 
 
@@ -261,7 +281,6 @@ class SampleFragmentA : BaseFragment() {
                                 (contentRecyclerView?.adapter as BaseQuickAdapter<ArrayList<String>, BaseViewHolder>).replaceData(data)
                             }
                         } catch (e: Exception) {
-
                             Log.e("ee", e.toString())
                             // LogUtil.d(e.toString())
                         }
@@ -311,8 +330,8 @@ class ScoreFragment : BaseFragment() {
         spinner2 = mView?.findViewById<Spinner>(R.id.spinner2)
         spinner1?.visibility = View.VISIBLE
         spinner2?.visibility = View.VISIBLE
-        spinner1?.isFocusable=true
-        spinner2?.isFocusable=true
+        spinner1?.isFocusable = true
+        spinner2?.isFocusable = true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
@@ -497,7 +516,7 @@ class SchoolAssignmentFragment : BaseFragment() {
     override fun initView() {
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
         spinner1?.visibility = View.VISIBLE
-        spinner1?.isFocusable=true
+        spinner1?.isFocusable = true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 

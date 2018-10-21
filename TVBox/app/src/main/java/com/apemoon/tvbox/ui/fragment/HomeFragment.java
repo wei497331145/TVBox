@@ -1,10 +1,10 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +21,7 @@ import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
 import com.apemoon.tvbox.ui.view.MainTabView;
 import com.apemoon.tvbox.utils.AnimationUtil;
+import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -145,34 +146,41 @@ public class HomeFragment extends BaseFragment implements IInformationView {
     }
 
     private void selectedClassRoomFragment(int position) {
-        FragmentActivity ac = getActivity();
-        if (null != ac) {
-            FragmentManager fm = ac.getSupportFragmentManager();
-            List<Fragment> fragments = fm.getFragments();
-            for (int i = 0; i < fragments.size(); i++) {
-                Fragment fragment = fragments.get(i);
-                if (fragment instanceof ClassRoomFragment) {
-                    ((ClassRoomFragment) fragment).initSelectedPosition(position);
-                    //((ClassRoomFragment) fragment).setSelectedPosition(position);
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
+            FragmentActivity ac = getActivity();
+            if (null != ac) {
+                FragmentManager fm = ac.getSupportFragmentManager();
+                List<Fragment> fragments = fm.getFragments();
+                for (int i = 0; i < fragments.size(); i++) {
+                    Fragment fragment = fragments.get(i);
+                    if (fragment instanceof ClassRoomFragment) {
+                        ((ClassRoomFragment) fragment).initSelectedPosition(position);
+                        LogUtil.d("requestFocus1    " + position);
+                        //((ClassRoomFragment) fragment).setSelectedPosition(position);
+                    }
                 }
             }
-        }
+        }, 200);
     }
 
 
     private void selectedClassFragment(int position) {
-        FragmentActivity ac = getActivity();
-        if (null != ac) {
-            FragmentManager fm = ac.getSupportFragmentManager();
-            List<Fragment> fragments = fm.getFragments();
-            for (int i = 0; i < fragments.size(); i++) {
-                Fragment fragment = fragments.get(i);
-                if (fragment instanceof ClassFragment) {
-                    ((ClassFragment) fragment).initSelectedPosition(position);
+
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
+            FragmentActivity ac = getActivity();
+            if (null != ac) {
+                FragmentManager fm = ac.getSupportFragmentManager();
+                List<Fragment> fragments = fm.getFragments();
+                for (int i = 0; i < fragments.size(); i++) {
+                    Fragment fragment = fragments.get(i);
+                    if (fragment instanceof ClassFragment) {
+                        ((ClassFragment) fragment).initSelectedPosition(position);
+                        LogUtil.d("requestFocus1    " + position);
 //                    ((ClassFragment) fragment).setSelectedPosition(position);
+                    }
                 }
             }
-        }
+        }, 200);
     }
 
 
@@ -181,7 +189,7 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         switch (view.getId()) {
             case R.id.tv_class_schedule://班级课表
                 changeTab(3);
-                selectedClassRoomFragment(0);
+               // selectedClassRoomFragment(0);
 
                 break;
             case R.id.tv_class_performance://课堂表现
@@ -198,6 +206,7 @@ public class HomeFragment extends BaseFragment implements IInformationView {
                 break;
             case R.id.cv_album://班级相册
                 changeTab(4);
+
                 selectedClassFragment(3);
 
                 break;
