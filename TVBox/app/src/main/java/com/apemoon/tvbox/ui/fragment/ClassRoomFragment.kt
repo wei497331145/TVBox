@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.TextUtils
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,10 +24,7 @@ import com.apemoon.tvbox.entity.*
 import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity
 import com.apemoon.tvbox.ui.activity.MainActivity
 import com.apemoon.tvbox.ui.adapter.BaseSpinnerAdapter
-import com.apemoon.tvbox.utils.ConstantUtil
-import com.apemoon.tvbox.utils.DateTimeUtil
-import com.apemoon.tvbox.utils.PreferenceUtil
-import com.apemoon.tvbox.utils.RequestUtil
+import com.apemoon.tvbox.utils.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.JsonParser
@@ -63,7 +61,31 @@ class ClassRoomFragment : BaseFragment() {
         return R.layout.class_room_fragment
     }
 
-    private var selectedPosition: Int = 0
+    var currentPosition: Int = 0
+
+    fun getCurrentPositionItemView(): View? {
+        LogUtil.d("getCurrentPositionItemView    $currentPosition")
+        return headerRecyclerView?.layoutManager?.findViewByPosition(currentPosition)
+    }
+
+
+    fun setCurrentPositionNextFocusRightId(id: Int) {
+        if (headerRecyclerView != null) {
+            headerRecyclerView?.post {
+                val itemView = headerRecyclerView?.layoutManager?.findViewByPosition(currentPosition)
+                itemView?.nextFocusRightId = id
+            }
+        }
+    }
+
+    fun setCurrentPositionNextFocusLeftId(id: Int) {
+        if (headerRecyclerView != null) {
+            headerRecyclerView?.post {
+                val itemView = headerRecyclerView?.layoutManager?.findViewByPosition(currentPosition)
+                itemView?.nextFocusLeftId = id
+            }
+        }
+    }
 
 
     fun initSelectedPosition(position: Int) {
@@ -71,6 +93,10 @@ class ClassRoomFragment : BaseFragment() {
             headerRecyclerView?.post {
                 val itemView = headerRecyclerView?.layoutManager?.findViewByPosition(position)
                 itemView?.requestFocus()
+                if (null != itemView && itemView.isFocused) {
+                    currentPosition = position
+                    LogUtil.d("getCurrentPositionItemView  SelectedPosition   $currentPosition")
+                }
             }
         }
     }
@@ -85,6 +111,16 @@ class ClassRoomFragment : BaseFragment() {
         // headerRecyclerView?.nextFocusUpId = R.id.main_tab
     }
 
+    private fun getLastNodeFragment(): Fragment? {
+        activity?.supportFragmentManager?.fragments?.forEach { fragment ->
+            if (fragment is ClassRoomFragment) {
+                return fragment
+            }
+        }
+        return null
+    }
+
+
     override fun initData() {
         /*   headerRecyclerView?.adapter =*/object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
             override fun convert(helper: BaseViewHolder?, item: String?) {
@@ -93,11 +129,21 @@ class ClassRoomFragment : BaseFragment() {
 
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
+                // ("班级课表", "课堂表现", "我的作业", "我的成绩", "名师导学")
                 if (position == 0) {
                     holder.getView<View>(R.id.rootHeadLayout)?.nextFocusUpId = (activity as MainActivity).mainTab.id
+                    val fragment = getLastNodeFragment()
+                    if (fragment is ClassRoomFragment) {
+                        val view = fragment.getCurrentPositionItemView()
+                        if (null != view) {
+                            holder.getView<View>(R.id.rootHeadLayout)?.nextFocusLeftId = view.id
+                        }
+                    }
                 }
                 holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
+                        currentPosition = position
+                        LogUtil.d("getCurrentPositionItemView  FocusChangeListener   $currentPosition")
                         if (position == 1 || position == 4) return@setOnFocusChangeListener
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
@@ -182,9 +228,19 @@ class SampleFragmentA : BaseFragment() {
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
+    private fun getLastNodeFragment(): Fragment? {
+        //childFragmentManager
+        activity?.supportFragmentManager?.fragments?.forEach { fragment ->
+            if (fragment is ClassRoomFragment) {
+                return fragment
+            }
+        }
+        return null
+    }
+
     override fun initData() {
         contentRecyclerView?.layoutManager = android.support.v7.widget.GridLayoutManager(activity, 6)
-        contentRecyclerView?.adapter = object : BaseQuickAdapter<ArrayList<String>, BaseViewHolder>(R.layout.curriculum_layout) {
+        /*   contentRecyclerView?.adapter = */object : BaseQuickAdapter<ArrayList<String>, BaseViewHolder>(R.layout.curriculum_layout) {
             override fun convert(helper: BaseViewHolder?, item: ArrayList<String>?) {
                 val viewGroup = helper?.getView<ViewGroup>(R.id.row_root)
                 item?.forEachIndexed { index, s ->
@@ -193,7 +249,23 @@ class SampleFragmentA : BaseFragment() {
                     }
                 }
             }
-        }
+
+            override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+                super.onBindViewHolder(holder, position)
+                holder.getView<View>(R.id.row_root)?.nextFocusUpId = (activity as MainActivity).mainTab.id
+                if (position == 0) {
+                    val fragment = getLastNodeFragment()
+                    if (fragment is ClassRoomFragment) {
+                        val view = fragment.getCurrentPositionItemView()
+                        if (null != view) {
+                            holder.getView<View>(R.id.row_root)?.nextFocusLeftId = view.id
+                        }
+                    }
+                }
+
+
+            }
+        }.bindToRecyclerView(contentRecyclerView)
     }
 
     override fun initListener() {
@@ -306,11 +378,32 @@ class ScoreFragment : BaseFragment() {
 
         spinner1?.isFocusable = true
         spinner2?.isFocusable = true
-
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
 
+        val fragment = getLastNodeFragment()
+        if (fragment is ClassRoomFragment) {
+            val view = fragment.getCurrentPositionItemView()
+            view?.nextFocusRightId = spinner1?.id!!
+            if (null != view) {
+                spinner1?.setOnKeyListener { v, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                        fragment.initSelectedPosition(fragment.currentPosition)
+                        return@setOnKeyListener true
+                    }
+                    return@setOnKeyListener false
+                }
+                //  spinner1?.nextFocusLeftId = view.id
+            }
+        }
+    }
 
-        contentRecyclerView?.nextFocusLeftId = R.id.headerRecyclerView
+    private fun getLastNodeFragment(): Fragment? {
+        activity?.supportFragmentManager?.fragments?.forEach { fragment ->
+            if (fragment is ClassRoomFragment) {
+                return fragment
+            }
+        }
+        return null
     }
 
 
@@ -329,6 +422,23 @@ class ScoreFragment : BaseFragment() {
                 super.onBindViewHolder(holder, position)
                 if (position == 0) {
                     holder.getView<View>(R.id.row_root)?.nextFocusUpId = spinner1?.id!!
+                }
+                if (position % 6 == 0) {
+                    val fragment = getLastNodeFragment()
+                    if (fragment is ClassRoomFragment) {
+                        val view = fragment.getCurrentPositionItemView()
+                        view?.nextFocusRightId = spinner1?.id!!
+                        if (null != view) {
+                            holder.getView<View>(R.id.row_root)?.setOnKeyListener { v, keyCode, event ->
+                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                                    fragment.initSelectedPosition(fragment.currentPosition)
+                                    return@setOnKeyListener true
+                                }
+                                return@setOnKeyListener false
+                            }
+                            //holder.getView<View>(R.id.row_root)?.nextFocusLeftId = view.id
+                        }
+                    }
                 }
             }
         }.bindToRecyclerView(contentRecyclerView)
@@ -506,6 +616,32 @@ class SchoolAssignmentFragment : BaseFragment() {
 
         spinner1?.isFocusable = true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
+
+        val fragment = getLastNodeFragment()
+        if (fragment is ClassRoomFragment) {
+            val view = fragment.getCurrentPositionItemView()
+            view?.nextFocusRightId = spinner1?.id!!
+            if (null != view) {
+                spinner1?.setOnKeyListener { v, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                        fragment.initSelectedPosition(fragment.currentPosition)
+                        return@setOnKeyListener true
+                    }
+                    return@setOnKeyListener false
+                }
+                // spinner1?.nextFocusLeftId = view.id
+            }
+        }
+
+    }
+
+    private fun getLastNodeFragment(): Fragment? {
+        activity?.supportFragmentManager?.fragments?.forEach { fragment ->
+            if (fragment is ClassRoomFragment) {
+                return fragment
+            }
+        }
+        return null
     }
 
     override fun initData() {
@@ -527,9 +663,23 @@ class SchoolAssignmentFragment : BaseFragment() {
                 if (position == 0) {
                     holder.getView<View>(R.id.itemRootLayout)?.nextFocusUpId = spinner1?.id!!
                 }
+                val fragment = getLastNodeFragment()
+                if (fragment is ClassRoomFragment) {
+                    val view = fragment.getCurrentPositionItemView()
+                    view?.nextFocusRightId = spinner1?.id!!
+                    if (null != view) {
+                        holder.getView<View>(R.id.itemRootLayout)?.setOnKeyListener { v, keyCode, event ->
+                            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                                fragment.initSelectedPosition(fragment.currentPosition)
+                                return@setOnKeyListener true
+                            }
+                            return@setOnKeyListener false
+                        }
+                        //  holder.getView<View>(R.id.itemRootLayout)?.nextFocusLeftId = view.id
+                    }
+                }
             }
         }.bindToRecyclerView(contentRecyclerView)
-
 
         (contentRecyclerView?.adapter as BaseQuickAdapter<WorkBean, BaseViewHolder>).setOnItemClickListener { adapter, view, position ->
             val manager = activity.supportFragmentManager
@@ -701,6 +851,7 @@ class SchoolAssignmentDetailFragment : BaseFragment() {
             }
             (activity as MainActivity).setMainTabVisiable(true)
         }
+        tv_back?.requestFocus()
     }
 
 
