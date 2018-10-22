@@ -1,6 +1,11 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,20 +18,29 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.apemoon.tvbox.R;
+import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.VideoDetailInfo;
 import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
@@ -36,14 +50,18 @@ import com.apemoon.tvbox.interfaces.fragment.IInformationView;
 import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
+import com.apemoon.tvbox.ui.activity.SettingActivity;
+import com.apemoon.tvbox.ui.activity.VideoActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoImagesAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationTvAdapter;
+import com.apemoon.tvbox.ui.adapter.personalCenter.SemestersAdapter;
 import com.apemoon.tvbox.ui.view.ItemLinearLayout;
 import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
+import com.apemoon.tvbox.utils.GlideUtil;
 import com.boredream.bdvideoplayer.BDVideoPlayer;
 import com.boredream.bdvideoplayer.BDVideoView;
 import com.boredream.bdvideoplayer.listener.SimpleOnVideoControlListener;
@@ -57,6 +75,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.apemoon.tvbox.ui.activity.VideoActivity.VIDEO_INFO;
 
 /**
  * Created by water on 2018/8/31/031.
@@ -72,6 +92,8 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     private InformationTvAdapter mInformationAdater;
     private List<InfoListEntity.InformationBean> informationBeanList;
 
+    @BindView(R.id.root_view)
+    RelativeLayout rootView;
     @BindView(R.id.tv_back)
     TextView mTvBack;
     @BindView(R.id.ll_content)
@@ -86,8 +108,8 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     WebView webView;
     @BindView(R.id.framne_video)
     FrameLayout framenLayout;
-    @BindView(R.id.video_view)
-    BDVideoView videoView;
+    @BindView(R.id.iv_head)
+    ImageView ivVideo;
     @BindView(R.id.rv_info_list)
     RecyclerView mRecyclerView;
     @BindView(R.id.rv_img_list)
@@ -101,6 +123,8 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     private static final String TYPE_TURL_ID = "2";
     private static final String TYPE_VIDEO_ID = "3";
     private static final String TYPE_PAGES_ID = "4";
+
+    private PopupWindow md2_popView;
 
     public static InfoListFragment getInstance(int currentTwoClassId,int infoId,int frgmentId){
         InfoListFragment fragment = new InfoListFragment();
@@ -212,6 +236,7 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
                             initImages(bean);
                             break;
                         case TYPE_VIDEO_ID://视屏
+//                            initVidoView(bean);
                             initVidoView(bean);
                             break;
 
@@ -502,7 +527,8 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
 
     private void initVidoView(InfoListEntity.InformationBean bean){
-        framenLayout.setVisibility(View.GONE);
+        framenLayout.setVisibility(View.VISIBLE);
+        GlideUtil.image(getActivity(),bean.getCover(),ivVideo);
         framenLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -516,6 +542,32 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
      * @param bean
      */
     private void initVideo(InfoListEntity.InformationBean bean){
+
+        if(TextUtils.isEmpty(bean.getVideos())){
+            return;
+        }
+
+        VideoDetailInfo info = new VideoDetailInfo(bean.getTitle(),bean.getVideos());
+        Intent intent = new Intent(getActivity(), VideoActivity.class);
+        intent.putExtra(VIDEO_INFO, info);
+        getActivity().startActivity(intent);
+
+    }
+
+
+    private void initPopWindow(InfoListEntity.InformationBean bean){
+        View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
+        md2_popView = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
+        md2_popView.setTouchable(true);
+        md2_popView.setOutsideTouchable(false);
+        md2_popView.setFocusable(true);
+        // 设置背景为半透明灰色
+        md2_popView.setBackgroundDrawable(new BitmapDrawable(null,""));
+        // 设置动画
+//        md2_popView.setAnimationStyle(R.style.invitation_anim);
+        BDVideoView videoView = popupView.findViewById(R.id.video_view);
+
+        videoView.setVisibility(View.VISIBLE);
         if(TextUtils.isEmpty(bean.getVideos())){
             return;
         }
@@ -532,7 +584,7 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
             @Override
             public void onBack() {
-                onDestroy();
+                md2_popView.dismiss();
             }
 
             @Override
@@ -541,8 +593,26 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
             }
         });
         videoView.startPlayVideo(info);
-        DisplayUtils.toggleScreenOrientation(getActivity());
+
+        md2_popView.showAtLocation(rootView, Gravity.NO_GRAVITY, 0, getStatusBarHeight(getActivity()));
+        popupView.requestFocus();
+
+//        rates_lst.getChildAt(0).requestFocus();
     }
+
+    /**
+     * 获取状态通知栏高度
+     * @param activity
+     * @return
+     */
+    public static int getStatusBarHeight(Activity activity) {
+        Rect frame = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        return frame.top;
+    }
+
+
+
 
     @Override
     public void onDestroy() {

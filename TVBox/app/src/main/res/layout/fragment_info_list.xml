@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
@@ -122,15 +123,16 @@
                 android:background="@drawable/bg_bl_tv_selector"
                 android:focusable="true"
                 android:padding="@dimen/dp_5">
-            <com.boredream.bdvideoplayer.BDVideoView
-                android:id="@+id/video_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </com.boredream.bdvideoplayer.BDVideoView>
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/iv_head"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_vertical" />
+                <ImageView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_100"
                     android:layout_gravity="center"
                     android:src="@drawable/play"
                     />

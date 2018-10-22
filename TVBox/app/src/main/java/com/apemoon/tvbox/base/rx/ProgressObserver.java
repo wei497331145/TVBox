@@ -98,10 +98,10 @@ public abstract class ProgressObserver<T> extends DisposableObserver<T> {
 
     private void dealUnifiedCode(T t, String errorCode, String msg) {
         //1：token失效  5： 账号被禁用 14: 群组中被踢
+        dismissLoadingDialog();
         switch (errorCode) {
             case "0000":
                 doNext(t);
-
                 break;
             case "10000":
                 ActivityManager.getIntence().logout(mContext);
@@ -145,7 +145,7 @@ public abstract class ProgressObserver<T> extends DisposableObserver<T> {
     }
 
     private void dismissLoadingDialog() {
-        if (null != mLoadingDialog) {
+        if (null != mLoadingDialog && mLoadingDialog.isShowing()) {
             mLoadingDialog.dimissLoading();
         }
     }

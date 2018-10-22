@@ -7,7 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.RxBaseListFragment;
@@ -43,6 +45,12 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     private List<InfoClassicalEntity.TwoClassicalBean> twoClasscialList;
     private List<InfoListEntity.InformationBean> informationBeanList;
 
+    @BindView(R.id.ll_recy)
+    LinearLayout llRecy;
+    @BindView(R.id.emptyRootLayout)
+    LinearLayout emptyRootLayout;
+    @BindView(R.id.root_view)
+    RelativeLayout root_view;
     @BindView(R.id.lv_two_classical)
     RecyclerView lvTwoClassical;
     @BindView(R.id.recyclerView)
@@ -123,7 +131,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     public void receiveInformationsSuccess(InfoListEntity entity) {
         if (entity != null) {
             informationBeanList = entity.getInformationList();
-            if (informationBeanList != null) {
+            if (informationBeanList != null && informationBeanList.size()>0 && emptyRootLayout!=null) {
                 setPageInfo(informationBeanList.size());
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
@@ -133,6 +141,14 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
                         mInformationAdater.addData(informationBeanList);
                         break;
                 }
+                    emptyRootLayout.setVisibility(View.GONE);
+            }else{
+                if(getRequestType() == REQUESTTYPE_NEW_DATE){
+                    if(emptyRootLayout!=null) {
+                        emptyRootLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+
             }
         }
     }
@@ -145,30 +161,43 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
         twoClasscialList = entity.getTraditonalTwoClassical();
-        currentTwoClassId = twoClasscialList.get(0).getId();
-        InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
-            @Override
-            public void onItemSelectListner(int position) {
-                InfoClassicalEntity.TwoClassicalBean bean = twoClasscialList.get(position);
-                if(bean != null) {
-                    currentTwoClassId = bean.getId();
-                    requestNew();
-                }
+        if(twoClasscialList!=null && twoClasscialList.size()>0 && lvTwoClassical!=null){
+            if(emptyRootLayout!=null && llRecy !=null) {
+                emptyRootLayout.setVisibility(View.GONE);
+                llRecy.setVisibility(View.VISIBLE);
             }
-        });
-        lvTwoClassical.setAdapter(twoClassicaladapter);
-        twoClassicaladapter.setNewData(twoClasscialList);
-        twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InfoClassicalEntity.TwoClassicalBean bean = twoClassicaladapter.getData().get(position);
-                if(bean != null) {
-                    currentTwoClassId = bean.getId();
-                    requestNew();
+
+            currentTwoClassId = twoClasscialList.get(0).getId();
+            InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
+                @Override
+                public void onItemSelectListner(int position) {
+                    InfoClassicalEntity.TwoClassicalBean bean = twoClasscialList.get(position);
+                    if(bean != null) {
+                        currentTwoClassId = bean.getId();
+                        requestNew();
+                    }
                 }
+            });
+            lvTwoClassical.setAdapter(twoClassicaladapter);
+            twoClassicaladapter.setNewData(twoClasscialList);
+            twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    InfoClassicalEntity.TwoClassicalBean bean = twoClassicaladapter.getData().get(position);
+                    if(bean != null) {
+                        currentTwoClassId = bean.getId();
+                        requestNew();
+                    }
+                }
+            });
+            requestNew();
+
+        }else{
+            if(emptyRootLayout!=null) {
+                llRecy.setVisibility(View.VISIBLE);
+                emptyRootLayout.setVisibility(View.GONE);
             }
-        });
-        requestNew();
+        }
     }
 
     @Override

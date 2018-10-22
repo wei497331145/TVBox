@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.RxBaseListFragment;
@@ -36,6 +37,10 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     private List<InfoClassicalEntity.TwoClassicalBean> twoClasscialList;
     private List<InfoListEntity.InformationBean> informationBeanList;
 
+    @BindView(R.id.ll_recy)
+    LinearLayout llRecy;
+    @BindView(R.id.emptyRootLayout)
+    LinearLayout emptyRootLayout;
     @BindView(R.id.lv_two_classical)
     RecyclerView lvTwoClassical;
     @BindView(R.id.recyclerView)
@@ -111,7 +116,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     public void receiveInformationsSuccess(InfoListEntity entity) {
         if (entity != null) {
             informationBeanList = entity.getInformationList();
-            if (informationBeanList != null) {
+            if (informationBeanList != null && informationBeanList.size()>0) {
                 setPageInfo(informationBeanList.size());
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
@@ -121,6 +126,16 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                         mInformationAdater.addData(informationBeanList);
                         break;
                 }
+                if(emptyRootLayout!=null) {
+                    emptyRootLayout.setVisibility(View.GONE);
+                }
+            }else{
+                if(getRequestType() == REQUESTTYPE_NEW_DATE){
+                    if(emptyRootLayout!=null) {
+                        emptyRootLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+
             }
         }
     }
@@ -133,30 +148,38 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
         twoClasscialList = entity.getSchoollTwoClassical();
-        currentTwoClassId = twoClasscialList.get(0).getId();
-        InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
-            @Override
-            public void onItemSelectListner(int position) {
-                InfoClassicalEntity.TwoClassicalBean bean = twoClasscialList.get(position);
-                if(bean != null) {
-                    currentTwoClassId = bean.getId();
-                    requestNew();
+        if(twoClasscialList!=null && twoClasscialList.size()>0) {
+            currentTwoClassId = twoClasscialList.get(0).getId();
+            InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
+                @Override
+                public void onItemSelectListner(int position) {
+                    InfoClassicalEntity.TwoClassicalBean bean = twoClasscialList.get(position);
+                    if (bean != null) {
+                        currentTwoClassId = bean.getId();
+                        requestNew();
+                    }
                 }
-            }
-        });
-        lvTwoClassical.setAdapter(twoClassicaladapter);
-        twoClassicaladapter.setNewData(twoClasscialList);
-        twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InfoClassicalEntity.TwoClassicalBean bean = twoClassicaladapter.getData().get(position);
-                if(bean != null) {
-                    currentTwoClassId = bean.getId();
-                    requestNew();
+            });
+            lvTwoClassical.setAdapter(twoClassicaladapter);
+            twoClassicaladapter.setNewData(twoClasscialList);
+            twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    InfoClassicalEntity.TwoClassicalBean bean = twoClassicaladapter.getData().get(position);
+                    if (bean != null) {
+                        currentTwoClassId = bean.getId();
+                        requestNew();
+                    }
                 }
+            });
+            requestNew();
+        }else{
+            if(emptyRootLayout!=null) {
+                llRecy.setVisibility(View.VISIBLE);
+                emptyRootLayout.setVisibility(View.GONE);
             }
-        });
-       requestNew();
+
+        }
     }
 
     @Override

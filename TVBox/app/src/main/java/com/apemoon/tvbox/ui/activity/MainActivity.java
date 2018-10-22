@@ -153,25 +153,36 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     }
 
     public void onTabSelected(int position) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = FragmentFactory.getIntance().getFragment(position);
-        if(fragment == null){
-            return;
-        }
-        fragment.setUserVisibleHint(true);
-        if (!fragment.isAdded()) {
-            transaction.replace(R.id.fl_main, fragment, String.valueOf(position));
-        }
-        transaction.show(fragment).commit();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Fragment fragment = FragmentFactory.getIntance().getFragment(position);
+                if(fragment == null){
+                    return;
+                }
+                fragment.setUserVisibleHint(true);
+                if (!fragment.isAdded()) {
+                    transaction.replace(R.id.fl_main, fragment, String.valueOf(position));
+                }
+                transaction.show(fragment).commit();
+            }
+        },100);
+
     }
 
     public void onTabUnselected(int position) {
-        Fragment fragment = FragmentFactory.getIntance().getFragment(position);
-        if(fragment==null){
-            return;
-        }
-        fragment.setUserVisibleHint(false);
-        getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment = FragmentFactory.getIntance().getFragment(position);
+                if(fragment==null){
+                    return;
+                }
+                fragment.setUserVisibleHint(false);
+                getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+            }
+        },100);
     }
 
 

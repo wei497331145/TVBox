@@ -22,6 +22,7 @@ import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,6 +33,9 @@ import butterknife.BindView;
  */
 
 public class NoticeFragment extends RxBaseListFragment implements IReceiveNoticeView, NoticeAdapter.NoticeRecyclerViewItemSelectListener {
+
+    @BindView(R.id.emptyRootLayout)
+    LinearLayout emptyRootLayout;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.web_view)
@@ -118,9 +122,8 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                     noticeListBean.setIsRead("1");
                     noticeList.remove(position);
                     noticeList.add(position, noticeListBean);
-                    mNoticeAdapter.addData(noticeList);
+//                    mNoticeAdapter.addData(noticeList);
 
-                    mRecyclerView.scrollToPosition(position);
                 }
             }
         });
@@ -188,9 +191,9 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     @Override
     public void getReceiveNoticeListSuccess(ReceiveNoticeListEntity receiveNoticeListEntity) {
-        if (receiveNoticeListEntity != null) {
+        if (receiveNoticeListEntity != null ) {
             noticeList = receiveNoticeListEntity.getNoticeList();
-            if (noticeList != null) {
+            if (noticeList != null && noticeList.size()>0 && emptyRootLayout!=null ) {
                 setPageInfo(noticeList.size());
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
@@ -205,9 +208,19 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                     case REQUESTTYPE_ADD_DATE:
                         if(noticeList!=null) {
 //                            noticeList.addAll(receiveNoticeListEntity.getNoticeList());
+
                             mNoticeAdapter.addData(receiveNoticeListEntity.getNoticeList());
                         }
                         break;
+                }
+                if(emptyRootLayout!=null) {
+                    emptyRootLayout.setVisibility(View.GONE);
+                }
+            }else{
+                if(getRequestType() == REQUESTTYPE_NEW_DATE){
+                    if(emptyRootLayout!=null) {
+                        emptyRootLayout.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }

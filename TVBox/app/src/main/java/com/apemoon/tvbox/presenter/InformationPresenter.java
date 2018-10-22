@@ -87,7 +87,8 @@ public class InformationPresenter extends RxBasePresenter {
         }else {
             paras.put("selectType", "1");
         }
-        LogUtil.d("发送数据：" + paras.toString());
+        LogUtil.d("发送数据资讯：" + paras.toString());
+
 
         addDisposable(mDataManager.getNetService().getInfoList(paras),
                 new ProgressObserver<HttpResultBody<InfoListEntity>>(mContext, true) {

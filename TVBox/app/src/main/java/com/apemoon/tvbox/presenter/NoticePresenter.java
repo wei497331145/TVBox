@@ -9,6 +9,7 @@ import com.apemoon.tvbox.base.rx.RxBasePresenter;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IReceiveNoticeView;
 import com.apemoon.tvbox.utils.ConstantUtil;
+import com.apemoon.tvbox.utils.LogUtil;
 import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.apemoon.tvbox.utils.RequestUtil;
 
@@ -44,6 +45,7 @@ public class NoticePresenter extends RxBasePresenter {
         }else {
             paras.put("selectType", "1");
         }
+        LogUtil.d("发送数据通知：" + paras.toString());
 
         addDisposable(mDataManager.getNetService().receiveNoticeListCall(paras),
                 new ProgressObserver<HttpResultBody<ReceiveNoticeListEntity>>(mContext, true) {

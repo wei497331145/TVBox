@@ -10,7 +10,7 @@
     <FrameLayout
         android:id="@+id/framen_iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/dp_120">
     <ImageView
         android:id="@+id/iv_head"
         android:layout_width="match_parent"
@@ -21,8 +21,8 @@
         <ImageView
             android:id="@+id/iv_video_noti"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_120"
-            android:scaleType="centerCrop"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
             android:visibility="gone"
             android:background="@color/transparent"
             android:src="@drawable/play"

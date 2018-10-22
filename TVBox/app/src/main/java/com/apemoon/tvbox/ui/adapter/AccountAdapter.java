@@ -1,6 +1,7 @@
 package com.apemoon.tvbox.ui.adapter;
 
 import android.view.View;
+import android.widget.ImageView;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
@@ -38,10 +39,14 @@ public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountIn
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
+                ImageView iv = helper.getView(R.id.iv_head);
                 if(hasFocus) {
-                    AnimationUtil.setTextAnimation(view, hasFocus, 1.1f, 1.1f, 1.0f, 1.0f);
-                    recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
+                    iv.setEnabled(true);
+                }else{
+                    iv.setEnabled(false);
                 }
+                AnimationUtil.setTextAnimation(iv, hasFocus, 1.1f, 1.1f, 1.0f, 1.0f);
+                recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
             }
         });
     }
