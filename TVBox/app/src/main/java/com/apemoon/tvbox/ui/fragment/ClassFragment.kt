@@ -115,15 +115,9 @@ class ClassFragment : BaseFragment() {
     }
 
     override fun initListener() {
-//        (headerRecyclerView?.adapter!! as BaseQuickAdapter<String, BaseViewHolder>).onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-//            val fr = FragmentFactory.createFragment(position = position)
-//            replaceFragment(fr!!)
-//        }
         //initSelectedPosition(0)
         val fr = FragmentFactory.createFragment(0)
         replaceFragment(fr!!)
-
-        //headerRecyclerView?.nextFocusUpId = (activity as MainActivity).mainTab.id
     }
 
 

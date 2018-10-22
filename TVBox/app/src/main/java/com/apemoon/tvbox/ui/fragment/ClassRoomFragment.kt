@@ -554,12 +554,10 @@ class ScoreFragment : BaseFragment() {
             val view = fragment.getCurrentPositionItemView()
             view?.nextFocusRightId = spinner1?.id!!
             if (null != view) {
-                //   spinner1?.nextFocusLeftId = view.id
                 val headerView = fragment.getPositionItemView(3)
                 if (null != headerView) {
                     spinner1?.nextFocusLeftId = headerView.id
                 }
-                // fragment.initSelectedPosition(fragment.currentPosition)
             }
         }
     }
@@ -588,6 +586,8 @@ class ScoreFragment : BaseFragment() {
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
                 if (position == 0) {
+                    spinner1?.nextFocusDownId = holder.getView<View>(R.id.row_root)?.id!!
+                    spinner2?.nextFocusDownId = holder.getView<View>(R.id.row_root)?.id!!
                     holder.getView<View>(R.id.row_root)?.nextFocusUpId = spinner1?.id!!
                 }
                 if (position % 6 == 0) {
@@ -595,16 +595,12 @@ class ScoreFragment : BaseFragment() {
                     if (fragment is ClassRoomFragment) {
                         val view = fragment.getCurrentPositionItemView()
                         view?.nextFocusRightId = spinner1?.id!!
-                        if (null != view) {
-                            holder.getView<View>(R.id.row_root)?.setOnKeyListener { v, keyCode, event ->
-                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
-                                    fragment.initSelectedPosition(fragment.currentPosition)
-                                    return@setOnKeyListener true
-                                }
-                                return@setOnKeyListener false
-                            }
-                            //holder.getView<View>(R.id.row_root)?.nextFocusLeftId = view.id
+
+                        val headerView = fragment.getPositionItemView(3)
+                        if (null != headerView) {
+                            holder.getView<View>(R.id.row_root)?.nextFocusLeftId = headerView.id
                         }
+                        //holder.getView<View>(R.id.row_root)?.nextFocusLeftId = view.id
                     }
                 }
             }
@@ -739,6 +735,8 @@ class ScoreFragment : BaseFragment() {
                             val markList = ArrayList<MarkBean>()
                             val list = httpResultBody.result.mark
                             if (!list.isEmpty()) {
+                                emptyRootLayout?.visibility = View.GONE
+
                                 val jo = list[0]
                                 val keys = jo.keySet()
                                 keys?.forEachIndexed { index, s ->
@@ -972,6 +970,8 @@ class SchoolAssignmentFragment : BaseFragment() {
                             }
                             if (null == jo || jo.isEmpty()) {
                                 emptyRootLayout?.visibility = View.VISIBLE
+                            }else{
+                                emptyRootLayout?.visibility = View.GONE
                             }
                         }
                     }
