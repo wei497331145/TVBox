@@ -155,7 +155,9 @@ class ClassRoomFragment : BaseFragment() {
     }
 
     override fun initListener() {
-        initSelectedPosition(0)
+        // initSelectedPosition(0)
+        val fr = FragmentFactory.createFragment(0)
+        replaceFragment(fr!!)
     }
 
 

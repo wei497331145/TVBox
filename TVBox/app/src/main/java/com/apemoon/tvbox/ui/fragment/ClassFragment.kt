@@ -109,7 +109,10 @@ class ClassFragment : BaseFragment() {
 //            val fr = FragmentFactory.createFragment(position = position)
 //            replaceFragment(fr!!)
 //        }
-        initSelectedPosition(0)
+        //initSelectedPosition(0)
+        val fr = FragmentFactory.createFragment(0)
+        replaceFragment(fr!!)
+
         headerRecyclerView?.nextFocusUpId = (activity as MainActivity).mainTab.id
     }
 
@@ -568,6 +571,8 @@ class PhotoAlbumFragment : BaseFragment() {
     }
 
 
+    var lastPosition = 0
+    var hasFocusPosition = 0
     override fun initData() {
         contentRecyclerView?.layoutManager = GridLayoutManager(activity, 3)
         /*   contentRecyclerView?.adapter = */object : BaseQuickAdapter<PhotoAlbumBean, BaseViewHolder>(R.layout.photo_album_item_layout) {
@@ -582,19 +587,28 @@ class PhotoAlbumFragment : BaseFragment() {
 
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
+                holder.getView<View>(R.id.photoRootItem)?.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                    if (hasFocus) {
+                        hasFocusPosition = position
+                    } else {
+                        lastPosition = position
+                    }
+                }
                 if (position % 3 == 0) {
                     val fragment = getLastNodeFragment()
                     if (fragment is ClassFragment) {
                         val view = fragment.getCurrentPositionItemView()
                         if (null != view) {
                             holder.getView<View>(R.id.photoRootItem)?.setOnKeyListener { v, keyCode, event ->
-                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
-                                    fragment.initSelectedPosition(fragment.currentPosition)
-                                    return@setOnKeyListener true
+                                when (keyCode) {
+                                    KeyEvent.KEYCODE_DPAD_LEFT -> { //排除第二列KeyEvent传递KEYCODE_DPAD_LEFT 冲突
+                                        if (lastPosition % 3 == 0) {
+                                            fragment.initSelectedPosition(fragment.currentPosition)
+                                        }
+                                    }
                                 }
-                                return@setOnKeyListener false
+                                false
                             }
-                            //  holder.getView<View>(R.id.photoRootItem)?.nextFocusLeftId = view.id
                         }
                     }
                 }
