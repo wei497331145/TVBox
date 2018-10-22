@@ -59,6 +59,14 @@ class ClassFragment : BaseFragment() {
         headerRecyclerView = mView?.findViewById<RecyclerView>(R.id.headerRecyclerView)
     }
 
+    private var currentPosition: Int = 0
+
+    fun getCurrentPositionItemView(): View? {
+        LogUtil.d("getCurrentPositionItemView    $currentPosition")
+        return headerRecyclerView?.layoutManager?.findViewByPosition(currentPosition)
+    }
+
+
     override fun initData() {
         /*   headerRecyclerView?.adapter =*/ object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
             override fun convert(helper: BaseViewHolder?, item: String?) {
@@ -72,6 +80,7 @@ class ClassFragment : BaseFragment() {
                 }
                 holder?.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
+                        currentPosition = position
                         if (position == 1 || position == 2) return@setOnFocusChangeListener
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
@@ -81,14 +90,15 @@ class ClassFragment : BaseFragment() {
         }.bindToRecyclerView(headerRecyclerView)
     }
 
-    private var selectedPosition: Int = 0
-
 
     fun initSelectedPosition(position: Int) {//数据不满一屏幕
         if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
             headerRecyclerView?.post {
                 val itemView = headerRecyclerView?.layoutManager?.findViewByPosition(position)
                 itemView?.requestFocus()
+                if (null != itemView && itemView.isFocused) {
+                    currentPosition = position
+                }
             }
         }
     }
@@ -150,6 +160,15 @@ class ClassActivityFragment : BaseFragment() {
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
+    private fun getLastNodeFragment(): Fragment? {
+        activity?.supportFragmentManager?.fragments?.forEach { fragment ->
+            if (fragment is ClassRoomFragment) {
+                return fragment
+            }
+        }
+        return null
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -172,7 +191,7 @@ class ClassActivityFragment : BaseFragment() {
     private var selectId = 0
     override fun initData() {
         contentRecyclerView?.layoutManager = android.support.v7.widget.GridLayoutManager(activity, 3)
-        contentRecyclerView?.adapter = object : BaseQuickAdapter<ClassActivityBean, BaseViewHolder>(R.layout.class_activity_layout) {
+        /*contentRecyclerView?.adapter = */object : BaseQuickAdapter<ClassActivityBean, BaseViewHolder>(R.layout.class_activity_layout) {
             override fun convert(helper: BaseViewHolder?, item: ClassActivityBean?) {
                 helper?.getView<TextView>(R.id.activityTitleTv)?.text = item?.title
                 if (!TextUtils.isEmpty(item?.createTime)) {
@@ -189,7 +208,20 @@ class ClassActivityFragment : BaseFragment() {
                     }
                 }
             }
-        }
+
+            override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+                super.onBindViewHolder(holder, position)
+                if (position % 3 == 0) {
+                    val fragment = getLastNodeFragment()
+                    if (fragment is ClassFragment) {
+                        val view = fragment.getCurrentPositionItemView()
+                        if (null != view) {
+                            holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = view.id
+                        }
+                    }
+                }
+            }
+        }.bindToRecyclerView(contentRecyclerView)
         (contentRecyclerView?.adapter as BaseQuickAdapter<ClassActivityBean, BaseViewHolder>).setOnItemClickListener { adapter, view, position ->
             val manager = activity.supportFragmentManager
             val fragments = manager.fragments
@@ -518,9 +550,19 @@ class PhotoAlbumFragment : BaseFragment() {
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
+    private fun getLastNodeFragment(): Fragment? {
+        activity?.supportFragmentManager?.fragments?.forEach { fragment ->
+            if (fragment is ClassRoomFragment) {
+                return fragment
+            }
+        }
+        return null
+    }
+
+
     override fun initData() {
         contentRecyclerView?.layoutManager = GridLayoutManager(activity, 3)
-        contentRecyclerView?.adapter = object : BaseQuickAdapter<PhotoAlbumBean, BaseViewHolder>(R.layout.photo_album_item_layout) {
+        /*   contentRecyclerView?.adapter = */object : BaseQuickAdapter<PhotoAlbumBean, BaseViewHolder>(R.layout.photo_album_item_layout) {
             override fun convert(helper: BaseViewHolder?, item: PhotoAlbumBean?) {
                 val photoIv = helper?.getView<ImageView>(R.id.photoIv)
                 Glide.with(GlobalUtil.mContext).load(item?.cover).into(photoIv)
@@ -529,7 +571,21 @@ class PhotoAlbumFragment : BaseFragment() {
                 }
                 helper?.getView<TextView>(R.id.photoNameTv)?.text = item?.name
             }
-        }
+
+            override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+                super.onBindViewHolder(holder, position)
+                if (position % 3 == 0) {
+                    val fragment = getLastNodeFragment()
+                    if (fragment is ClassFragment) {
+                        val view = fragment.getCurrentPositionItemView()
+                        if (null != view) {
+                            holder.getView<View>(R.id.photoRootItem)?.nextFocusLeftId = view.id
+                        }
+                    }
+                }
+            }
+
+        }.bindToRecyclerView(contentRecyclerView)
 
         (contentRecyclerView?.adapter as BaseQuickAdapter<PhotoAlbumBean, BaseViewHolder>).setOnItemClickListener { adapter, view, position ->
             val manager = activity.supportFragmentManager
@@ -651,6 +707,7 @@ class PhotoListFragment : BaseFragment() {
             }
             (activity as MainActivity).setMainTabVisiable(true)
         }
+        tv_back?.requestFocus()
     }
 
     //photoAlbumId 	是 	int 	相册id
