@@ -376,8 +376,10 @@ class SampleFragmentA : BaseFragment() {
         return R.layout.curriculum_list_layout
     }
 
+    var emptyRootLayout: View? = null
     override fun initView() {
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
+        emptyRootLayout = mView?.findViewById<RecyclerView>(R.id.emptyRootLayout)
     }
 
     private fun getLastNodeFragment(): Fragment? {
@@ -414,8 +416,6 @@ class SampleFragmentA : BaseFragment() {
                         }
                     }
                 }
-
-
             }
         }.bindToRecyclerView(contentRecyclerView)
     }
@@ -518,8 +518,10 @@ class ScoreFragment : BaseFragment() {
     var spinner2: Spinner? = null
     var spinner2Layout: View? = null
 
+    var emptyRootLayout: View? = null
 
     override fun initView() {
+        emptyRootLayout = mView?.findViewById<RecyclerView>(R.id.emptyRootLayout)
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
         spinner1Layout = mView?.findViewById(R.id.spinner1Layout)
         spinner2 = mView?.findViewById<Spinner>(R.id.spinner2)
@@ -733,6 +735,8 @@ class ScoreFragment : BaseFragment() {
                                         markList.add(MarkBean(s, jo.get(s).asString))
                                     }
                                 }
+                            } else {
+                                emptyRootLayout?.visibility = View.VISIBLE
                             }
                             (contentRecyclerView?.adapter as BaseQuickAdapter<MarkBean, BaseViewHolder>).replaceData(markList)
                         }
@@ -761,7 +765,13 @@ class SchoolAssignmentFragment : BaseFragment() {
     var contentRecyclerView: RecyclerView? = null
     var spinner1: Spinner? = null
     var spinner1Layout: View? = null
+
+    var emptyRootLayout: View? = null
+
+
     override fun initView() {
+        emptyRootLayout = mView?.findViewById<RecyclerView>(R.id.emptyRootLayout)
+
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
         spinner1Layout = mView?.findViewById(R.id.spinner1Layout)
         spinner1Layout?.visibility = View.VISIBLE
@@ -942,6 +952,9 @@ class SchoolAssignmentFragment : BaseFragment() {
                             val jo = httpResultBody.result.seatworkList
                             if (null != jo) {
                                 (contentRecyclerView?.adapter as BaseQuickAdapter<WorkBean, BaseViewHolder>).replaceData(jo)
+                            }
+                            if (null == jo || jo.isEmpty()) {
+                                emptyRootLayout?.visibility = View.VISIBLE
                             }
                         }
                     }
