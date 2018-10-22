@@ -100,7 +100,6 @@ public class MainTabView extends LinearLayout {
         mTvStore = view.findViewById(R.id.tv_store);
         this.indicator = view.findViewById(R.id.indicator); //指示器
 
-
     }
 
 

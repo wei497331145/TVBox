@@ -144,6 +144,10 @@ class ClassRoomFragment : BaseFragment() {
                         }
                     }
                 }
+                if (position == 4) {
+                    holder.getView<View>(R.id.rootHeadLayout)?.nextFocusLeftId = holder.getView<View>(R.id.rootHeadLayout)?.id!!
+                    holder.getView<View>(R.id.rootHeadLayout)?.nextFocusRightId = holder.getView<View>(R.id.rootHeadLayout)?.id!!
+                }
                 holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
                         currentPosition = position
@@ -379,7 +383,7 @@ class SampleFragmentA : BaseFragment() {
     var emptyRootLayout: View? = null
     override fun initView() {
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
-        emptyRootLayout = mView?.findViewById<RecyclerView>(R.id.emptyRootLayout)
+        emptyRootLayout = mView?.findViewById(R.id.emptyRootLayout)
     }
 
     private fun getLastNodeFragment(): Fragment? {
@@ -423,7 +427,6 @@ class SampleFragmentA : BaseFragment() {
     override fun initListener() {
 
     }
-
 
     //gradeId 	是 	int 	班级id
     private fun loadData() {
@@ -521,7 +524,7 @@ class ScoreFragment : BaseFragment() {
     var emptyRootLayout: View? = null
 
     override fun initView() {
-        emptyRootLayout = mView?.findViewById<RecyclerView>(R.id.emptyRootLayout)
+        emptyRootLayout = mView?.findViewById(R.id.emptyRootLayout)
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
         spinner1Layout = mView?.findViewById(R.id.spinner1Layout)
         spinner2 = mView?.findViewById<Spinner>(R.id.spinner2)
@@ -645,7 +648,7 @@ class ScoreFragment : BaseFragment() {
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
-
+                        emptyRootLayout?.visibility = View.VISIBLE
                     }
                 })
     }
@@ -694,7 +697,7 @@ class ScoreFragment : BaseFragment() {
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
-
+                        emptyRootLayout?.visibility = View.VISIBLE
                     }
                 })
     }
@@ -744,6 +747,7 @@ class ScoreFragment : BaseFragment() {
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
+                        emptyRootLayout?.visibility = View.VISIBLE
                     }
                 })
     }
@@ -770,8 +774,7 @@ class SchoolAssignmentFragment : BaseFragment() {
 
 
     override fun initView() {
-        emptyRootLayout = mView?.findViewById<RecyclerView>(R.id.emptyRootLayout)
-
+        emptyRootLayout = mView?.findViewById(R.id.emptyRootLayout)
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
         spinner1Layout = mView?.findViewById(R.id.spinner1Layout)
         spinner1Layout?.visibility = View.VISIBLE
@@ -961,6 +964,7 @@ class SchoolAssignmentFragment : BaseFragment() {
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
+                        emptyRootLayout?.visibility = View.VISIBLE
                     }
                 })
     }

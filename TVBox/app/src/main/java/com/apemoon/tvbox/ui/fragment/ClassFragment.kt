@@ -160,7 +160,10 @@ class ClassActivityFragment : BaseFragment() {
     }
 
     var contentRecyclerView: RecyclerView? = null
+    var emptyRootLayout: View? = null
+
     override fun initView() {
+        emptyRootLayout = mView?.findViewById(R.id.emptyRootLayout)
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
@@ -279,13 +282,16 @@ class ClassActivityFragment : BaseFragment() {
                 object : ProgressObserver<HttpResultBody<ClassActivityList>>(activity, false) {
                     override fun doNext(httpResultBody: HttpResultBody<ClassActivityList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
+                            if (httpResultBody.result.classActivityList.isEmpty()) {
+                                emptyRootLayout?.visibility = View.VISIBLE
+                            }
                             (contentRecyclerView?.adapter as BaseQuickAdapter<ClassActivityBean, BaseViewHolder>).replaceData(httpResultBody.result.classActivityList)
                         }
                     }
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
-
+                        emptyRootLayout?.visibility = View.VISIBLE
                     }
                 })
     }
@@ -557,7 +563,10 @@ class PhotoAlbumFragment : BaseFragment() {
     }
 
     var contentRecyclerView: RecyclerView? = null
+    var emptyRootLayout: View? = null
+
     override fun initView() {
+        emptyRootLayout = mView?.findViewById(R.id.emptyRootLayout)
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
     }
 
@@ -667,6 +676,9 @@ class PhotoAlbumFragment : BaseFragment() {
                     override fun doNext(httpResultBody: HttpResultBody<PhotoAlbumList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             val list = httpResultBody.result.photoAlbumList
+                            if (list.isEmpty()) {
+                                emptyRootLayout?.visibility = View.VISIBLE
+                            }
                             (contentRecyclerView?.adapter as BaseQuickAdapter<PhotoAlbumBean, BaseViewHolder>).replaceData(list)
                         }
                     }
@@ -697,7 +709,10 @@ class PhotoListFragment : BaseFragment() {
 
     var photosRecyclerView: RecyclerView? = null
     var tv_back: TextView? = null
+    var emptyRootLayout: View? = null
     override fun initView() {
+        emptyRootLayout = mView?.findViewById(R.id.emptyRootLayout)
+
         tv_back = mView?.findViewById<TextView>(R.id.tv_back)
         photosRecyclerView = mView.findViewById<RecyclerView>(R.id.photosRecyclerView)
     }
@@ -758,13 +773,16 @@ class PhotoListFragment : BaseFragment() {
                     override fun doNext(httpResultBody: HttpResultBody<PhotoList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             val list = httpResultBody.result.photoList
+                            if (list.isEmpty()) {
+                                emptyRootLayout?.visibility = View.VISIBLE
+                            }
                             (photosRecyclerView?.adapter as BaseQuickAdapter<PhotoBean, BaseViewHolder>).replaceData(list)
                         }
                     }
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
-
+                        emptyRootLayout?.visibility = View.VISIBLE
                     }
                 })
 
