@@ -66,6 +66,18 @@ public class SchoolPresenter extends RxBasePresenter {
         Map<String, String> paras = RequestUtil.createMap();
         if(provience.equals("北京")|| provience.equals("天津") || provience.equals("上海") || provience.equals("重庆")) {
             paras.put("province", provience + "市");
+        }else if(provience.equals("西藏") ||provience.equals("内蒙古")  ){
+            paras.put("province", provience + "自治区");
+        }else if(provience.equals("广西") ){
+            paras.put("province", provience + "壮族自治区");
+        }else if(provience.equals("宁夏") ){
+            paras.put("province", provience + "壮族自治区");
+        }else if(provience.equals("新疆") ){
+            paras.put("province", provience + "维吾尔族自治区");
+        }else if(provience.equals("香港") ){
+            paras.put("province", provience + "特别行政区");
+        }else if(provience.equals("澳门") ){
+            paras.put("province", provience + "地区");
         }else{
             paras.put("province", provience + "省");
         }
