@@ -1,5 +1,8 @@
 package com.apemoon.tvbox.ui.fragment
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.net.http.SslError
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +14,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.*
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.Spinner
@@ -144,7 +148,7 @@ class ClassRoomFragment : BaseFragment() {
                     if (hasFocus) {
                         currentPosition = position
                         LogUtil.d("getCurrentPositionItemView  FocusChangeListener   $currentPosition")
-                        if (position == 1 || position == 4) return@setOnFocusChangeListener
+                        if (position == 1) return@setOnFocusChangeListener
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
                     }
@@ -155,6 +159,8 @@ class ClassRoomFragment : BaseFragment() {
     }
 
     override fun initListener() {
+
+
         // initSelectedPosition(0)
         val fr = FragmentFactory.createFragment(0)
         replaceFragment(fr!!)
@@ -177,7 +183,7 @@ class ClassRoomFragment : BaseFragment() {
                     return ScoreFragment()
                 }
                 4 -> {
-                    return EmptyFragment()
+                    return EmptyHtmlFragment()
                 }
                 else -> return null
             }
@@ -186,6 +192,150 @@ class ClassRoomFragment : BaseFragment() {
     }
 
 }
+
+/**
+ *网页链接
+ *
+ */
+class EmptyHtmlFragment : BaseFragment() {
+
+
+    /**
+     * 加载webview
+     */
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun initWebView() {
+        val webSettings = emptyWebView!!.settings
+        // 是否允许javascript
+        webSettings.javaScriptEnabled = true
+        // NORMAL：正常显示，没有渲染变化。
+        // SINGLE_COLUMN：把所有内容放到WebView组件等宽的一列中。
+        // NARROW_COLUMNS：可能的话，使所有列的宽度不超过屏幕宽度。
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL)
+        // 设置默认的字体大小，默认为16，有效值区间在1-72之间。
+        //webSettings.setDefaultFontSize(18);
+        // 无痕加载
+        //webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.defaultTextEncodingName = "UTF-8"
+        //提高渲染的优先级
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH)
+        // 将图片下载阻塞
+        webSettings.blockNetworkImage = true
+        // 保留缩放功能但隐藏缩放控件
+        webSettings.setSupportZoom(true)
+        webSettings.builtInZoomControls = true
+        // 注意：setDisplayZoomControls是在Android 3.0中新增的API.
+        webSettings.displayZoomControls = false
+
+        // 添加js可调用的接口
+        //        webView.addJavascriptInterface(new JS(), "jl");
+        //屏蔽掉长按事件 因为webview长按时将会调用系统的复制控件:
+        emptyWebView?.setOnLongClickListener { true }
+        emptyWebView?.webViewClient = MyWebViewClient()
+        emptyWebView?.webChromeClient = MyWebChromeClient()
+
+        // 加载URL
+        emptyWebView?.loadUrl("http://baike.baidu.com/ziran")
+    }
+
+
+    /**
+     * WebViewClient主要帮助WebView处理各种通知、请求事件的，比如：
+     * onLoadResource
+     * onPageStart
+     * onPageFinish
+     * onReceiveError
+     * onReceivedHttpAuthRequest
+     */
+    private inner class MyWebViewClient : WebViewClient() {
+
+        // 在点击请求的链接时才会调用，
+        // 重写此方法返回true表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边。
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            view?.loadUrl(url)
+            return true
+        }
+
+        // 重写此方法可以让webview处理https请求
+        override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+            handler?.proceed()
+        }
+
+        // 重写此方法才能够处理在浏览器中的按键事件。
+        override fun shouldOverrideKeyEvent(view: WebView?, event: KeyEvent?): Boolean {
+            return super.shouldOverrideKeyEvent(view, event)
+        }
+
+        // 在加载页面资源时会调用，每一个资源（比如图片）的加载都会调用一次
+        override fun onLoadResource(view: WebView?, url: String?) {
+            super.onLoadResource(view, url)
+        }
+
+        // 在页面加载开始时调用
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+
+        }
+
+        // 在页面加载结束时调用。
+        // WebView 在Android4.4的手机上onPageFinished()回调会多调用一次(具体原因待追查)
+        // 需要尽量避免在onPageFinished()中做业务操作，否则会导致重复调用，还有可能会引起逻辑上的错误.
+        override fun onPageFinished(view: WebView?, url: String?) {
+            // 载入图片
+            view?.settings?.blockNetworkImage = false
+        }
+
+        // 页面加载出错时调用
+        override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
+            super.onReceivedError(view, errorCode, description, failingUrl)
+        }
+    }
+
+    /**
+     * WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等比如
+     * onCloseWindow(关闭WebView)
+     * onCreateWindow()
+     * onJsAlert (WebView上alert无效，需要定制WebChromeClient处理弹出)
+     * onJsPrompt
+     * onJsConfirm
+     * onProgressChanged
+     * onReceivedIcon
+     * onReceivedTitle
+     */
+    private inner class MyWebChromeClient : WebChromeClient() {
+
+        // 获取网页的title
+        override fun onReceivedTitle(view: WebView?, title: String?) {
+
+            super.onReceivedTitle(view, title)
+        }
+
+        override fun onProgressChanged(view: WebView, newProgress: Int) {
+            super.onProgressChanged(view, newProgress)
+        }
+    }
+
+
+    override fun lazyLoadData() {
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.empty_html_fragment_layout
+    }
+
+    private var emptyWebView: WebView? = null
+    override fun initView() {
+        emptyWebView = mView?.findViewById<WebView>(R.id.emptyWebView)
+        initWebView()
+    }
+
+    override fun initData() {
+    }
+
+    override fun initListener() {
+    }
+
+}
+
 
 /**
  *空白内容
@@ -282,7 +432,7 @@ class SampleFragmentA : BaseFragment() {
         paras["gradeId"] = id
         val rxP = object : RxBasePresenter(activity) {}
         rxP.addDisposable<HttpResultBody<ClassSchedule>>(rxP.getmDataManager().netService.getClassSchedule(paras),
-                object : ProgressObserver<HttpResultBody<ClassSchedule>>(activity, false) {
+                object : ProgressObserver<HttpResultBody<ClassSchedule>>(activity, true) {
                     override fun doNext(httpResultBody: HttpResultBody<ClassSchedule>) {
                         try {
                             if (TextUtils.equals(httpResultBody.code, "0000")) {

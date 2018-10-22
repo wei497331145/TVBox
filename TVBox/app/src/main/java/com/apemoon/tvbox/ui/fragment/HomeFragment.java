@@ -187,7 +187,7 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         switch (view.getId()) {
             case R.id.tv_class_schedule://班级课表
                 changeTab(3);
-                // selectedClassRoomFragment(0);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassRoomFragment(0), 200);
 
                 break;
             case R.id.tv_class_performance://课堂表现

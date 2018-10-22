@@ -15,7 +15,6 @@
             android:id="@+id/spinner1Layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_border_shape"
             android:paddingBottom="@dimen/dp_2"
             android:paddingEnd="@dimen/dp_8"
             android:paddingTop="@dimen/dp_2"
@@ -39,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_15"
-            android:background="@drawable/bg_border_shape"
+
             android:paddingBottom="@dimen/dp_2"
             android:paddingEnd="@dimen/dp_8"
             android:paddingTop="@dimen/dp_2"
@@ -56,7 +55,7 @@
                 android:nextFocusRight="@+id/spinner1"
                 android:popupBackground="@color/font_FF0072AC"
                 android:spinnerMode="dropdown"
-                android:visibility="gone" />
+                 />
         </LinearLayout>
 
 
