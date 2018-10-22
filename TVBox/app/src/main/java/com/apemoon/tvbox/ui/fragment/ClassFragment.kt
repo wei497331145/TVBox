@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.TextUtils
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -59,7 +60,7 @@ class ClassFragment : BaseFragment() {
         headerRecyclerView = mView?.findViewById<RecyclerView>(R.id.headerRecyclerView)
     }
 
-    private var currentPosition: Int = 0
+    var currentPosition: Int = 0
 
     fun getCurrentPositionItemView(): View? {
         LogUtil.d("getCurrentPositionItemView    $currentPosition")
@@ -162,7 +163,7 @@ class ClassActivityFragment : BaseFragment() {
 
     private fun getLastNodeFragment(): Fragment? {
         activity?.supportFragmentManager?.fragments?.forEach { fragment ->
-            if (fragment is ClassRoomFragment) {
+            if (fragment is ClassFragment) {
                 return fragment
             }
         }
@@ -216,7 +217,14 @@ class ClassActivityFragment : BaseFragment() {
                     if (fragment is ClassFragment) {
                         val view = fragment.getCurrentPositionItemView()
                         if (null != view) {
-                            holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = view.id
+                            holder.getView<View>(R.id.rootItemLayout)?.setOnKeyListener { v, keyCode, event ->
+                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                                    fragment.initSelectedPosition(fragment.currentPosition)
+                                    return@setOnKeyListener true
+                                }
+                                return@setOnKeyListener false
+                            }
+                            // holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = view.id
                         }
                     }
                 }
@@ -552,7 +560,7 @@ class PhotoAlbumFragment : BaseFragment() {
 
     private fun getLastNodeFragment(): Fragment? {
         activity?.supportFragmentManager?.fragments?.forEach { fragment ->
-            if (fragment is ClassRoomFragment) {
+            if (fragment is ClassFragment) {
                 return fragment
             }
         }
@@ -579,7 +587,14 @@ class PhotoAlbumFragment : BaseFragment() {
                     if (fragment is ClassFragment) {
                         val view = fragment.getCurrentPositionItemView()
                         if (null != view) {
-                            holder.getView<View>(R.id.photoRootItem)?.nextFocusLeftId = view.id
+                            holder.getView<View>(R.id.photoRootItem)?.setOnKeyListener { v, keyCode, event ->
+                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                                    fragment.initSelectedPosition(fragment.currentPosition)
+                                    return@setOnKeyListener true
+                                }
+                                return@setOnKeyListener false
+                            }
+                            //  holder.getView<View>(R.id.photoRootItem)?.nextFocusLeftId = view.id
                         }
                     }
                 }

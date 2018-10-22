@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.TextUtils
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,7 +61,7 @@ class ClassRoomFragment : BaseFragment() {
         return R.layout.class_room_fragment
     }
 
-    private var currentPosition: Int = 0
+    var currentPosition: Int = 0
 
     fun getCurrentPositionItemView(): View? {
         LogUtil.d("getCurrentPositionItemView    $currentPosition")
@@ -384,7 +385,14 @@ class ScoreFragment : BaseFragment() {
             val view = fragment.getCurrentPositionItemView()
             view?.nextFocusRightId = spinner1?.id!!
             if (null != view) {
-                spinner1?.nextFocusLeftId = view.id
+                spinner1?.setOnKeyListener { v, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                        fragment.initSelectedPosition(fragment.currentPosition)
+                        return@setOnKeyListener true
+                    }
+                    return@setOnKeyListener false
+                }
+                //  spinner1?.nextFocusLeftId = view.id
             }
         }
     }
@@ -421,7 +429,14 @@ class ScoreFragment : BaseFragment() {
                         val view = fragment.getCurrentPositionItemView()
                         view?.nextFocusRightId = spinner1?.id!!
                         if (null != view) {
-                            holder.getView<View>(R.id.row_root)?.nextFocusLeftId = view.id
+                            holder.getView<View>(R.id.row_root)?.setOnKeyListener { v, keyCode, event ->
+                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                                    fragment.initSelectedPosition(fragment.currentPosition)
+                                    return@setOnKeyListener true
+                                }
+                                return@setOnKeyListener false
+                            }
+                            //holder.getView<View>(R.id.row_root)?.nextFocusLeftId = view.id
                         }
                     }
                 }
@@ -607,7 +622,14 @@ class SchoolAssignmentFragment : BaseFragment() {
             val view = fragment.getCurrentPositionItemView()
             view?.nextFocusRightId = spinner1?.id!!
             if (null != view) {
-                spinner1?.nextFocusLeftId = view.id
+                spinner1?.setOnKeyListener { v, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                        fragment.initSelectedPosition(fragment.currentPosition)
+                        return@setOnKeyListener true
+                    }
+                    return@setOnKeyListener false
+                }
+                // spinner1?.nextFocusLeftId = view.id
             }
         }
 
@@ -646,7 +668,14 @@ class SchoolAssignmentFragment : BaseFragment() {
                     val view = fragment.getCurrentPositionItemView()
                     view?.nextFocusRightId = spinner1?.id!!
                     if (null != view) {
-                        holder.getView<View>(R.id.itemRootLayout)?.nextFocusLeftId = view.id
+                        holder.getView<View>(R.id.itemRootLayout)?.setOnKeyListener { v, keyCode, event ->
+                            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+                                fragment.initSelectedPosition(fragment.currentPosition)
+                                return@setOnKeyListener true
+                            }
+                            return@setOnKeyListener false
+                        }
+                        //  holder.getView<View>(R.id.itemRootLayout)?.nextFocusLeftId = view.id
                     }
                 }
             }
