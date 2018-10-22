@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.TextUtils
-import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -67,6 +66,13 @@ class ClassFragment : BaseFragment() {
         return headerRecyclerView?.layoutManager?.findViewByPosition(currentPosition)
     }
 
+    fun getPositionItemView(position: Int): View? {
+        if (headerRecyclerView != null && position >= 0 && position < headerList.size) {
+            return headerRecyclerView?.layoutManager?.findViewByPosition(position)
+        }
+        return null
+    }
+
 
     override fun initData() {
         /*   headerRecyclerView?.adapter =*/ object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
@@ -78,6 +84,7 @@ class ClassFragment : BaseFragment() {
                 super.onBindViewHolder(holder, position)
                 if (position == 0) {
                     holder.getView<View>(R.id.rootHeadLayout)?.nextFocusUpId = (activity as MainActivity).mainTab.id
+                    (activity as MainActivity).mainTab.nextFocusDownId = holder.getView<View>(R.id.rootHeadLayout).id
                 }
                 holder?.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
@@ -223,13 +230,18 @@ class ClassActivityFragment : BaseFragment() {
                     if (fragment is ClassFragment) {
                         val view = fragment.getCurrentPositionItemView()
                         if (null != view) {
-                            holder.getView<View>(R.id.rootItemLayout)?.setOnKeyListener { v, keyCode, event ->
-                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
-                                    fragment.initSelectedPosition(fragment.currentPosition)
-                                    return@setOnKeyListener true
-                                }
-                                return@setOnKeyListener false
+                            //holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = view.id
+                            val headerView = fragment.getPositionItemView(0)
+                            if (null != headerView) {
+                                holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = headerView.id
                             }
+//                            holder.getView<View>(R.id.rootItemLayout)?.setOnKeyListener { v, keyCode, event ->
+//                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
+//                                    fragment.initSelectedPosition(fragment.currentPosition)
+//                                    return@setOnKeyListener true
+//                                }
+//                                return@setOnKeyListener false
+//                            }
                             // holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = view.id
                         }
                     }
@@ -606,19 +618,29 @@ class PhotoAlbumFragment : BaseFragment() {
                 if (position % 3 == 0) {
                     val fragment = getLastNodeFragment()
                     if (fragment is ClassFragment) {
-                        val view = fragment.getCurrentPositionItemView()
-                        if (null != view) {
-                            holder.getView<View>(R.id.photoRootItem)?.setOnKeyListener { v, keyCode, event ->
-                                when (keyCode) {
-                                    KeyEvent.KEYCODE_DPAD_LEFT -> { //排除第二列KeyEvent传递KEYCODE_DPAD_LEFT 冲突
-                                        if (lastPosition % 3 == 0) {
-                                            fragment.initSelectedPosition(fragment.currentPosition)
-                                        }
-                                    }
-                                }
-                                false
-                            }
+                        var headerView: View? = null
+                        if (photoAlbumType == "1") {
+                            headerView = fragment.getPositionItemView(3)
                         }
+                        if (photoAlbumType == "2") {
+                            headerView = fragment.getPositionItemView(4)
+                        }
+                        if (null != headerView) {
+                            holder.getView<View>(R.id.photoRootItem)?.nextFocusLeftId = headerView.id
+                        }
+//                        val view = fragment.getCurrentPositionItemView()
+//                        if (null != view) {
+//                            holder.getView<View>(R.id.photoRootItem)?.setOnKeyListener { v, keyCode, event ->
+//                                when (keyCode) {
+//                                    KeyEvent.KEYCODE_DPAD_LEFT -> { //排除第二列KeyEvent传递KEYCODE_DPAD_LEFT 冲突
+//                                        if (lastPosition % 3 == 0) {
+//                                            fragment.initSelectedPosition(fragment.currentPosition)
+//                                        }
+//                                    }
+//                                }
+//                                false
+//                            }
+//                        }
                     }
                 }
             }
