@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +22,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ import com.apemoon.tvbox.entity.information.InfoClassicalEntity;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.factory.main.FragmentFactory;
 import com.apemoon.tvbox.interfaces.fragment.IInformationView;
+import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoImagesAdapter;
@@ -81,6 +84,8 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     TextView tvTime;
     @BindView(R.id.web_view)
     WebView webView;
+    @BindView(R.id.framne_video)
+    FrameLayout framenLayout;
     @BindView(R.id.video_view)
     BDVideoView videoView;
     @BindView(R.id.rv_info_list)
@@ -115,7 +120,13 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @Override
     public BaseQuickAdapter getAdapter() {
-        mInformationAdater = new InformationTvAdapter();
+        mInformationAdater = new InformationTvAdapter(new RecyclerViewItemSelectListener() {
+            @Override
+            public void onItemSelectListner(int position) {
+                InfoListEntity.InformationBean bean = mInformationAdater.getData().get(position);
+                setTvContent(bean);
+            }
+        });
         return mInformationAdater;
     }
 
@@ -172,13 +183,6 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @Override
     public void initListener() {
-        mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InfoListEntity.InformationBean bean = mInformationAdater.getData().get(position);
-                setTvContent(bean);
-            }
-        });
 
     }
 
@@ -192,31 +196,37 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     }
 
     private void setTvContent(InfoListEntity.InformationBean bean){
-        setContentsGone();
-        if(bean!=null){
-            switch (bean.getType()){
-                case TYPE_TEXT_ID://富文本
-                    initText(bean);
-                    break;
-                case TYPE_TURL_ID://链接
-                    initWebView(bean);
-                    break;
-                case TYPE_PAGES_ID://图片
-                    initImages(bean);
-                    break;
-                case TYPE_VIDEO_ID://视屏
-                    initVideo(bean);
-                    break;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setContentsGone();
+                if(bean!=null){
+                    switch (bean.getType()){
+                        case TYPE_TEXT_ID://富文本
+                            initText(bean);
+                            break;
+                        case TYPE_TURL_ID://链接
+                            initWebView(bean);
+                            break;
+                        case TYPE_PAGES_ID://图片
+                            initImages(bean);
+                            break;
+                        case TYPE_VIDEO_ID://视屏
+                            initVidoView(bean);
+                            break;
 
+                    }
+                }
             }
-        }
+        },10);
+
     }
 
     private void setContentsGone(){
         llContent.setVisibility(View.GONE);
         llTv.setVisibility(View.GONE);
         mRVImgList.setVisibility(View.GONE);
-        videoView.setVisibility(View.GONE);
+        framenLayout.setVisibility(View.GONE);
     }
 
     @Nullable
@@ -490,6 +500,17 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         }
     }
 
+
+    private void initVidoView(InfoListEntity.InformationBean bean){
+        framenLayout.setVisibility(View.GONE);
+        framenLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initVideo(bean);
+            }
+        });
+    }
+
     /**
      * 播放视屏
      * @param bean
@@ -520,7 +541,7 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
             }
         });
         videoView.startPlayVideo(info);
-        videoView.requestFocus();
+        DisplayUtils.toggleScreenOrientation(getActivity());
     }
 
     @Override

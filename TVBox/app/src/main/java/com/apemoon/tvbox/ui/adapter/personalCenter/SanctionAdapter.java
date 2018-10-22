@@ -24,7 +24,7 @@ public class SanctionAdapter extends BaseQuickAdapter<UserRecordInfoEntity.UserR
     protected void convert(BaseViewHolder helper,UserRecordInfoEntity.UserRecordsInfoBean item) {
         if (item != null) {
             ((ItemLinearLayout)helper.getView(R.id.item_school)).setRightText(item.getSchoolName());
-            ((ItemLinearLayout)helper.getView(R.id.item_time)).setRightText(item.getStartTime());
+            ((ItemLinearLayout)helper.getView(R.id.item_time)).setRightText(item.getJcTime());
             ((ItemLinearLayout)helper.getView(R.id.item_santion)).setRightText(item.getContent());
             ((ItemLinearLayout)helper.getView(R.id.item_info)).setRightText(item.getIntro());
         }

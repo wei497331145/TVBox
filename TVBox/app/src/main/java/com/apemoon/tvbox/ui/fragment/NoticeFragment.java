@@ -1,6 +1,7 @@
 package com.apemoon.tvbox.ui.fragment;
 
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -127,11 +128,17 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     }
 
     private void setContent(ReceiveNoticeListEntity.NoticeListBean noticeListBean) {
-        if (noticeListBean != null && mTvTitle !=null && mWebView!=null) {
-            mTvTitle.setText(noticeListBean.getTitle());
-            mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (noticeListBean != null && mTvTitle !=null && mWebView!=null) {
+                    mTvTitle.setText(noticeListBean.getTitle());
+                    mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
 
-        }
+                }
+            }
+        },10);
+
     }
 
     @Override

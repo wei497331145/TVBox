@@ -72,6 +72,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public RecyclerView getRecyclerView() {
+        mRecyclerView.addItemDecoration(new RecycleViewDivider(
+                getActivity(), LinearLayoutManager.VERTICAL, 25, getResources().getColor(R.color.font_FF0072AC)));
+
         return mRecyclerView;
     }
 
@@ -165,7 +168,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
                 }
             }
         });
-        mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
+        requestNew();
     }
 
     @Override

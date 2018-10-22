@@ -31,6 +31,7 @@ public class InformationAdapter extends BaseQuickAdapter<InfoListEntity.Informat
             helper.setText(R.id.tv_name, item.getTitle());
             helper.setText(R.id.tv_time, DateTimeUtil.getStrTime(item.getCreateTime()));
             GlideUtil.image(TvApplication.getGlobalApplication(),item.getCover(),helper.getView(R.id.iv_head));
+                helper.setVisible(R.id.iv_video_noti,item.getType().equals("3"));
         }
 
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {

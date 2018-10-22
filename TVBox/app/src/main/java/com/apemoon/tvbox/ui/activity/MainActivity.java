@@ -197,11 +197,14 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     }
 
     public void setMainTabVisiable(boolean isVisiable) {
-        if (isVisiable) {
-            mMainTab.setVisibility(View.VISIBLE);
-            mMainTab.requestFocus();
-        } else {
-            mMainTab.setVisibility(View.GONE);
+        if(mMainTab!=null) {
+            if (isVisiable) {
+                mMainTab.setVisibility(View.VISIBLE);
+                mMainTab.requestFocus();
+            } else {
+                mMainTab.setVisibility(View.GONE);
+
+            }
         }
     }
 

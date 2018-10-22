@@ -48,10 +48,10 @@ public class FragmentFactory {
 //                    mHomeFragment = new HomeFragment();
 //                }
 //                baseFragment = mHomeFragment;
-                if (mHomeFragment == null) {
-                    mHomeFragment = new HomeFragment();
+                if (mTraditionalFragment == null) {
+                    mTraditionalFragment = new TraditionalFragment();
                 }
-                baseFragment = mHomeFragment;
+                baseFragment = mTraditionalFragment;
                 break;
             case 1://公告通知
                 if (mNoticeFragment == null) {

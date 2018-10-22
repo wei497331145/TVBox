@@ -171,7 +171,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
                 llPersonalMd3.setVisibility(View.VISIBLE);
                 break;
 
-            }
+        }
 
     }
 
@@ -274,7 +274,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
         md2Spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPersonalPresenter.receiveRecords("2", "" + semstersBeanList.get(i).getId());
+                mPersonalPresenter.receiveRecords("4", "" + semstersBeanList.get(i).getId());
             }
 
             @Override
@@ -288,7 +288,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
         md3Spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPersonalPresenter.receiveRecords("4", "" + semstersBeanList.get(i).getId());
+                mPersonalPresenter.receiveRecords("2", "" + semstersBeanList.get(i).getId());
             }
 
             @Override
@@ -298,7 +298,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
         });
         md3Spiner.setVisibility(View.VISIBLE);
         mPersonalPresenter.receiveRecords("2", entity.getCurrentSemesterId());
-        mPersonalPresenter.receiveRecords("3", entity.getCurrentSemesterId());
+//        mPersonalPresenter.receiveRecords("3", entity.getCurrentSemesterId());
         mPersonalPresenter.receiveRecords("4", entity.getCurrentSemesterId());
     }
 

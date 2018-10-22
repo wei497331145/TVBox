@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/person_md1"
-    android:layout_margin="@dimen/dp_15"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,10 +10,14 @@
     tools:showIn="@layout/fragment_personal">
     <ScrollView
         android:id="@+id/scroll"
+        android:layout_margin="@dimen/dp_15"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
+        android:background="@drawable/bg_bl_tv_info_selector"
         android:nextFocusLeft="@id/tv_base_info"
+        android:nextFocusDown="@null"
+        android:nextFocusUp="@null"
         android:scrollbars="none"
         >
     <LinearLayout
@@ -189,7 +192,7 @@
             android:layout_marginBottom="@dimen/dp_3"
             android:layout_marginTop="@dimen/dp_10"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_18" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

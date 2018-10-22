@@ -5,6 +5,7 @@ import android.view.View;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
+import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
@@ -18,8 +19,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 public class InformationTvAdapter extends BaseQuickAdapter<InfoListEntity.InformationBean,BaseViewHolder> {
 
-    public InformationTvAdapter() {
+    private RecyclerViewItemSelectListener recyclerViewItemSelectListener;
+    public InformationTvAdapter(RecyclerViewItemSelectListener listener) {
         super(R.layout.item_info_tv_infolist);
+        this.recyclerViewItemSelectListener = listener;
     }
 
     @Override
@@ -33,12 +36,9 @@ public class InformationTvAdapter extends BaseQuickAdapter<InfoListEntity.Inform
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-//                if(hasFocus){
-//                    view.setBackgroundResource(R.drawable.bg_notice_normal);
-//                }else{
-//                    view.setBackgroundResource(R.drawable.bg_notice_selected);
-//                }
-//                AnimationUtil.setTextAnimation(view,hasFocus,1.01f,1.01f,1.0f,1.0f);
+                if(hasFocus){
+                    recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
+                }
 
             }
         });
