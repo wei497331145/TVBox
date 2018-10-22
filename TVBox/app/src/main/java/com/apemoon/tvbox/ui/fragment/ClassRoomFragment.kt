@@ -140,6 +140,7 @@ class ClassRoomFragment : BaseFragment() {
 
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
+                holder.getView<View>(R.id.rootHeadLayout)?.id = View.generateViewId()
                 // ("班级课表", "课堂表现", "我的作业", "我的成绩", "名师导学")
                 if (position == 0) {
                     holder.getView<View>(R.id.rootHeadLayout)?.nextFocusUpId = (activity as MainActivity).mainTab.id

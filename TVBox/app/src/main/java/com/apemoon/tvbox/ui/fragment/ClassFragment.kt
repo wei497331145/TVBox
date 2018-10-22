@@ -78,10 +78,13 @@ class ClassFragment : BaseFragment() {
         /*   headerRecyclerView?.adapter =*/ object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
             override fun convert(helper: BaseViewHolder?, item: String?) {
                 helper?.getView<TextView>(R.id.headTv)?.text = item
+                LogUtil.d("onBindViewHolder  helper " + helper?.getView<View>(R.id.rootHeadLayout)?.id)
             }
 
             override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
+                holder.getView<View>(R.id.rootHeadLayout)?.id = View.generateViewId()
+                LogUtil.d("onBindViewHolder  position " + position + "   " + holder.getView<View>(R.id.rootHeadLayout).id)
                 if (position == 0) {
                     holder.getView<View>(R.id.rootHeadLayout)?.nextFocusUpId = (activity as MainActivity).mainTab.id
                     (activity as MainActivity).mainTab.nextFocusDownId = holder.getView<View>(R.id.rootHeadLayout).id
@@ -120,7 +123,7 @@ class ClassFragment : BaseFragment() {
         val fr = FragmentFactory.createFragment(0)
         replaceFragment(fr!!)
 
-        headerRecyclerView?.nextFocusUpId = (activity as MainActivity).mainTab.id
+        //headerRecyclerView?.nextFocusUpId = (activity as MainActivity).mainTab.id
     }
 
 
@@ -620,27 +623,14 @@ class PhotoAlbumFragment : BaseFragment() {
                     if (fragment is ClassFragment) {
                         var headerView: View? = null
                         if (photoAlbumType == "1") {
-                            headerView = fragment.getPositionItemView(3)
+                            headerView = fragment.getPositionItemView(4)
                         }
                         if (photoAlbumType == "2") {
-                            headerView = fragment.getPositionItemView(4)
+                            headerView = fragment.getPositionItemView(3)
                         }
                         if (null != headerView) {
                             holder.getView<View>(R.id.photoRootItem)?.nextFocusLeftId = headerView.id
                         }
-//                        val view = fragment.getCurrentPositionItemView()
-//                        if (null != view) {
-//                            holder.getView<View>(R.id.photoRootItem)?.setOnKeyListener { v, keyCode, event ->
-//                                when (keyCode) {
-//                                    KeyEvent.KEYCODE_DPAD_LEFT -> { //排除第二列KeyEvent传递KEYCODE_DPAD_LEFT 冲突
-//                                        if (lastPosition % 3 == 0) {
-//                                            fragment.initSelectedPosition(fragment.currentPosition)
-//                                        }
-//                                    }
-//                                }
-//                                false
-//                            }
-//                        }
                     }
                 }
             }
