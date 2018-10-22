@@ -970,7 +970,7 @@ class SchoolAssignmentFragment : BaseFragment() {
                             }
                             if (null == jo || jo.isEmpty()) {
                                 emptyRootLayout?.visibility = View.VISIBLE
-                            }else{
+                            } else {
                                 emptyRootLayout?.visibility = View.GONE
                             }
                         }

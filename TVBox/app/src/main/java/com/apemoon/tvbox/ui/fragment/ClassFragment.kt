@@ -288,7 +288,7 @@ class ClassActivityFragment : BaseFragment() {
         paras["pageSize"] = "100"
         val rxP = object : RxBasePresenter(activity) {}
         rxP.addDisposable<HttpResultBody<ClassActivityList>>(rxP.getmDataManager().netService.getClassActivityList(paras),
-                object : ProgressObserver<HttpResultBody<ClassActivityList>>(activity, false) {
+                object : ProgressObserver<HttpResultBody<ClassActivityList>>(activity, true) {
                     override fun doNext(httpResultBody: HttpResultBody<ClassActivityList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             if (httpResultBody.result.classActivityList.isEmpty()) {
