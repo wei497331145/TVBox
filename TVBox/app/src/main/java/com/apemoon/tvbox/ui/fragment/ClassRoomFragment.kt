@@ -846,14 +846,6 @@ class SchoolAssignmentFragment : BaseFragment() {
                 if (null != headerView) {
                     spinner1?.nextFocusLeftId = headerView.id
                 }
-//                spinner1?.setOnKeyListener { v, keyCode, event ->
-//                    if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
-//                        fragment.initSelectedPosition(fragment.currentPosition)
-//                        return@setOnKeyListener true
-//                    }
-//                    return@setOnKeyListener false
-//                }
-                // spinner1?.nextFocusLeftId = view.id
             }
         }
 
@@ -923,6 +915,7 @@ class SchoolAssignmentFragment : BaseFragment() {
                 transaction.add(R.id.fl_main, tagFragment, "SchoolAssignmentDetailFragment")
             }
             (tagFragment as SchoolAssignmentDetailFragment).seatworkId = (adapter.getItem(position) as WorkBean).id
+            selectView = view
             tagFragment.userVisibleHint = true
             transaction.commit()
         }
@@ -931,6 +924,17 @@ class SchoolAssignmentFragment : BaseFragment() {
 
     override fun initListener() {
     }
+
+    private var selectView: View? = null
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            selectView?.postDelayed({
+                selectView?.requestFocus()
+            }, 20)
+        }
+    }
+
 
     /**
      * 获取科目信息 getSubjectList
@@ -1073,13 +1077,6 @@ class SchoolAssignmentDetailFragment : BaseFragment() {
         tv_back?.setOnClickListener {
             val manager = activity.supportFragmentManager
             val fragments = manager.fragments
-            fragments.forEachIndexed { index, fragment ->
-                if (fragment is ClassRoomFragment) {
-                    val transaction = manager.beginTransaction()
-                    transaction.show(fragment)
-                    transaction.commit()
-                }
-            }
             val tagFragment = manager.findFragmentByTag("SchoolAssignmentDetailFragment")
             if (null != tagFragment) {
                 tagFragment.userVisibleHint = true
@@ -1088,6 +1085,20 @@ class SchoolAssignmentDetailFragment : BaseFragment() {
                 transaction.commit()
             }
             (activity as MainActivity).setMainTabVisiable(true)
+            fragments.forEachIndexed { index, fragment ->
+                if (fragment is ClassRoomFragment) {
+                    val transaction = manager.beginTransaction()
+                    transaction.show(fragment)
+                    transaction.commit()
+                    fragment.childFragmentManager.fragments.forEachIndexed { index, ft ->
+                        if (ft is SchoolAssignmentFragment) {
+                            ft.onHiddenChanged(false)
+                        }
+                    }
+                }
+            }
+
+
         }
         tv_back?.requestFocus()
     }
