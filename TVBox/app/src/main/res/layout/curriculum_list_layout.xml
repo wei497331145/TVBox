@@ -14,14 +14,14 @@
         <LinearLayout
             android:id="@+id/spinner1Layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_45"
             android:visibility="gone">
 
             <Spinner
                 android:id="@+id/spinner1"
+                style="@style/spinner_style"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_spinner_drop_down"
+                android:layout_height="match_parent"
                 android:focusable="true"
                 android:gravity="center"
                 android:nextFocusRight="@id/spinner2"
@@ -34,20 +34,20 @@
         <LinearLayout
             android:id="@+id/spinner2Layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_45"
             android:layout_marginStart="@dimen/dp_15"
             android:visibility="gone">
 
             <Spinner
                 android:id="@+id/spinner2"
+                style="@style/spinner_style"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_spinner_drop_down"
+                android:layout_height="match_parent"
                 android:focusable="true"
                 android:gravity="center"
-                android:overlapAnchor="false"
                 android:nextFocusRight="@+id/spinner1"
                 android:nextFocusDown="@+id/contentRecyclerView"
+                android:overlapAnchor="false"
                 android:popupBackground="@color/font_FF0072AC"
                 android:spinnerMode="dropdown" />
         </LinearLayout>

@@ -1,27 +1,14 @@
 package com.apemoon.tvbox.ui.fragment;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,18 +21,12 @@ import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity;
 import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.presenter.PersonalPresenter;
-import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.BaseSpinnerAdapter;
 import com.apemoon.tvbox.ui.adapter.MyTeacherAdapter;
-import com.apemoon.tvbox.ui.adapter.NewAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.JudegeAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.SanctionAdapter;
-import com.apemoon.tvbox.ui.adapter.personalCenter.SemesterListViewAdapter;
-import com.apemoon.tvbox.ui.adapter.personalCenter.SemestersAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.TeachersAdapter;
-import com.apemoon.tvbox.ui.view.ItemLinearLayout;
 import com.apemoon.tvbox.utils.GlideUtil;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +38,7 @@ import butterknife.OnClick;
  * Created by water on 2018/8/31/031.
  * des：
  */
-public class PersonalFragment extends BaseFragment implements IPersonalView ,View.OnFocusChangeListener {
+public class PersonalFragment extends BaseFragment implements IPersonalView, View.OnFocusChangeListener {
 
     private PersonalPresenter mPersonalPresenter;
 
@@ -92,8 +73,6 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
     RecyclerView mRecyclerViewMd2;
     @BindView(R.id.recyclerView_md3)
     RecyclerView mRecyclerViewMd3;
-
-
 
 
     @BindView(R.id.person_md1)
@@ -149,8 +128,6 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
     }
 
 
-
-
     @OnClick({R.id.tv_base_info, R.id.tv_judge_info, R.id.tv_sanction_info})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -178,7 +155,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
 
     private void setUserData(UserInfoEntity userEntity) {
         UserEntity.UserInfoBean userInfo = userEntity.getUserInfo();
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             GlideUtil.imageCircleLocal(getActivity(), userInfo.getHeadImage(), mIvHead);
         }
         mTvName.setText(userInfo.getName());
@@ -188,13 +165,12 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
         mTvPhone.setText(userInfo.getPhone());
         mTvSchool.setText(userInfo.getSchoolName());
         mTvClass.setText(userInfo.getGradeName());
-        if(userInfo.getSex().equals("女")){
+        if (userInfo.getSex().equals("女")) {
             mIvSex.setImageDrawable(getResources().getDrawable(R.drawable.nan));
-        }else{
+        } else {
             mIvSex.setImageDrawable(getResources().getDrawable(R.drawable.nv));
         }
     }
-
 
 
     @Override
@@ -270,7 +246,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
     public void receiveRemstersSuccess(UserSemstersEntity entity) {
         semstersBeanList = entity.getSemesterList();
         mUserSemsterEntity = entity;
-        md2Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()) );
+        md2Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()));
         md2Spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -284,7 +260,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
         });
         md2Spiner.setVisibility(View.VISIBLE);
 
-        md3Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()) );
+        md3Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()));
         md3Spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -329,7 +305,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
         }
     }
 
-    class SmsAdapter<UserSemstersEntity> extends BaseSpinnerAdapter{
+    class SmsAdapter<UserSemstersEntity> extends BaseSpinnerAdapter {
         List<com.apemoon.tvbox.entity.userCenter.UserSemstersEntity.SemstersBean> smstersList;
 
         public SmsAdapter(List<com.apemoon.tvbox.entity.userCenter.UserSemstersEntity.SemstersBean> list) {
@@ -340,7 +316,15 @@ public class PersonalFragment extends BaseFragment implements IPersonalView ,Vie
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false);
-            ((TextView)rootView.findViewById(R.id.spinnerTv)).setText(smstersList.get(position).getName());
+            rootView.setBackgroundColor(Color.TRANSPARENT);
+            ((TextView) rootView.findViewById(R.id.spinnerTv)).setText(smstersList.get(position).getName());
+            return rootView;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false);
+            ((TextView) rootView.findViewById(R.id.spinnerTv)).setText(smstersList.get(position).getName());
             return rootView;
         }
     }

@@ -3,15 +3,14 @@
     <item>
         <selector>
             <item
-                android:drawable="@drawable/spinner_normal"
+                android:drawable="@drawable/spinner_bg_normal_box"
                 android:state_focused="false" />
-
             <item
-                android:drawable="@drawable/spinner_selected"
+                android:drawable="@drawable/spinner_bg_selected_box"
                 android:state_focused="true" />
 
             <item
-                android:drawable="@drawable/spinner_selected"
+                android:drawable="@drawable/spinner_bg_selected_box"
                 android:state_selected="true" />
 
         </selector>

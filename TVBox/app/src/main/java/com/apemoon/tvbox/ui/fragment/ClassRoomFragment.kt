@@ -2,6 +2,7 @@ package com.apemoon.tvbox.ui.fragment
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.http.SslError
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -638,10 +639,19 @@ class ScoreFragment : BaseFragment() {
                             spinner2?.adapter = object : BaseSpinnerAdapter<ExamClassifyBean>(examClassifyList.examClassifyList) {
                                 override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                                     val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.setBackgroundColor(Color.TRANSPARENT)
                                     rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
                                     return rootView
                                 }
+
+                                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                                    val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
+                                    return rootView
+                                    // return super.getDropDownView(position, convertView, parent)
+                                }
                             }
+
 
                             spinner2?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -689,8 +699,16 @@ class ScoreFragment : BaseFragment() {
                             spinner1?.adapter = object : BaseSpinnerAdapter<UserSemstersEntity.SemstersBean>(semstersEntity.semesterList) {
                                 override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                                     val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.setBackgroundColor(Color.TRANSPARENT)
                                     rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
                                     return rootView
+                                }
+
+                                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                                    val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
+                                    return rootView
+                                    // return super.getDropDownView(position, convertView, parent)
                                 }
                             }
                             spinner1?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -924,8 +942,16 @@ class SchoolAssignmentFragment : BaseFragment() {
                             spinner1?.adapter = object : BaseSpinnerAdapter<SubjectBean>(subs) {
                                 override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                                     val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.setBackgroundColor(Color.TRANSPARENT)
                                     rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
                                     return rootView
+                                }
+
+                                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                                    val rootView = LayoutInflater.from(activity).inflate(R.layout.spinner_item_layout, parent, false)
+                                    rootView.findViewById<TextView>(R.id.spinnerTv).text = getItem(position).name
+                                    return rootView
+                                    // return super.getDropDownView(position, convertView, parent)
                                 }
                             }
                             spinner1?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
