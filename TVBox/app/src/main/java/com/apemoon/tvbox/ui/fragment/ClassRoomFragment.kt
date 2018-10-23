@@ -461,7 +461,6 @@ class SampleFragmentA : BaseFragment() {
                                 weekArr.add("第六节")
                                 weekArr.add("第七节")
                                 data.add(weekArr)
-
                                 data.add(initArr("星期一"))
                                 data.add(initArr("星期二"))
                                 data.add(initArr("星期三"))
@@ -470,16 +469,28 @@ class SampleFragmentA : BaseFragment() {
                                 if ("2" == httpResultBody.result?.classSchedule?.contentType) {
                                     val scheduleJsonStr = httpResultBody.result.classSchedule?.scheduleJson
                                     val jar = JsonParser().parse(scheduleJsonStr).asJsonArray
-                                    jar.forEachIndexed { index, jsonElement ->
-                                        //7
-                                        val jb = jsonElement.asJsonArray
-                                        jb.forEachIndexed { _index, jsonElement ->
-                                            //6
-                                            if (_index != 0) {
-                                                data[_index][index + 1] = jsonElement.asString
+                                    jar.forEachIndexed { num, jsonElement ->
+                                        val jb = jsonElement.asJsonObject
+                                        val keys = jb.keySet()
+                                        keys.forEachIndexed { week, s ->
+                                            if (week == 0) {
+                                                data[week][num + 1] = s
+                                            } else {
+                                                data[week][num + 1] = jb.get(s).asString
                                             }
                                         }
                                     }
+//                                    val jar = JsonParser().parse(scheduleJsonStr).asJsonArray
+//                                    jar.forEachIndexed { index, jsonElement ->
+//                                        //7
+//                                        val jb = jsonElement.asJsonArray
+//                                        jb.forEachIndexed { _index, jsonElement ->
+//                                            //6
+//                                            if (_index != 0) {
+//                                                data[_index][index + 1] = jsonElement.asString
+//                                            }
+//                                        }
+//                                    }
                                 }
                                 (contentRecyclerView?.adapter as BaseQuickAdapter<ArrayList<String>, BaseViewHolder>).replaceData(data)
                             }

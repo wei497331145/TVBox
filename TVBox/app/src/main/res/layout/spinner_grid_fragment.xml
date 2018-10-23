@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:gravity="center"
+                android:overlapAnchor="false"
                 android:nextFocusDown="@null"
                 android:nextFocusLeft="@null"
                 android:nextFocusRight="@id/spinner2"
@@ -38,6 +39,7 @@
                 android:nextFocusDown="@null"
                 android:nextFocusLeft="@id/spinner1"
                 android:nextFocusRight="@null"
+                android:overlapAnchor="false"
                 android:nextFocusUp="@null" />
         </LinearLayout>
 

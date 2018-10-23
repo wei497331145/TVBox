@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/dp_8"
-    android:paddingEnd="@dimen/dp_31"
     android:paddingStart="@dimen/dp_31"
-    android:paddingTop="@dimen/dp_8">
+    android:paddingTop="@dimen/dp_8"
+    android:paddingEnd="@dimen/dp_31"
+    android:paddingBottom="@dimen/dp_8">
 
     <TextView
         android:id="@+id/spinnerTv"

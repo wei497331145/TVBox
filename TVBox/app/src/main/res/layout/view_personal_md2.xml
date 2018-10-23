@@ -24,6 +24,7 @@
             android:background="@drawable/shape_spinner_drop_down"
             android:nextFocusLeft="@id/tv_sanction_info"
             android:nextFocusUp="@null"
+            android:overlapAnchor="false"
             android:spinnerMode="dropdown"
             android:popupBackground="@color/font_FF0072AC"
             android:visibility="gone" />
