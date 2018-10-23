@@ -157,6 +157,7 @@ public class MainTabView extends LinearLayout {
     }
 
     public void setTab() {
+        indicator.setVisibility(GONE);
         switch (mPosition) {
             case 1:
                 setTabChange(mTvMain);
@@ -183,6 +184,7 @@ public class MainTabView extends LinearLayout {
                 setTabChange(mTvStore);
                 break;
 
+
         }
     }
 
@@ -203,6 +205,7 @@ public class MainTabView extends LinearLayout {
     }
 
     public void setTabUnable(){
+        indicator.setVisibility(VISIBLE);
         mTvMain.setEnabled(false);
         mTvNotice.setEnabled(false);
         mTvClass.setEnabled(false);

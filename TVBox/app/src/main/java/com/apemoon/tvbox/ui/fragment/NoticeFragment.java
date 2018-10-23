@@ -188,13 +188,12 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
         super.onDestroy();
     }
 
-
     @Override
     public void getReceiveNoticeListSuccess(ReceiveNoticeListEntity receiveNoticeListEntity) {
         if (receiveNoticeListEntity != null ) {
             noticeList = receiveNoticeListEntity.getNoticeList();
+            setPageInfo(noticeList.size());
             if (noticeList != null && noticeList.size()>0 && emptyRootLayout!=null ) {
-                setPageInfo(noticeList.size());
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
                         if (noticeList.size() != 0) {

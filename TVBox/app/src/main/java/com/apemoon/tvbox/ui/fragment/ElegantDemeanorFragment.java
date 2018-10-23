@@ -116,8 +116,8 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     public void receiveInformationsSuccess(InfoListEntity entity) {
         if (entity != null) {
             informationBeanList = entity.getInformationList();
+            setPageInfo(informationBeanList.size());
             if (informationBeanList != null && informationBeanList.size()>0) {
-                setPageInfo(informationBeanList.size());
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
                         mInformationAdater.setNewData(informationBeanList);

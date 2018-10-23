@@ -131,8 +131,8 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     public void receiveInformationsSuccess(InfoListEntity entity) {
         if (entity != null) {
             informationBeanList = entity.getInformationList();
+            setPageInfo(informationBeanList.size());
             if (informationBeanList != null && informationBeanList.size()>0 && emptyRootLayout!=null) {
-                setPageInfo(informationBeanList.size());
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
                         mInformationAdater.setNewData(informationBeanList);

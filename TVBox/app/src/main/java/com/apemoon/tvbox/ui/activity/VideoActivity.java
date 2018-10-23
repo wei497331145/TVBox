@@ -84,4 +84,19 @@ public class VideoActivity extends BaseActivity {
 
         super.onDestroy();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        videoView.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        videoView.onStart();
+    }
+
 }

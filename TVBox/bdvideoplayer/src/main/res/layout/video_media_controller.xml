@@ -30,8 +30,12 @@
         android:layout_width="32dp"
         android:layout_height="44dp"
         android:layout_alignTop="@id/video_controller_title"
+        android:background="@drawable/bg_bl_tv_selector"
         android:padding="12dp"
+        android:focusable="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_back_white" />
+        android:src="@drawable/ic_back_white" >
+        <requestFocus/>
+    </ImageView>
 
 </RelativeLayout>

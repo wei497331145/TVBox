@@ -41,9 +41,9 @@ public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountIn
             public void onFocusChange(View view, boolean hasFocus) {
                 ImageView iv = helper.getView(R.id.iv_head);
                 if(hasFocus) {
-                    iv.setEnabled(true);
+                    helper.getView(R.id.iv_head).setBackgroundResource(R.drawable.bg_cirlcle_focused);
                 }else{
-                    iv.setEnabled(false);
+                    helper.getView(R.id.iv_head).setBackgroundResource(R.drawable.bg_cirlcle_normal);
                 }
                 AnimationUtil.setTextAnimation(iv, hasFocus, 1.1f, 1.1f, 1.0f, 1.0f);
                 recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());

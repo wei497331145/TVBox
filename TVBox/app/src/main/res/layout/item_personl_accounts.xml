@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_notice"
     android:orientation="vertical"
-    android:layout_marginBottom="@dimen/dp_10"
     android:layout_margin="@dimen/dp_10"
     android:focusable="true"
     android:layout_width="wrap_content"
@@ -11,8 +10,8 @@
         android:id="@+id/iv_head"
         android:layout_width="@dimen/dp_100"
         android:layout_height="@dimen/dp_100"
+        android:layout_margin="@dimen/dp_10"
         android:padding="@dimen/dp_3"
-        android:background="@drawable/bg_bl_circle_selector"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_vertical" />
 

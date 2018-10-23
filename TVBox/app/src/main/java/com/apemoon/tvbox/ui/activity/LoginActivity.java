@@ -81,8 +81,8 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {//当选中这个View时做一些你所需要的操作
-                    view.setScaleX(1.2f);
-                    view.setScaleY(1.2f);
+                    view.setScaleX(1.1f);
+                    view.setScaleY(1.1f);
                 } else {
                     view.setScaleX(1.0f);
                     view.setScaleY(1.0f);

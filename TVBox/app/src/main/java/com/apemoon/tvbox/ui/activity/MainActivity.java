@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.apemoon.tvbox.R;
@@ -36,8 +38,8 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
     @BindView(R.id.tv_school_name)
     TextView mTvSchoolName;
-    @BindView(R.id.iv_switch_school)
-    ImageView mIvSwitchSchool;
+    @BindView(R.id.rl_switch_school)
+    RelativeLayout mIvSwitchSchool;
     @BindView(R.id.iv_head)
     ImageView mIvHead;
     @BindView(R.id.tv_name)
@@ -131,10 +133,10 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     }
 
 
-    @OnClick({R.id.iv_switch_school, R.id.iv_setting})
+    @OnClick({R.id.rl_switch_school, R.id.iv_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_switch_school://切换学校
+            case R.id.rl_switch_school://切换学校
                 showSchoolPop();
                 break;
             case R.id.iv_setting://设置
@@ -156,16 +158,18 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment fragment = FragmentFactory.getIntance().getFragment(position);
-                if(fragment == null){
-                    return;
+                if(!MainActivity.this.isFinishing()) {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    Fragment fragment = FragmentFactory.getIntance().getFragment(position);
+                    if (fragment == null) {
+                        return;
+                    }
+                    fragment.setUserVisibleHint(true);
+                    if (!fragment.isAdded()) {
+                        transaction.replace(R.id.fl_main, fragment, String.valueOf(position));
+                    }
+                    transaction.show(fragment).commitAllowingStateLoss();
                 }
-                fragment.setUserVisibleHint(true);
-                if (!fragment.isAdded()) {
-                    transaction.replace(R.id.fl_main, fragment, String.valueOf(position));
-                }
-                transaction.show(fragment).commit();
             }
         },100);
 
@@ -175,12 +179,14 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Fragment fragment = FragmentFactory.getIntance().getFragment(position);
-                if(fragment==null){
-                    return;
+                if(!MainActivity.this.isFinishing()) {
+                    Fragment fragment = FragmentFactory.getIntance().getFragment(position);
+                    if (fragment == null) {
+                        return;
+                    }
+                    fragment.setUserVisibleHint(false);
+                    getSupportFragmentManager().beginTransaction().hide(fragment).commit();
                 }
-                fragment.setUserVisibleHint(false);
-                getSupportFragmentManager().beginTransaction().hide(fragment).commit();
             }
         },100);
     }

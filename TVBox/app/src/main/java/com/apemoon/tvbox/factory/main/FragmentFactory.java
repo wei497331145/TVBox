@@ -9,6 +9,7 @@ import com.apemoon.tvbox.ui.fragment.ElegantDemeanorFragment;
 import com.apemoon.tvbox.ui.fragment.HomeFragment;
 import com.apemoon.tvbox.ui.fragment.NoticeFragment;
 import com.apemoon.tvbox.ui.fragment.PersonalFragment;
+import com.apemoon.tvbox.ui.fragment.StoreFragment;
 import com.apemoon.tvbox.ui.fragment.TraditionalFragment;
 
 
@@ -23,6 +24,7 @@ public class FragmentFactory {
     private ElegantDemeanorFragment mElegantDemeanorFragment;
     private TraditionalFragment mTraditionalFragment;
     private PersonalFragment mPersonalFragment;
+    private StoreFragment mStoreFragment;
 
     private FragmentFactory() {
 
@@ -44,14 +46,10 @@ public class FragmentFactory {
         Fragment baseFragment = null;
         switch (position) {
             case 0://首页
-//                if (mHomeFragment == null) {
-//                    mHomeFragment = new HomeFragment();
-//                }
-//                baseFragment = mHomeFragment;
-                if (mTraditionalFragment == null) {
-                    mTraditionalFragment = new TraditionalFragment();
+                if (mHomeFragment == null) {
+                    mHomeFragment = new HomeFragment();
                 }
-                baseFragment = mTraditionalFragment;
+                baseFragment = mHomeFragment;
                 break;
             case 1://公告通知
                 if (mNoticeFragment == null) {
@@ -89,6 +87,12 @@ public class FragmentFactory {
                 }
                 baseFragment = mPersonalFragment;
                 break;
+            case 7://商城
+                if (mStoreFragment == null) {
+                    mStoreFragment = new StoreFragment();
+                }
+                baseFragment = mStoreFragment;
+                break;
         }
         return baseFragment;
     }
@@ -101,6 +105,7 @@ public class FragmentFactory {
         mElegantDemeanorFragment = null;
         mTraditionalFragment = null;
         mPersonalFragment = null;
+        mStoreFragment = null;
     }
 
 

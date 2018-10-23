@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.ActivityManager;
@@ -41,8 +43,8 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
     LinearLayout mRootView;
     @BindView(R.id.tv_school_name)
     TextView mTvSchoolName;
-    @BindView(R.id.iv_switch_school)
-    ImageView mIvSwitchSchool;
+    @BindView(R.id.rl_switch_school)
+    RelativeLayout mIvSwitchSchool;
     @BindView(R.id.iv_head)
     ImageView mIvHead;
     @BindView(R.id.tv_name)
@@ -124,10 +126,10 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
     }
 
 
-    @OnClick({R.id.iv_switch_school, R.id.iv_setting, R.id.tv_back, R.id.tv_logout, R.id.tv_switch_account})
+    @OnClick({R.id.rl_switch_school, R.id.iv_setting, R.id.tv_back, R.id.tv_logout, R.id.tv_switch_account})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_switch_school://切换学校
+            case R.id.rl_switch_school://切换学校
                 showSchoolPop();
                 break;
             case R.id.iv_setting://设置

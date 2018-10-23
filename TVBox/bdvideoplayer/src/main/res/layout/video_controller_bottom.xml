@@ -14,6 +14,8 @@
         android:layout_width="44dp"
         android:layout_height="match_parent"
         android:padding="10dp"
+        android:focusable="true"
+        android:background="@drawable/bg_bl_tv_selector"
         android:src="@drawable/ic_video_pause" />
 
     <TextView

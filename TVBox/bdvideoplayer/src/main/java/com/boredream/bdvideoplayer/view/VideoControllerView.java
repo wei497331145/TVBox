@@ -175,10 +175,10 @@ public class VideoControllerView extends FrameLayout {
 
         post(mShowProgress);
 
-        if (timeout > 0) {
-            removeCallbacks(mFadeOut);
-            postDelayed(mFadeOut, timeout);
-        }
+//        if (timeout > 0) {
+//            removeCallbacks(mFadeOut);
+//            postDelayed(mFadeOut, timeout);
+//        }
     }
 
     private void hide() {
