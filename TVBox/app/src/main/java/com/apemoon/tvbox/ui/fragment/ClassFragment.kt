@@ -197,29 +197,25 @@ class ClassActivityFragment : BaseFragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        initSelectedPosition(selectId)
-    }
-
-    private fun initSelectedPosition(position: Int) {
-        if (contentRecyclerView != null && position >= 0 && null != contentRecyclerView?.adapter) {
-            val adapter = contentRecyclerView?.adapter as BaseQuickAdapter<ClassActivityBean, BaseViewHolder>
-            if (position < adapter.data.size) {
-                contentRecyclerView?.scrollToPosition(position)
-                contentRecyclerView?.postDelayed({
-                    contentRecyclerView?.findViewHolderForAdapterPosition(position)?.itemView?.requestFocus()
-                }, 50)
-            }
+    private var selectView: View? = null
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            selectView?.postDelayed({
+                selectView?.requestFocus()
+            }, 20)
         }
     }
 
 
     private var selectId = 0
+
     override fun initData() {
         contentRecyclerView?.layoutManager = android.support.v7.widget.GridLayoutManager(activity, 3)
         /*contentRecyclerView?.adapter = */object : BaseQuickAdapter<ClassActivityBean, BaseViewHolder>(R.layout.class_activity_layout) {
             override fun convert(helper: BaseViewHolder?, item: ClassActivityBean?) {
+                helper?.getView<View>(R.id.rootItemLayout)?.id = View.generateViewId()
+
                 helper?.getView<TextView>(R.id.activityTitleTv)?.text = item?.title
                 if (!TextUtils.isEmpty(item?.createTime)) {
                     helper?.getView<TextView>(R.id.activityTimeTv)?.text = DateTimeUtil.getStrTime(item?.createTime?.toLong()!!)
@@ -248,13 +244,7 @@ class ClassActivityFragment : BaseFragment() {
                             if (null != headerView) {
                                 holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = headerView.id
                             }
-//                            holder.getView<View>(R.id.rootItemLayout)?.setOnKeyListener { v, keyCode, event ->
-//                                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {//左键
-//                                    fragment.initSelectedPosition(fragment.currentPosition)
-//                                    return@setOnKeyListener true
-//                                }
-//                                return@setOnKeyListener false
-//                            }
+
                             // holder.getView<View>(R.id.rootItemLayout)?.nextFocusLeftId = view.id
                         }
                     }
@@ -279,6 +269,9 @@ class ClassActivityFragment : BaseFragment() {
                 transaction.add(R.id.fl_main, tagFragment, "ClassActivityDetailFragment")
             }
             selectId = position
+            selectView = contentRecyclerView?.layoutManager?.focusedChild
+            LogUtil.d("onResume  focusedChild --  " + selectView?.id)
+
             (tagFragment as ClassActivityDetailFragment).selectId = position
             tagFragment.userVisibleHint = true
             transaction.commit()
@@ -426,22 +419,29 @@ class ClassActivityDetailFragment : BaseFragment() {
     override fun initListener() {
         tv_back?.setOnClickListener {
             val manager = activity.supportFragmentManager
+
+            val tagFragment = manager.findFragmentByTag("ClassActivityDetailFragment")
+            if (null != tagFragment) {
+                tagFragment.userVisibleHint = false
+                val transaction = manager.beginTransaction()
+                transaction.remove(tagFragment)
+                transaction.commit()
+            }
+            (activity as MainActivity).setMainTabVisiable(true)
             val fragments = manager.fragments
             fragments.forEachIndexed { index, fragment ->
                 if (fragment is ClassFragment) {
                     val transaction = manager.beginTransaction()
                     transaction.show(fragment)
                     transaction.commit()
+                    //刷新班级活动ClassActivityFragment中的焦点
+                    fragment.childFragmentManager.fragments.forEachIndexed { index, ft ->
+                        if (ft is ClassActivityFragment) {
+                            ft.onHiddenChanged(false)
+                        }
+                    }
                 }
             }
-            val tagFragment = manager.findFragmentByTag("ClassActivityDetailFragment")
-            if (null != tagFragment) {
-                tagFragment.userVisibleHint = true
-                val transaction = manager.beginTransaction()
-                transaction.remove(tagFragment)
-                transaction.commit()
-            }
-            (activity as MainActivity).setMainTabVisiable(true)
         }
     }
 
@@ -611,6 +611,7 @@ class PhotoAlbumFragment : BaseFragment() {
         contentRecyclerView?.layoutManager = GridLayoutManager(activity, 3)
         /*   contentRecyclerView?.adapter = */object : BaseQuickAdapter<PhotoAlbumBean, BaseViewHolder>(R.layout.photo_album_item_layout) {
             override fun convert(helper: BaseViewHolder?, item: PhotoAlbumBean?) {
+                helper?.getView<View>(R.id.photoRootItem)?.id = View.generateViewId()
                 val photoIv = helper?.getView<ImageView>(R.id.photoIv)
                 Glide.with(GlobalUtil.mContext).load(item?.cover).into(photoIv)
                 if (!TextUtils.isEmpty(item?.createTime)) {
@@ -666,10 +667,23 @@ class PhotoAlbumFragment : BaseFragment() {
             }
             (tagFragment as PhotoListFragment).photoAlbumId = (adapter.getItem(position) as PhotoAlbumBean).id
 
+            selectView = view
+
             tagFragment.userVisibleHint = true
             transaction.commit()
         }
     }
+
+    private var selectView: View? = null
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            selectView?.postDelayed({
+                selectView?.requestFocus()
+            }, 20)
+        }
+    }
+
 
     override fun initListener() {
     }
@@ -756,14 +770,6 @@ class PhotoListFragment : BaseFragment() {
 
         tv_back?.setOnClickListener {
             val manager = activity.supportFragmentManager
-            val fragments = manager.fragments
-            fragments.forEachIndexed { index, fragment ->
-                if (fragment is ClassFragment) {
-                    val transaction = manager.beginTransaction()
-                    transaction.show(fragment)
-                    transaction.commit()
-                }
-            }
             val tagFragment = manager.findFragmentByTag("PhotoListFragment")
             if (null != tagFragment) {
                 tagFragment.userVisibleHint = true
@@ -771,7 +777,21 @@ class PhotoListFragment : BaseFragment() {
                 transaction.remove(tagFragment)
                 transaction.commit()
             }
+
+            val fragments = manager.fragments
             (activity as MainActivity).setMainTabVisiable(true)
+            fragments.forEachIndexed { index, fragment ->
+                if (fragment is ClassFragment) {
+                    val transaction = manager.beginTransaction()
+                    transaction.show(fragment)
+                    transaction.commit()
+                    fragment.childFragmentManager.fragments.forEachIndexed { index, ft ->
+                        if (ft is PhotoAlbumFragment) {
+                            ft.onHiddenChanged(false)
+                        }
+                    }
+                }
+            }
         }
         tv_back?.requestFocus()
     }
