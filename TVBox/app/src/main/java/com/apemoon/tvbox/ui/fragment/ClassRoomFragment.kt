@@ -134,6 +134,8 @@ class ClassRoomFragment : BaseFragment() {
 
 
     override fun initData() {
+
+
         /*   headerRecyclerView?.adapter =*/object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.curriculum_header, headerList) {
             override fun convert(helper: BaseViewHolder?, item: String?) {
                 helper?.getView<TextView>(R.id.headTv)?.text = item
@@ -159,14 +161,30 @@ class ClassRoomFragment : BaseFragment() {
                     holder.getView<View>(R.id.rootHeadLayout)?.nextFocusLeftId = holder.getView<View>(R.id.rootHeadLayout)?.id!!
                     holder.getView<View>(R.id.rootHeadLayout)?.nextFocusRightId = holder.getView<View>(R.id.rootHeadLayout)?.id!!
                 }
+
+
                 holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
+                        //重置选中状态背景
+                        val count = headerRecyclerView?.layoutManager?.childCount!!
+                        for (index in 0..count) {
+                            getPositionItemView(index)?.setBackgroundResource(R.drawable.bg_bl_tv_info_selector)
+                        }
+                        //v.setBackgroundResource(R.drawable.bg_bl_tv_info_selector)
                         currentPosition = position
                         LogUtil.d("getCurrentPositionItemView  FocusChangeListener   $currentPosition")
                         if (position == 1) return@setOnFocusChangeListener
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
                     }
+                }
+                holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnKeyListener { v, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                        if (v.nextFocusRightId != v.id) {
+                            v.setBackgroundResource(R.drawable.bg_bl_tv_info_drawable)
+                        }
+                    }
+                    return@setOnKeyListener false
                 }
             }
         }.bindToRecyclerView(headerRecyclerView)

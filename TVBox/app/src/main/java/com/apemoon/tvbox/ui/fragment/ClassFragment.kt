@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.TextUtils
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -89,13 +90,28 @@ class ClassFragment : BaseFragment() {
                     holder.getView<View>(R.id.rootHeadLayout)?.nextFocusUpId = (activity as MainActivity).mainTab.id
                     (activity as MainActivity).mainTab.nextFocusDownId = holder.getView<View>(R.id.rootHeadLayout).id
                 }
-                holder?.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
+                holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
+                        //重置选中状态背景
+                        val count = headerRecyclerView?.layoutManager?.childCount!!
+                        for (index in 0..count) {
+                            getPositionItemView(index)?.setBackgroundResource(R.drawable.bg_bl_tv_info_selector)
+                        }
+
                         currentPosition = position
                         if (position == 1 || position == 2) return@setOnFocusChangeListener
                         val fr = FragmentFactory.createFragment(position)
                         replaceFragment(fr!!)
                     }
+                }
+
+                holder.getView<ViewGroup>(R.id.rootHeadLayout)?.setOnKeyListener { v, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                        if (v.nextFocusRightId != v.id) {
+                            v.setBackgroundResource(R.drawable.bg_bl_tv_info_drawable)
+                        }
+                    }
+                    return@setOnKeyListener false
                 }
             }
         }.bindToRecyclerView(headerRecyclerView)
