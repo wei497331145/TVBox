@@ -3,6 +3,7 @@ package com.apemoon.tvbox.ui.fragment;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,6 +125,33 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
         mTvSanctionInfo.setOnFocusChangeListener(this);
         mTvJudgeInfo.setOnFocusChangeListener(this);
 
+        //指定向上焦点
+        mTvBaseInfo.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                if (v.getNextFocusRightId() != v.getId()) {
+                    v.setBackgroundResource(R.drawable.bg_bl_tv_info_drawable);
+                }
+            }
+            return false;
+        });
+
+        mTvSanctionInfo.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                if (v.getNextFocusRightId() != v.getId()) {
+                    v.setBackgroundResource(R.drawable.bg_bl_tv_info_drawable);
+                }
+            }
+            return false;
+        });
+
+        mTvJudgeInfo.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                if (v.getNextFocusRightId() != v.getId()) {
+                    v.setBackgroundResource(R.drawable.bg_bl_tv_info_drawable);
+                }
+            }
+            return false;
+        });
 
     }
 
@@ -283,21 +311,41 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     }
 
+    public void resetInfoItemDrawable() {
+        mTvBaseInfo.setBackgroundResource(R.drawable.bg_bl_tv_info_selector);
+        mTvSanctionInfo.setBackgroundResource(R.drawable.bg_bl_tv_info_selector);
+        mTvJudgeInfo.setBackgroundResource(R.drawable.bg_bl_tv_info_selector);
+    }
+
+//         mTvBaseInfo.setOnFocusChangeListener(this);
+//        mTvSanctionInfo.setOnFocusChangeListener(this);
+//        mTvJudgeInfo.setOnFocusChangeListener(this);
+
     @Override
     public void onFocusChange(View view, boolean b) {
         switch (view.getId()) {
             case R.id.tv_base_info://个人信息
+                if(b){
+                    resetInfoItemDrawable();
+                }
                 llPersonalMd1.setVisibility(View.VISIBLE);
                 llPersonalMd2.setVisibility(View.GONE);
                 llPersonalMd3.setVisibility(View.GONE);
                 break;
 
             case R.id.tv_sanction_info://奖罚信息
+                if(b){
+                    resetInfoItemDrawable();
+                }
+
                 llPersonalMd1.setVisibility(View.GONE);
                 llPersonalMd2.setVisibility(View.VISIBLE);
                 llPersonalMd3.setVisibility(View.GONE);
                 break;
             case R.id.tv_judge_info://评价信息
+                if(b){
+                    resetInfoItemDrawable();
+                }
                 llPersonalMd1.setVisibility(View.GONE);
                 llPersonalMd2.setVisibility(View.GONE);
                 llPersonalMd3.setVisibility(View.VISIBLE);

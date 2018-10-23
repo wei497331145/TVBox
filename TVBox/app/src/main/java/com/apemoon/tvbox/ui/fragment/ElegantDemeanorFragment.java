@@ -3,7 +3,6 @@ package com.apemoon.tvbox.ui.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,7 +17,6 @@ import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
-import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -77,14 +75,14 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     public void initListener() {
-        if(mInformationAdater == null){
+        if (mInformationAdater == null) {
             mInformationAdater = new InformationAdapter();
         }
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 InfoListEntity.InformationBean bean = mInformationAdater.getItem(position);
-                Fragment fragment = InfoListFragment.getInstance(currentTwoClassId,bean.getId(),4);
+                Fragment fragment = InfoListFragment.getInstance(currentTwoClassId, bean.getId(), 4);
                 fragment.setUserVisibleHint(true);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 if (!fragment.isAdded()) {
@@ -117,7 +115,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         if (entity != null) {
             informationBeanList = entity.getInformationList();
             setPageInfo(informationBeanList.size());
-            if (informationBeanList != null && informationBeanList.size()>0) {
+            if (informationBeanList != null && informationBeanList.size() > 0) {
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
                         mInformationAdater.setNewData(informationBeanList);
@@ -126,12 +124,12 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                         mInformationAdater.addData(informationBeanList);
                         break;
                 }
-                if(emptyRootLayout!=null) {
+                if (emptyRootLayout != null) {
                     emptyRootLayout.setVisibility(View.GONE);
                 }
-            }else{
-                if(getRequestType() == REQUESTTYPE_NEW_DATE){
-                    if(emptyRootLayout!=null) {
+            } else {
+                if (getRequestType() == REQUESTTYPE_NEW_DATE) {
+                    if (emptyRootLayout != null) {
                         emptyRootLayout.setVisibility(View.VISIBLE);
                     }
                 }
@@ -148,7 +146,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
         twoClasscialList = entity.getSchoollTwoClassical();
-        if(twoClasscialList!=null && twoClasscialList.size()>0) {
+        if (twoClasscialList != null && twoClasscialList.size() > 0) {
             currentTwoClassId = twoClasscialList.get(0).getId();
             InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
                 @Override
@@ -160,7 +158,8 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                     }
                 }
             });
-            lvTwoClassical.setAdapter(twoClassicaladapter);
+            //  lvTwoClassical.setAdapter(twoClassicaladapter);
+
             twoClassicaladapter.setNewData(twoClasscialList);
             twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
@@ -172,9 +171,22 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                     }
                 }
             });
+
+            twoClassicaladapter.bindToRecyclerView(lvTwoClassical);
+
+            lvTwoClassical.postDelayed(() -> {
+                if (lvTwoClassical.getLayoutManager().getChildCount() > 0) {
+                    View itemView = lvTwoClassical.getLayoutManager().getChildAt(0);
+                    if (null != activity && itemView != null) {
+                        ((MainActivity) activity).getMainTab().setNextFocusDownId(itemView.getId());
+                    }
+                }
+            }, 20);
+
+
             requestNew();
-        }else{
-            if(emptyRootLayout!=null) {
+        } else {
+            if (emptyRootLayout != null) {
                 llRecy.setVisibility(View.VISIBLE);
                 emptyRootLayout.setVisibility(View.GONE);
             }
@@ -193,10 +205,6 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     }
 
 
-
-
-
-
     @Override
     public void requestNew() {
         super.requestNew();
@@ -210,9 +218,6 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         super.onLoadMoreRequested();
         mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
     }
-
-
-
 
 
 }
