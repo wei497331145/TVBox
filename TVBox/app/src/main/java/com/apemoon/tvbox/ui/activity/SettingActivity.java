@@ -16,7 +16,6 @@ import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
 import com.apemoon.tvbox.presenter.SettingPresenter;
-import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
 import com.apemoon.tvbox.ui.view.address.AddressSelectorNewB;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AccountInfoUtil;
@@ -186,8 +185,8 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
     public void dialogclose() {
         GlobalUtil.showToast("选择成功");
         dialog.dismiss();
-        recreate();
-    }
+
+        MainActivity.actionStart(this, null);    }
 
     @Override
     public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {

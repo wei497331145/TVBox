@@ -136,6 +136,9 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
+        if(mRecyclerView == null){
+            return;
+        }
         if (entity != null) {
             informationBeanList = entity.getInformationList();
             setPageInfo(informationBeanList.size());
@@ -169,6 +172,9 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
+        if(lvTwoClassical == null){
+            return;
+        }
         twoClasscialList = entity.getSchoollTwoClassical();
         if (twoClasscialList != null && twoClasscialList.size() > 0) {
             currentTwoClassId = twoClasscialList.get(0).getId();

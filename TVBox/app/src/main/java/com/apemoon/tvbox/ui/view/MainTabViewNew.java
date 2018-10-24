@@ -16,14 +16,12 @@ import android.widget.TextView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.interfaces.IMainTabView;
 
-import java.util.logging.Handler;
-
 /**
  * Created by water on 2018/8/29/029.
  * des：主界面的TabLayout
  */
 
-public class MainTabView extends LinearLayout {
+public class MainTabViewNew extends LinearLayout {
     View view;
     TextView mTvMain;
     TextView mTvNotice;
@@ -61,12 +59,12 @@ public class MainTabView extends LinearLayout {
     }
 
 
-    public MainTabView(Context context) {
+    public MainTabViewNew(Context context) {
         super(context);
         init(context);
     }
 
-    public MainTabView(Context context, AttributeSet attrs) {
+    public MainTabViewNew(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }

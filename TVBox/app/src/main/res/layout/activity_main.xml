@@ -28,7 +28,7 @@
 
         <FrameLayout
             android:id="@+id/fl_main"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_0"
             android:layout_marginBottom="@dimen/dp_20"
             android:nextFocusUp="@id/main_tab"
             android:layout_width="match_parent"

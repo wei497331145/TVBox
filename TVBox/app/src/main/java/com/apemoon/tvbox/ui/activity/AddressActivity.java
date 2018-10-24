@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseActivity;
-import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
+import com.apemoon.tvbox.ui.view.address.AddressSelectorNewB;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.smarttop.library.bean.AdressBean;
 import com.smarttop.library.bean.City;
@@ -24,7 +24,7 @@ import com.smarttop.library.widget.OnAddressSelectedListener;
  * Created by smartTop on 2016/12/6.
  */
 
-public class AddressActivity extends BaseActivity implements View.OnClickListener, OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
+public class AddressActivity extends BaseActivity implements View.OnClickListener, OnAddressSelectedListener, AddressSelectorNewB.OnDialogCloseListener, AddressSelectorNewB.onSelectorAreaPositionListener {
     private TextView tv_selector_area;
     private BottomDialog dialog;
     private String provinceCode;
@@ -45,7 +45,7 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
         tv_selector_area = (TextView) findViewById(R.id.tv_selector_area);
         content = (LinearLayout) findViewById(R.id.content);
         tv_selector_area.setOnClickListener(this);
-        AddressSelectorNew selector = new AddressSelectorNew(AddressActivity.this);
+        AddressSelectorNewB selector = new AddressSelectorNewB(AddressActivity.this);
         //获取地址管理数据库
         addressDictManager = selector.getAddressDictManager();
 

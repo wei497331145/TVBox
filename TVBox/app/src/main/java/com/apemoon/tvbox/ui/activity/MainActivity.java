@@ -21,7 +21,6 @@ import com.apemoon.tvbox.interfaces.IMainTabView;
 import com.apemoon.tvbox.interfaces.IMainView;
 import com.apemoon.tvbox.presenter.MainPresenter;
 import com.apemoon.tvbox.ui.view.MainTabView;
-import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
 import com.apemoon.tvbox.ui.view.address.AddressSelectorNewB;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AnimationUtil;
@@ -69,6 +68,7 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
     public static void actionStart(Context context, UserEntity userEntity) {//带参启动界面
         Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(USER_ENTITY, userEntity);
         context.startActivity(intent);
     }

@@ -149,7 +149,7 @@ public class AddressSelectorNewB implements SchoolView,AdapterView.OnItemClickLi
                         List<City> tmpcities = (List<City>) msg.obj;
                         beijinCountries = new ArrayList<>();
                         for(City city:tmpcities){
-                            beijinCountries.add(new County(city.name));
+                            beijinCountries.add(new County(city.name,city.id));
                         }
                     }else {
                         cities = (List<City>) msg.obj;

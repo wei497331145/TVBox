@@ -301,6 +301,9 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
+        if(mRecyclerView == null){
+            return;
+        }
         if (entity != null) {
             informationBeanList = entity.getInformationList();
             //获取选中位置

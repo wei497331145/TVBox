@@ -213,6 +213,9 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     @Override
     public void getReceiveNoticeListSuccess(ReceiveNoticeListEntity receiveNoticeListEntity) {
+        if(mRecyclerView == null){
+            return;
+        }
         if (receiveNoticeListEntity != null) {
             noticeList = receiveNoticeListEntity.getNoticeList();
             setPageInfo(noticeList.size());

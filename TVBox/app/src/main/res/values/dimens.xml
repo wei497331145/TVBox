@@ -156,13 +156,13 @@
     <dimen name="dp_545">545dp</dimen>
 
 
-    <dimen name="sp_10">10sp</dimen>
-    <dimen name="sp_12">12sp</dimen>
-    <dimen name="sp_14">14sp</dimen>
-    <dimen name="sp_15">15sp</dimen>
-    <dimen name="sp_16">16sp</dimen>
-    <dimen name="sp_18">18sp</dimen>
-    <dimen name="sp_20">20sp</dimen>
+    <dimen name="sp_10">13sp</dimen>
+    <dimen name="sp_12">15sp</dimen>
+    <dimen name="sp_14">16sp</dimen>
+    <dimen name="sp_15">18sp</dimen>
+    <dimen name="sp_16">19sp</dimen>
+    <dimen name="sp_18">21sp</dimen>
+    <dimen name="sp_20">23sp</dimen>
 
 
 

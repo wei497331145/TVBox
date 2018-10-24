@@ -217,6 +217,9 @@ public class HomeFragment extends BaseFragment implements IInformationView {
 
     @Override
     public void receiveNewestInformationsSuccess(InfoListEntity entity) {
+        if(mRecyclerView == null){
+            return;
+        }
         if (entity.getInformationList().size() > 0) {
             mNewAdapter.setNewData(entity.getInformationList());
         }

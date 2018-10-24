@@ -229,6 +229,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     @Override
     public void receiveTeachersInfoSuccess(UserTeachersEntity entity) {
+        if(mRecyclerViewMd1 == null){
+            return;
+        }
         TeachersAdapter mTeachersAdapter = new TeachersAdapter();
         LinearLayoutManager ms = new LinearLayoutManager(getActivity());
         ms.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -246,7 +249,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     @Override
     public void receiveRecords2Success(UserRecordInfoEntity entity) {
-
+        if(mRecyclerViewMd3 == null){
+            return;
+        }
         JudegeAdapter mJudegeAdapter = new JudegeAdapter();
         mRecyclerViewMd3.setAdapter(mJudegeAdapter);
         mJudegeAdapter.setNewData(entity.getInfoRecordsList());
@@ -261,8 +266,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     @Override
     public void receiveRecords4Success(UserRecordInfoEntity entity) {
-
-
+        if(mRecyclerViewMd2 == null){
+            return;
+        }
         SanctionAdapter mSanctionAdapter = new SanctionAdapter();
         mRecyclerViewMd2.setAdapter(mSanctionAdapter);
         mSanctionAdapter.setNewData(entity.getInfoRecordsList());
@@ -277,6 +283,9 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     @Override
     public void receiveRemstersSuccess(UserSemstersEntity entity) {
+        if(md2Spiner == null){
+            return;
+        }
         semstersBeanList = entity.getSemesterList();
         mUserSemsterEntity = entity;
         md2Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()));

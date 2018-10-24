@@ -145,6 +145,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
+        if(mRecyclerView == null){
+            return;
+        }
         if (entity != null) {
             informationBeanList = entity.getInformationList();
             setPageInfo(informationBeanList.size());
@@ -175,6 +178,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
+        if(lvTwoClassical == null){
+            return;
+        }
         twoClasscialList = entity.getTraditonalTwoClassical();
         if (twoClasscialList != null && twoClasscialList.size() > 0 && lvTwoClassical != null) {
             if (emptyRootLayout != null && llRecy != null) {
