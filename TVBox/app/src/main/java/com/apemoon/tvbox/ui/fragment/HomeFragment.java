@@ -1,11 +1,16 @@
 package com.apemoon.tvbox.ui.fragment;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -71,6 +76,20 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         mTvMyAchievement.setFocusable(true);
         mCvAlbum.setFocusable(true);
         mCvCurriculum.setFocusable(true);
+
+        RoundedBitmapDrawable drawableC = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_album));
+        drawableC.setCornerRadius(5L);
+        mIvAlbum.setImageDrawable(drawableC);
+
+        RoundedBitmapDrawable drawableD = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_curriculum));
+        drawableD.setCornerRadius(5L);
+        mIvCurriculum.setImageDrawable(drawableD);
+
+
+    }
+
+    public static Bitmap id2Bitmap(Context context, int id) {
+        return BitmapFactory.decodeResource(context.getResources(), id);
     }
 
     @Override
