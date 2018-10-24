@@ -353,13 +353,16 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @OnClick(R.id.tv_back)
     public void onViewClicked(View view) {
+        Activity activity=getActivity();
+        if(null!=activity) ((MainActivity) getActivity()).setMainTabVisiable(true);
+
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         InfoListFragment.this.setUserVisibleHint(false);
         transaction.hide(InfoListFragment.this);
         Fragment fragment = FragmentFactory.getIntance().getFragment(currentFragmetnId);
-        fragment.setUserVisibleHint(true);
+       // fragment.setUserVisibleHint(true);
         transaction.show(fragment).commit();
-        ((MainActivity) getActivity()).setMainTabVisiable(true);
+
     }
 
 

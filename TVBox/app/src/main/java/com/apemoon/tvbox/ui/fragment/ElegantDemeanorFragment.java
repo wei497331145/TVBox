@@ -96,6 +96,17 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         mRecyclerView.setLayoutManager(mManagerLayout);
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && null != clickView) {
+            clickView.requestFocus();
+        }
+    }
+
+    private View clickView = null;
+
     @Override
     public void initListener() {
         if (mInformationAdater == null) {
@@ -104,6 +115,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                clickView = view;
                 InfoListEntity.InformationBean bean = mInformationAdater.getItem(position);
                 Fragment fragment = InfoListFragment.getInstance(currentTwoClassId, bean.getId(), 4);
                 fragment.setUserVisibleHint(true);
@@ -113,7 +125,6 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                 }
                 transaction.hide(ElegantDemeanorFragment.this);
                 transaction.show(fragment).commit();
-
             }
         });
     }
