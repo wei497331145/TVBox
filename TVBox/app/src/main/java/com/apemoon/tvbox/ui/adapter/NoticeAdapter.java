@@ -28,10 +28,12 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
     protected void convert(BaseViewHolder helper, ReceiveNoticeListEntity.NoticeListBean item) {
         if (item != null) {
             helper.setText(R.id.tv_title, item.getTitle());
+            helper.setText(R.id.tv_promulgator, item.getAutograph());
             helper.setText(R.id.tv_content, (Html.fromHtml(item.getContent())).toString());
             helper.setText(R.id.tv_time, DateTimeUtil.getStrTime(item.getCreateTime()));
             helper.setVisible(R.id.v_dot_read, "0".endsWith(item.getIsRead()));
         }
+
         helper.getView(R.id.ll_notice).setId(View.generateViewId());
 
         helper.getView(R.id.ll_notice).setOnFocusChangeListener((view, hasFocus) -> {
