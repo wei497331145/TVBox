@@ -42,7 +42,7 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
                 }
             }
             if (view != null && listener != null && hasFocus) {
-                listener.onItemSelectListner(helper.getLayoutPosition());
+                listener.onItemSelectListner(helper.getLayoutPosition(), view);
             }
         });
 
@@ -58,7 +58,7 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
     }
 
     public interface NoticeRecyclerViewItemSelectListener {
-        void onItemSelectListner(int position);
+        void onItemSelectListner(int position, View itemView);
     }
 
 }

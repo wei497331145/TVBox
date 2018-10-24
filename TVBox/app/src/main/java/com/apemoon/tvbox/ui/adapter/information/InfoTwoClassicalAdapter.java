@@ -32,7 +32,7 @@ public class InfoTwoClassicalAdapter extends BaseQuickAdapter<InfoClassicalEntit
 
         helper.getView(R.id.ll_notice).setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus) {
-                recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
+                recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition(),view);
                 RecyclerView recyclerView = getRecyclerView();
                 if (null != recyclerView) {
                     int count = recyclerView.getLayoutManager().getChildCount();
