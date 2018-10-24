@@ -63,8 +63,6 @@
         android:layout_marginRight="@dimen/dp_30"
         android:layout_weight="1"
         android:background="@drawable/bg_bl_tv_info_selector"
-        android:descendantFocusability="afterDescendants"
-        android:focusable="true"
         android:orientation="vertical">
 
         <include layout="@layout/view_personal_md1" />

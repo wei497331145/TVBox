@@ -4,7 +4,6 @@ import android.view.View;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
-import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
 import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
@@ -40,4 +39,12 @@ public class TeachersAdapter extends BaseQuickAdapter<UserTeachersEntity.Teacher
         });
     }
 
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+
+        if(position==0){
+            holder.getView(R.id.ll_notice).setNextFocusUpId(R.id.scroll);
+        }
+    }
 }

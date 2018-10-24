@@ -22,6 +22,7 @@ import com.apemoon.tvbox.entity.userCenter.UserSemstersEntity;
 import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 import com.apemoon.tvbox.interfaces.fragment.IPersonalView;
 import com.apemoon.tvbox.presenter.PersonalPresenter;
+import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.BaseSpinnerAdapter;
 import com.apemoon.tvbox.ui.adapter.MyTeacherAdapter;
 import com.apemoon.tvbox.ui.adapter.personalCenter.JudegeAdapter;
@@ -152,7 +153,11 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
             }
             return false;
         });
-
+        if (null != activity) {
+            int view = ((MainActivity) activity).getMainTab().getId();
+            ((MainActivity) activity).getMainTab().setNextFocusDownId(mTvBaseInfo.getId());
+            mTvBaseInfo.setNextFocusUpId(view);
+        }
     }
 
 
@@ -287,7 +292,6 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
             }
         });
         md2Spiner.setVisibility(View.VISIBLE);
-
         md3Spiner.setAdapter(new SmsAdapter(entity.getSemesterList()));
         md3Spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -325,7 +329,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
     public void onFocusChange(View view, boolean b) {
         switch (view.getId()) {
             case R.id.tv_base_info://个人信息
-                if(b){
+                if (b) {
                     resetInfoItemDrawable();
                 }
                 llPersonalMd1.setVisibility(View.VISIBLE);
@@ -334,7 +338,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
                 break;
 
             case R.id.tv_sanction_info://奖罚信息
-                if(b){
+                if (b) {
                     resetInfoItemDrawable();
                 }
 
@@ -343,7 +347,7 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
                 llPersonalMd3.setVisibility(View.GONE);
                 break;
             case R.id.tv_judge_info://评价信息
-                if(b){
+                if (b) {
                     resetInfoItemDrawable();
                 }
                 llPersonalMd1.setVisibility(View.GONE);

@@ -4,7 +4,6 @@ import android.view.View;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.entity.userCenter.UserRecordInfoEntity;
-import com.apemoon.tvbox.ui.view.ItemLinearLayout;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -25,6 +24,8 @@ public class JudegeAdapter extends BaseQuickAdapter<UserRecordInfoEntity.UserRec
         if (item != null) {
             helper.setText(R.id.tv_content, item.getContent());        }
 
+
+        helper.getView(R.id.ll_notice).setNextFocusLeftId(R.id.tv_judge_info);
         helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
