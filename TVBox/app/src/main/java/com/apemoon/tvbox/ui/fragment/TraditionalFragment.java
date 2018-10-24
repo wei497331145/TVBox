@@ -109,11 +109,23 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && null != clickView) {
+            clickView.requestFocus();
+        }
+    }
+
+    private View clickView = null;
+
     @Override
     public void initListener() {
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                clickView = view;
                 InfoListEntity.InformationBean bean = mInformationAdater.getItem(position);
                 Fragment fragment = InfoListFragment.getInstance(currentTwoClassId, bean.getId(), 5);
                 fragment.setUserVisibleHint(true);
@@ -145,7 +157,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
-        if(mRecyclerView == null){
+        if (mRecyclerView == null) {
             return;
         }
         if (entity != null) {
@@ -180,7 +192,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
-        if(lvTwoClassical == null){
+        if (lvTwoClassical == null) {
             return;
         }
         twoClasscialList = entity.getTraditonalTwoClassical();
