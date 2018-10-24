@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.entity.AccountListEntity;
-import com.apemoon.tvbox.entity.userCenter.UserTeachersEntity;
 import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
@@ -18,7 +17,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * des：
  */
 
-public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountInfoBean,BaseViewHolder> {
+public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountInfoBean, BaseViewHolder> {
 
     private RecyclerViewItemSelectListener recyclerViewItemSelectListener;
 
@@ -28,11 +27,11 @@ public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountIn
     }
 
     @Override
-    protected void convert(BaseViewHolder helper,AccountListEntity.AccountInfoBean item) {
+    protected void convert(BaseViewHolder helper, AccountListEntity.AccountInfoBean item) {
         if (item != null) {
             helper.setText(R.id.tv_name, item.getUserName());
             ((helper.getView(R.id.tv_duty))).setVisibility(View.GONE);
-            GlideUtil.imageCircleLocal(TvApplication.getGlobalApplication(),item.getUserHeadImg(),helper.getView(R.id.iv_head));
+            GlideUtil.imageCircleLocal(TvApplication.getGlobalApplication(), item.getUserHeadImg(), helper.getView(R.id.iv_head));
 
         }
 
@@ -40,13 +39,13 @@ public class AccountAdapter extends BaseQuickAdapter<AccountListEntity.AccountIn
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 ImageView iv = helper.getView(R.id.iv_head);
-                if(hasFocus) {
+                if (hasFocus) {
                     helper.getView(R.id.iv_head).setBackgroundResource(R.drawable.bg_cirlcle_focused);
-                }else{
+                } else {
                     helper.getView(R.id.iv_head).setBackgroundResource(R.drawable.bg_cirlcle_normal);
                 }
                 AnimationUtil.setTextAnimation(iv, hasFocus, 1.1f, 1.1f, 1.0f, 1.0f);
-                recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
+                recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition(), view);
             }
         });
     }

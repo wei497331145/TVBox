@@ -20,7 +20,6 @@ import com.apemoon.tvbox.presenter.NoticePresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
 import com.apemoon.tvbox.ui.view.RecycleViewDivider;
-import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
@@ -102,8 +101,8 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     public void init() {
         mWebView.setBackgroundColor(0);
         mWebView.getBackground().setAlpha(0);
-
         configWebView(mWebView);
+        mWebView.setFocusable(true);
     }
 
     @Override
@@ -278,15 +277,17 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     }
 
 
-    @Override
-    public void onItemSelectListner(int position) {
-        LogUtil.d("position:" + position);
-        LogUtil.d("noticeList.size():" + mNoticeAdapter.getData().size());
-        if (noticeList != null && mNoticeAdapter.getData().size() > 0 && position < mNoticeAdapter.getData().size()) {
+    private View selectView = null;
 
+
+    @Override
+    public void onItemSelectListner(int position, View itemView) {
+        if (null != mWebView && null != itemView) {
+            mWebView.setNextFocusLeftId(itemView.getId());
+        }
+        if (noticeList != null && mNoticeAdapter.getData().size() > 0 && position < mNoticeAdapter.getData().size()) {
+            selectView = itemView;
             setContent(mNoticeAdapter.getData().get(position));
         }
-
     }
-
 }

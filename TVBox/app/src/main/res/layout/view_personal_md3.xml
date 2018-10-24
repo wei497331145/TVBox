@@ -28,6 +28,7 @@
             android:nextFocusDown="@null"
             android:overlapAnchor="false"
             android:popupBackground="@color/font_FF0072AC"
+            android:scrollbars="none"
             android:spinnerMode="dropdown"
             android:visibility="gone" />
     </LinearLayout>

@@ -2,7 +2,6 @@ package com.apemoon.tvbox.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -20,13 +18,8 @@ import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
 import com.apemoon.tvbox.presenter.SettingPresenter;
 import com.apemoon.tvbox.ui.adapter.AccountAdapter;
-import com.apemoon.tvbox.ui.adapter.personalCenter.SemestersAdapter;
-import com.apemoon.tvbox.ui.adapter.personalCenter.TeachersAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
-import com.smarttop.library.bean.School;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +131,7 @@ public class AccountInfoUtil {
 
         AccountAdapter mAccountAdapter = new AccountAdapter(new RecyclerViewItemSelectListener() {
             @Override
-            public void onItemSelectListner(int position) {
+            public void onItemSelectListner(int position, View itemView) {
                 if (position == 0){
                     tv_home.setFocusable(true);
                 }

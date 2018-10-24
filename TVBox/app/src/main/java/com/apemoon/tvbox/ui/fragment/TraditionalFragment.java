@@ -57,8 +57,8 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public BaseQuickAdapter<?, ?> getAdapter() {
-        mInformationAdater = new InformationAdapter();
-        mInformationAdater.setLoadMoreView(new LoadMoreView(){
+        mInformationAdater = new InformationAdapter(this);
+        mInformationAdater.setLoadMoreView(new LoadMoreView() {
 
             @Override
             public int getLayoutId() {
@@ -176,6 +176,8 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     }
 
+    private View selectLeftView = null;
+
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
         if(lvTwoClassical == null){
@@ -191,7 +193,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
             currentTwoClassId = twoClasscialList.get(0).getId();
             InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
                 @Override
-                public void onItemSelectListner(int position) {
+                public void onItemSelectListner(int position, View itemView) {
+                    selectLeftView = itemView;
+
                     InfoClassicalEntity.TwoClassicalBean bean = twoClasscialList.get(position);
                     if (bean != null) {
                         currentTwoClassId = bean.getId();
@@ -212,9 +216,8 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
                 }
             });
             twoClassicaladapter.bindToRecyclerView(lvTwoClassical);
-
             lvTwoClassical.postDelayed(() -> {
-                if (lvTwoClassical.getLayoutManager().getChildCount() > 0) {
+                if (null != lvTwoClassical && lvTwoClassical.getLayoutManager().getChildCount() > 0) {
                     View itemView = lvTwoClassical.getLayoutManager().getChildAt(0);
                     if (null != activity && itemView != null) {
                         ((MainActivity) activity).getMainTab().setNextFocusDownId(itemView.getId());
@@ -256,4 +259,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     }
 
 
+    public View getSelectLeftView() {
+        return selectLeftView;
+    }
 }

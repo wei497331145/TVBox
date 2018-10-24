@@ -6,7 +6,6 @@ import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.entity.information.InfoListEntity;
 import com.apemoon.tvbox.interfaces.recyclerview.RecyclerViewItemSelectListener;
-import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -37,7 +36,7 @@ public class InformationTvAdapter extends BaseQuickAdapter<InfoListEntity.Inform
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if(hasFocus){
-                    recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition());
+                    recyclerViewItemSelectListener.onItemSelectListner(helper.getLayoutPosition(),view);
                 }
 
             }
