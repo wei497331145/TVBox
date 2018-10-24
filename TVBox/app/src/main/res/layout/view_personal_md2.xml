@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusable="true"
+            android:scrollbars="none"
             android:gravity="center"
             android:nextFocusLeft="@id/tv_sanction_info"
             android:nextFocusUp="@id/main_tab"
