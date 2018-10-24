@@ -20,7 +20,7 @@ import com.smarttop.library.widget.OnAddressSelectedListener;
  */
 
 public class BottomDialog extends Dialog {
-    private AddressSelectorNew selector;
+    private AddressSelectorNewB selector;
     private Activity context;
 
     public BottomDialog(Activity context) {
@@ -46,7 +46,7 @@ public class BottomDialog extends Dialog {
      * @param context
      */
     private void init(Activity context) {
-        selector = new AddressSelectorNew(context);
+        selector = new AddressSelectorNewB(context);
         setContentView(selector.getView());
 
         Window window = getWindow();
@@ -76,7 +76,7 @@ public class BottomDialog extends Dialog {
 
         return dialog;
     }
-    public void setDialogDismisListener(AddressSelectorNew.OnDialogCloseListener listener){
+    public void setDialogDismisListener(AddressSelectorNewB.OnDialogCloseListener listener){
         this.selector.setOnDialogCloseListener(listener);
     }
 
@@ -84,7 +84,7 @@ public class BottomDialog extends Dialog {
      * 设置选中位置的监听
      * @param listener
      */
-    public void setSelectorAreaPositionListener(AddressSelectorNew.onSelectorAreaPositionListener listener){
+    public void setSelectorAreaPositionListener(AddressSelectorNewB.onSelectorAreaPositionListener listener){
         this.selector.setOnSelectorAreaPositionListener(listener);
     }
     /**

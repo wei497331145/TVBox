@@ -24,7 +24,7 @@
             android:gravity="center"
             android:nextFocusLeft="@id/tv_judge_info"
             android:nextFocusRight="@id/spinner2"
-            android:nextFocusUp="@null"
+            android:nextFocusUp="@id/main_tab"
             android:nextFocusDown="@null"
             android:overlapAnchor="false"
             android:popupBackground="@color/font_FF0072AC"

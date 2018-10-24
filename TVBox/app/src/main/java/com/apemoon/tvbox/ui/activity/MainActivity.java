@@ -22,10 +22,13 @@ import com.apemoon.tvbox.interfaces.IMainView;
 import com.apemoon.tvbox.presenter.MainPresenter;
 import com.apemoon.tvbox.ui.view.MainTabView;
 import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
+import com.apemoon.tvbox.ui.view.address.AddressSelectorNewB;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AnimationUtil;
+import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
+import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
@@ -35,7 +38,7 @@ import com.smarttop.library.widget.OnAddressSelectedListener;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
+public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNewB.OnDialogCloseListener, AddressSelectorNewB.onSelectorAreaPositionListener {
     @BindView(R.id.tv_school_name)
     TextView mTvSchoolName;
     @BindView(R.id.rl_switch_school)

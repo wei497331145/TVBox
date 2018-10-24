@@ -17,6 +17,7 @@ import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
 import com.apemoon.tvbox.presenter.SettingPresenter;
 import com.apemoon.tvbox.ui.view.address.AddressSelectorNew;
+import com.apemoon.tvbox.ui.view.address.AddressSelectorNewB;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AccountInfoUtil;
 import com.apemoon.tvbox.utils.AnimationUtil;
@@ -38,7 +39,7 @@ import butterknife.OnClick;
  * des：
  */
 
-public class SettingActivity extends BaseActivity implements ILoginView,OnAddressSelectedListener, AddressSelectorNew.OnDialogCloseListener, AddressSelectorNew.onSelectorAreaPositionListener {
+public class SettingActivity extends BaseActivity implements ILoginView,OnAddressSelectedListener, AddressSelectorNewB.OnDialogCloseListener, AddressSelectorNewB.onSelectorAreaPositionListener {
     @BindView(R.id.root_view)
     LinearLayout mRootView;
     @BindView(R.id.tv_school_name)
@@ -183,7 +184,9 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     @Override
     public void dialogclose() {
+        GlobalUtil.showToast("选择成功");
         dialog.dismiss();
+        recreate();
     }
 
     @Override

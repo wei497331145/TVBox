@@ -5,6 +5,12 @@ package com.smarttop.library.bean;
  */
 
 public class City  {
+    public City(String name) {
+        this.name = name;
+    }
+    public City() {
+    }
+
     public int id;
     public String name;
     public String code;

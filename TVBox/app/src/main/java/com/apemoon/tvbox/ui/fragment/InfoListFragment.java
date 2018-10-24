@@ -67,6 +67,7 @@ import com.boredream.bdvideoplayer.BDVideoView;
 import com.boredream.bdvideoplayer.listener.SimpleOnVideoControlListener;
 import com.boredream.bdvideoplayer.utils.DisplayUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -149,6 +150,28 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
             public void onItemSelectListner(int position) {
                 InfoListEntity.InformationBean bean = mInformationAdater.getData().get(position);
                 setTvContent(bean);
+            }
+        });
+        mInformationAdater.setLoadMoreView(new LoadMoreView(){
+
+            @Override
+            public int getLayoutId() {
+                return R.layout.view_baseadapter_view;
+            }
+
+            @Override
+            protected int getLoadingViewId() {
+                return R.id.view_loading;
+            }
+
+            @Override
+            protected int getLoadFailViewId() {
+                return R.id.view_loading;
+            }
+
+            @Override
+            protected int getLoadEndViewId() {
+                return R.id.view_loading;
             }
         });
         return mInformationAdater;

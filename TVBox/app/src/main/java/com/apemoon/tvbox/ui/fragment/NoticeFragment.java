@@ -17,10 +17,12 @@ import com.apemoon.tvbox.base.RxBaseListFragment;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
 import com.apemoon.tvbox.interfaces.fragment.IReceiveNoticeView;
 import com.apemoon.tvbox.presenter.NoticePresenter;
+import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.NoticeAdapter;
 import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,28 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     @Override
     public BaseQuickAdapter<?, ?> getAdapter() {
         mNoticeAdapter = new NoticeAdapter(this);
+        mNoticeAdapter.setLoadMoreView(new LoadMoreView(){
+
+            @Override
+            public int getLayoutId() {
+                return R.layout.view_baseadapter_view;
+            }
+
+            @Override
+            protected int getLoadingViewId() {
+                return R.id.view_loading;
+            }
+
+            @Override
+            protected int getLoadFailViewId() {
+                return R.id.view_loading;
+            }
+
+            @Override
+            protected int getLoadEndViewId() {
+                return R.id.view_loading;
+            }
+        });
         return mNoticeAdapter;
     }
 
@@ -222,6 +246,16 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                     }
                 }
             }
+//            if(mRecyclerView != null) {
+//                mRecyclerView.postDelayed(() -> {
+//                    if (mRecyclerView.getLayoutManager().getChildCount() > 0) {
+//                        View itemView = mRecyclerView.getLayoutManager().getChildAt(0);
+//                        if (null != activity && itemView != null) {
+//                            ((MainActivity) activity).getMainTab().setNextFocusDownId(itemView.getId());
+//                        }
+//                    }
+//                }, 20);
+//            }
         }
     }
 

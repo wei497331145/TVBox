@@ -18,6 +18,8 @@ import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.loadmore.LoadMoreView;
+import com.chad.library.adapter.base.loadmore.SimpleLoadMoreView;
 
 import java.util.List;
 
@@ -52,6 +54,28 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
     @Override
     public BaseQuickAdapter<?, ?> getAdapter() {
         mInformationAdater = new InformationAdapter();
+        mInformationAdater.setLoadMoreView(new LoadMoreView(){
+
+            @Override
+            public int getLayoutId() {
+                return R.layout.view_baseadapter_view;
+            }
+
+            @Override
+            protected int getLoadingViewId() {
+                return R.id.view_loading;
+            }
+
+            @Override
+            protected int getLoadFailViewId() {
+                return R.id.view_loading;
+            }
+
+            @Override
+            protected int getLoadEndViewId() {
+                return R.id.view_loading;
+            }
+        });
         return mInformationAdater;
     }
 

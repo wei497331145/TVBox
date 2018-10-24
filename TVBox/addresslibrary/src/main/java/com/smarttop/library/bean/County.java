@@ -5,6 +5,13 @@ package com.smarttop.library.bean;
  */
 public class County {
     public int id;
+    public County() {
+    }
+
+    public County(String name) {
+        this.name = name;
+    }
+
     public String name;
     public String code;
 }

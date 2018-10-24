@@ -14,7 +14,7 @@
         android:layout_height="@dimen/dp_45"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/dp_20"
-        android:src="@drawable/bg_set_selector" />
+        android:background="@drawable/set_selected" />
 
     <LinearLayout
         android:layout_width="match_parent"

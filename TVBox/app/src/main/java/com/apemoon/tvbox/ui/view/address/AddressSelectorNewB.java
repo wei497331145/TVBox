@@ -21,7 +21,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apemoon.tvbox.entity.SchoolListEntity;
 import com.apemoon.tvbox.entity.SchoolTypeListEntity;
@@ -34,14 +33,13 @@ import com.smarttop.library.R;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
-import com.smarttop.library.bean.School;
-import com.smarttop.library.bean.SchoolType;
 import com.smarttop.library.bean.Street;
 import com.smarttop.library.db.manager.AddressDictManager;
 import com.smarttop.library.utils.Lists;
 import com.smarttop.library.utils.LogUtil;
 import com.smarttop.library.widget.OnAddressSelectedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,7 +47,7 @@ import java.util.List;
  * Created by smartTop on 2016/10/19.
  */
 
-public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickListener {
+public class AddressSelectorNewB implements SchoolView,AdapterView.OnItemClickListener {
     private SchoolPresenter mSchoolPresenter;
 
     private Province mProvience;
@@ -103,6 +101,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
     private List<Province> provinces;
     private List<City> cities;
     private List<County> counties;
+    private List<County> beijinCountries;
     private List<Street> streets;
     //TODO WXJ
     private List<SchoolTypeListEntity.SchoolTypeBean> schoolTypes;
@@ -144,7 +143,18 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                     break;
 
                 case WHAT_CITIES_PROVIDED: //更新城市列表
-                    cities = (List<City>) msg.obj;
+                    if(mProvience.name.equals("北京")){
+                        cities = new ArrayList<>();
+                        cities.add(new City("市辖区"));
+                        List<City> tmpcities = (List<City>) msg.obj;
+                        beijinCountries = new ArrayList<>();
+                        for(City city:tmpcities){
+                            beijinCountries.add(new County(city.name));
+                        }
+                    }else {
+                        cities = (List<City>) msg.obj;
+
+                    }
                     cityAdapter.notifyDataSetChanged();
                     if (Lists.notEmpty(cities)) {
                         // 以次级内容更新列表
@@ -159,7 +169,11 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                     break;
 
                 case WHAT_COUNTIES_PROVIDED://更新乡镇列表
-                    counties = (List<County>) msg.obj;
+                    if(mProvience.name.equals("北京")){
+                        counties = beijinCountries;
+                    }else {
+                        counties = (List<County>) msg.obj;
+                    }
                     countyAdapter.notifyDataSetChanged();
                     if (Lists.notEmpty(counties)) {
                         listView.setAdapter(countyAdapter);
@@ -233,7 +247,7 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
 
 
 
-    public AddressSelectorNew(Activity context) {
+    public AddressSelectorNewB(Activity context) {
         this.context = context;
         mSchoolPresenter = new SchoolPresenter(context,this);
         inflater = LayoutInflater.from(context);
@@ -685,7 +699,6 @@ public class AddressSelectorNew implements SchoolView,AdapterView.OnItemClickLis
                 String currentSchooldId = PreferenceUtil.getString(ConstantUtil.SCHOOL_ID,"");
                 if(!otherSchoolId.equals(currentSchooldId)) {
                     PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOO_ID, "" + school.getId());
-                    PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOOL_NAME, "" + school.getName());
                 }else{
                     //清除
                     PreferenceUtil.commitString(ConstantUtil.OTHER_SCHOO_ID, "");
