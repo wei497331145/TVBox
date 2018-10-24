@@ -24,7 +24,6 @@ import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,7 +60,7 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
     @Override
     public BaseQuickAdapter<?, ?> getAdapter() {
         mNoticeAdapter = new NoticeAdapter(this);
-        mNoticeAdapter.setLoadMoreView(new LoadMoreView(){
+        mNoticeAdapter.setLoadMoreView(new LoadMoreView() {
 
             @Override
             public int getLayoutId() {
@@ -158,13 +157,13 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (noticeListBean != null && mTvTitle !=null && mWebView!=null) {
+                if (noticeListBean != null && mTvTitle != null && mWebView != null) {
                     mTvTitle.setText(noticeListBean.getTitle());
                     mWebView.loadDataWithBaseURL(null, noticeListBean.getContent(), "text/html", "utf-8", null);
 
                 }
             }
-        },10);
+        }, 10);
 
     }
 
@@ -214,10 +213,10 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     @Override
     public void getReceiveNoticeListSuccess(ReceiveNoticeListEntity receiveNoticeListEntity) {
-        if (receiveNoticeListEntity != null ) {
+        if (receiveNoticeListEntity != null) {
             noticeList = receiveNoticeListEntity.getNoticeList();
             setPageInfo(noticeList.size());
-            if (noticeList != null && noticeList.size()>0 && emptyRootLayout!=null ) {
+            if (noticeList != null && noticeList.size() > 0 && emptyRootLayout != null) {
                 switch (getRequestType()) {
                     case REQUESTTYPE_NEW_DATE:
                         if (noticeList.size() != 0) {
@@ -229,33 +228,35 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                         mNoticeAdapter.setNewData(noticeList);
                         break;
                     case REQUESTTYPE_ADD_DATE:
-                        if(noticeList!=null) {
+                        if (noticeList != null) {
 //                            noticeList.addAll(receiveNoticeListEntity.getNoticeList());
 
                             mNoticeAdapter.addData(receiveNoticeListEntity.getNoticeList());
                         }
                         break;
                 }
-                if(emptyRootLayout!=null) {
+                if (emptyRootLayout != null) {
                     emptyRootLayout.setVisibility(View.GONE);
                 }
-            }else{
-                if(getRequestType() == REQUESTTYPE_NEW_DATE){
-                    if(emptyRootLayout!=null) {
+            } else {
+                if (getRequestType() == REQUESTTYPE_NEW_DATE) {
+                    if (emptyRootLayout != null) {
                         emptyRootLayout.setVisibility(View.VISIBLE);
                     }
                 }
             }
-//            if(mRecyclerView != null) {
-//                mRecyclerView.postDelayed(() -> {
-//                    if (mRecyclerView.getLayoutManager().getChildCount() > 0) {
-//                        View itemView = mRecyclerView.getLayoutManager().getChildAt(0);
-//                        if (null != activity && itemView != null) {
-//                            ((MainActivity) activity).getMainTab().setNextFocusDownId(itemView.getId());
-//                        }
-//                    }
-//                }, 20);
-//            }
+
+            //不要注释上，，如果webview中有控件可以获取焦点，，焦点不一定会走左侧
+            if (mRecyclerView != null) {
+                mRecyclerView.postDelayed(() -> {
+                    if (mRecyclerView.getLayoutManager().getChildCount() > 0) {
+                        View itemView = mRecyclerView.getLayoutManager().getChildAt(0);
+                        if (null != activity && itemView != null) {
+                            ((MainActivity) activity).getMainTab().setNextFocusDownId(itemView.getId());
+                        }
+                    }
+                }, 20);
+            }
         }
     }
 
@@ -277,9 +278,9 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     @Override
     public void onItemSelectListner(int position) {
-        LogUtil.d("position:"+position);
-        LogUtil.d("noticeList.size():"+mNoticeAdapter.getData().size());
-        if (noticeList != null && mNoticeAdapter.getData().size()>0 && position<mNoticeAdapter.getData().size()) {
+        LogUtil.d("position:" + position);
+        LogUtil.d("noticeList.size():" + mNoticeAdapter.getData().size());
+        if (noticeList != null && mNoticeAdapter.getData().size() > 0 && position < mNoticeAdapter.getData().size()) {
 
             setContent(mNoticeAdapter.getData().get(position));
         }

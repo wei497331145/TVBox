@@ -61,7 +61,8 @@ public abstract class RxBaseListFragment extends BaseFragment implements IBaseLi
         mBaseQuickAdapter = getAdapter();
         mRecyclerView = getRecyclerView();
         if (mRecyclerView != null) {
-            mRecyclerView.setAdapter(mBaseQuickAdapter);
+//            mRecyclerView.setAdapter(mBaseQuickAdapter);
+            mBaseQuickAdapter.bindToRecyclerView(mRecyclerView);
             if (isLoadMore()) {
                 mBaseQuickAdapter.setEnableLoadMore(true);
                 mBaseQuickAdapter.setOnLoadMoreListener(this, mRecyclerView);

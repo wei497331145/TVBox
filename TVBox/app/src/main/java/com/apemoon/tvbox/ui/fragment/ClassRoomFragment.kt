@@ -572,8 +572,7 @@ class ScoreFragment : BaseFragment() {
         spinner2 = mView?.findViewById<Spinner>(R.id.spinner2)
         spinner2Layout = mView?.findViewById(R.id.spinner2Layout)
 
-        spinner1Layout?.visibility = View.VISIBLE
-        spinner2Layout?.visibility = View.VISIBLE
+
 
         spinner1?.isFocusable = true
         spinner2?.isFocusable = true
@@ -685,6 +684,7 @@ class ScoreFragment : BaseFragment() {
                             }
 
                             if (!examClassifyList.examClassifyList.isEmpty()) {
+                                spinner2Layout?.visibility = View.VISIBLE
                                 spinner2?.setSelection(0)
                             }
 
@@ -742,6 +742,7 @@ class ScoreFragment : BaseFragment() {
 
                             }
                             if (!semstersEntity.semesterList.isEmpty()) {
+                                spinner1Layout?.visibility = View.VISIBLE
                                 spinner1?.setSelection(0)
                             }
                             examClassifyListList()
@@ -832,7 +833,7 @@ class SchoolAssignmentFragment : BaseFragment() {
         emptyRootLayout = mView?.findViewById(R.id.emptyRootLayout)
         spinner1 = mView?.findViewById<Spinner>(R.id.spinner1)
         spinner1Layout = mView?.findViewById(R.id.spinner1Layout)
-        spinner1Layout?.visibility = View.VISIBLE
+
 
         spinner1?.isFocusable = true
         contentRecyclerView = mView?.findViewById<RecyclerView>(R.id.contentRecyclerView)
@@ -988,6 +989,7 @@ class SchoolAssignmentFragment : BaseFragment() {
                                 }
                             }
                             if (!subs.isEmpty()) {
+                                spinner1Layout?.visibility = View.VISIBLE
                                 spinner1?.setSelection(0)
                             }
                         }
@@ -1020,7 +1022,7 @@ class SchoolAssignmentFragment : BaseFragment() {
         paras["gradeId"] = id
         val rxP = object : RxBasePresenter(activity) {}
         rxP.addDisposable<HttpResultBody<WorkList>>(rxP.getmDataManager().netService.getWorkList(paras),
-                object : ProgressObserver<HttpResultBody<WorkList>>(activity, false) {
+                object : ProgressObserver<HttpResultBody<WorkList>>(activity, true) {
                     override fun doNext(httpResultBody: HttpResultBody<WorkList>) {
                         if (TextUtils.equals(httpResultBody.code, "0000")) {
                             val jo = httpResultBody.result.seatworkList
@@ -1097,8 +1099,6 @@ class SchoolAssignmentDetailFragment : BaseFragment() {
                     }
                 }
             }
-
-
         }
         tv_back?.requestFocus()
     }
@@ -1110,7 +1110,7 @@ class SchoolAssignmentDetailFragment : BaseFragment() {
         paras["seatworkId"] = seatworkId
         val rxP = object : RxBasePresenter(activity) {}
         rxP.addDisposable<HttpResultBody<WorkDetail>>(rxP.getmDataManager().netService.getWorkDetail(paras),
-                object : ProgressObserver<HttpResultBody<WorkDetail>>(activity, false) {
+                object : ProgressObserver<HttpResultBody<WorkDetail>>(activity, true) {
                     override fun doNext(httpResultBody: HttpResultBody<WorkDetail>) {
                         try {
                             if (TextUtils.equals(httpResultBody.code, "0000")) {

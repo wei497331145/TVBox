@@ -1,14 +1,12 @@
 package com.apemoon.tvbox.ui.adapter;
 
-import android.support.annotation.Nullable;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.entity.notice.ReceiveNoticeListEntity;
-import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.DateTimeUtil;
-import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -17,14 +15,13 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * des：
  */
 
-public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.NoticeListBean,BaseViewHolder> {
+public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.NoticeListBean, BaseViewHolder> {
     private NoticeRecyclerViewItemSelectListener listener;
 
-    public NoticeAdapter(NoticeRecyclerViewItemSelectListener listener ) {
+    public NoticeAdapter(NoticeRecyclerViewItemSelectListener listener) {
         super(R.layout.item_notice_news);
         this.listener = listener;
     }
-
 
 
     @Override
@@ -33,21 +30,34 @@ public class NoticeAdapter extends BaseQuickAdapter<ReceiveNoticeListEntity.Noti
             helper.setText(R.id.tv_title, item.getTitle());
             helper.setText(R.id.tv_content, (Html.fromHtml(item.getContent())).toString());
             helper.setText(R.id.tv_time, DateTimeUtil.getStrTime(item.getCreateTime()));
-            helper.setVisible(R.id.v_dot_read,"0".endsWith(item.getIsRead()));
+            helper.setVisible(R.id.v_dot_read, "0".endsWith(item.getIsRead()));
         }
+        helper.getView(R.id.ll_notice).setId(View.generateViewId());
 
-        helper.getView(R.id.ll_notice).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if(view !=null && listener!=null && hasFocus) {
-                    listener.onItemSelectListner(helper.getLayoutPosition());
-
+        helper.getView(R.id.ll_notice).setOnFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                int count = getRecyclerView().getLayoutManager().getChildCount();
+                for (int i = 0; i < count; i++) {
+                    getRecyclerView().getLayoutManager().getChildAt(i).setBackgroundResource(R.drawable.bg_bl_notice_selector);
                 }
             }
+            if (view != null && listener != null && hasFocus) {
+                listener.onItemSelectListner(helper.getLayoutPosition());
+            }
         });
+
+        helper.getView(R.id.ll_notice).setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                if (v.getNextFocusRightId() != v.getId()) {
+                    v.setBackgroundResource(R.drawable.bg_bl_tv_info_drawable);
+                }
+            }
+            return false;
+        });
+
     }
 
-    public interface NoticeRecyclerViewItemSelectListener{
+    public interface NoticeRecyclerViewItemSelectListener {
         void onItemSelectListner(int position);
     }
 

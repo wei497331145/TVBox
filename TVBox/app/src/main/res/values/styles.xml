@@ -6,8 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:dropDownListViewStyle">@style/CSpinnerStyle</item>
-        <item name="android:dropDownItemStyle">@style/CSpinnerItemStyle</item>
+      <!--  <item name="android:dropDownListViewStyle">@style/CSpinnerStyle</item>
+        <item name="android:dropDownItemStyle">@style/CSpinnerItemStyle</item>-->
     </style>
 
     <!-- 分隔线颜色 -->
