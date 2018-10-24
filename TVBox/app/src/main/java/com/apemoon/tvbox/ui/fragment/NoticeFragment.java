@@ -245,7 +245,6 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                     }
                 }
             }
-
             //不要注释上，，如果webview中有控件可以获取焦点，，焦点不一定会走左侧
             if (mRecyclerView != null) {
                 mRecyclerView.postDelayed(() -> {
