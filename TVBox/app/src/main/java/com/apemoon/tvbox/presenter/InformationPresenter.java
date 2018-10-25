@@ -115,8 +115,14 @@ public class InformationPresenter extends RxBasePresenter {
      */
     public void receiveInfoClassfication(){
         Map<String, String> paras = RequestUtil.createMap();
-        paras.put("schoolId", PreferenceUtil.getString(ConstantUtil.SCHOOL_ID,""));
-        paras.put("selectType","1");
+        String otherSchoolId = PreferenceUtil.getString(ConstantUtil.OTHER_SCHOO_ID,"");
+        if(!TextUtils.isEmpty(otherSchoolId)){
+            paras.put("schoolId",otherSchoolId);
+            paras.put("selectType","2");
+        }else {
+            paras.put("schoolId", PreferenceUtil.getString(ConstantUtil.SCHOOL_ID,""));
+            paras.put("selectType", "1");
+        }
         addDisposable(mDataManager.getNetService().getInfoClassical(paras),
                 new ProgressObserver<HttpResultBody<InfoClassicalEntity>>(mContext, true) {
 
