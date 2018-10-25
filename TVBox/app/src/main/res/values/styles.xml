@@ -6,8 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-      <!--  <item name="android:dropDownListViewStyle">@style/CSpinnerStyle</item>
-        <item name="android:dropDownItemStyle">@style/CSpinnerItemStyle</item>-->
+        <!--  <item name="android:dropDownListViewStyle">@style/CSpinnerStyle</item>
+          <item name="android:dropDownItemStyle">@style/CSpinnerItemStyle</item>-->
     </style>
 
     <!-- 分隔线颜色 -->
@@ -22,7 +22,7 @@
 
 
     <style name="spinner_style" parent="Base.Widget.AppCompat.Spinner">
-        <item name="android:background">@drawable/spinner_bg_selector</item>
+        <item name="android:background">@drawable/spinner_bg_selector2</item>
         <item name="android:dropDownVerticalOffset">@dimen/dp_45</item>
     </style>
 

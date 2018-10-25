@@ -988,6 +988,9 @@ class SchoolAssignmentFragment : BaseFragment() {
                                     }
                                 }
                             }
+
+
+
                             if (!subs.isEmpty()) {
                                 spinner1Layout?.visibility = View.VISIBLE
                                 spinner1?.setSelection(0)
