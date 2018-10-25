@@ -26,7 +26,6 @@
             android:nextFocusLeft="@id/tv_sanction_info"
             android:nextFocusUp="@id/main_tab"
             android:nextFocusDown="@null"
-            android:overlapAnchor="false"
             android:popupBackground="@color/font_FF0072AC"
             android:spinnerMode="dropdown"
             android:visibility="gone" />

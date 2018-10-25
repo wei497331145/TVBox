@@ -26,7 +26,6 @@
             android:nextFocusRight="@id/spinner2"
             android:nextFocusUp="@id/main_tab"
             android:nextFocusDown="@null"
-            android:overlapAnchor="false"
             android:popupBackground="@color/font_FF0072AC"
             android:scrollbars="none"
             android:spinnerMode="dropdown"

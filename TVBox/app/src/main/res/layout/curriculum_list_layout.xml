@@ -24,11 +24,10 @@
                 android:layout_height="match_parent"
                 android:focusable="true"
                 android:gravity="center"
-                android:scrollbars="none"
                 android:nextFocusRight="@id/spinner2"
                 android:nextFocusDown="@+id/contentRecyclerView"
-                android:overlapAnchor="false"
                 android:popupBackground="@color/font_FF0072AC"
+                android:scrollbars="none"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
@@ -46,11 +45,10 @@
                 android:layout_height="match_parent"
                 android:focusable="true"
                 android:gravity="center"
-                android:scrollbars="none"
                 android:nextFocusRight="@+id/spinner1"
                 android:nextFocusDown="@+id/contentRecyclerView"
-                android:overlapAnchor="false"
                 android:popupBackground="@color/font_FF0072AC"
+                android:scrollbars="none"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
