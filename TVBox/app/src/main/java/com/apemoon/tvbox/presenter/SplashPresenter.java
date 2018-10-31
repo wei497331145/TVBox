@@ -33,6 +33,7 @@ public class SplashPresenter extends RxBasePresenter {
      */
     public void login(String account,String password){
         Map<String, String> paras = RequestUtil.createMap();
+        paras.put("type", "tv");
         paras.put("account", account);
         paras.put("password", MD5EncoderUtil.encodeByMd5(password));//jiaoyu888
 
