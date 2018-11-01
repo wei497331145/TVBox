@@ -34,6 +34,7 @@ public class LoginPresenter extends RxBasePresenter {
      */
     public void login(String account,String password){
         Map<String, String> paras = RequestUtil.createMapWithoutToen();
+        paras.put("type", "tv");
         paras.put("account", account);//15245645236
         paras.put("password", MD5EncoderUtil.encodeByMd5(password));//jiaoyu888
         addDisposable(mDataManager.getNetService().loginCall(paras),

@@ -35,6 +35,7 @@ public class SettingPresenter extends RxBasePresenter {
     public void login(String account,String password){
         Map<String, String> paras = RequestUtil.createMapWithoutToen();
         paras.put("account", account);
+        paras.put("type", "tv");
         paras.put("password", MD5EncoderUtil.encodeByMd5(password));
         addDisposable(mDataManager.getNetService().loginCall(paras),
                 new ProgressObserver<HttpResultBody<UserEntity>>(mContext, true) {
