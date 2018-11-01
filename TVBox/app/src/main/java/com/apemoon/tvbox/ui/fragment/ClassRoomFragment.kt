@@ -493,7 +493,7 @@ class SampleFragmentA : BaseFragment() {
                                         val keys = jb.keySet()
                                         keys.forEachIndexed { week, s ->
                                             if (week == 0) {
-                                                data[week][num + 1] = s
+                                              //  data[week][num + 1] = s
                                             } else {
                                                 data[week][num + 1] = jb.get(s).asString
                                             }
@@ -892,7 +892,6 @@ class SchoolAssignmentFragment : BaseFragment() {
                             }
                             return@setOnKeyListener false
                         }
-                        //  holder.getView<View>(R.id.itemRootLayout)?.nextFocusLeftId = view.id
                     }
                 }
             }
@@ -982,6 +981,7 @@ class SchoolAssignmentFragment : BaseFragment() {
                                 }
 
                                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                    //  spinner1?.setBackgroundResource(R.drawable.spinner_normal_layerlist)
                                     subjectId = (spinner1?.adapter as BaseSpinnerAdapter<SubjectBean>).getItem(position).id
                                     if (!TextUtils.isEmpty(subjectId)) {
                                         loadData(subjectId)
@@ -989,7 +989,11 @@ class SchoolAssignmentFragment : BaseFragment() {
                                 }
                             }
 
-
+                            spinner1?.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                                if (v is Spinner) {
+                                    LogUtil.d("spinner1  hasFocus  " + hasFocus + "  childCount  " + v.childCount)
+                                }
+                            }
 
                             if (!subs.isEmpty()) {
                                 spinner1Layout?.visibility = View.VISIBLE
