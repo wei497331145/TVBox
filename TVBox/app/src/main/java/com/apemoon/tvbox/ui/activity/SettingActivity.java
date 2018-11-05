@@ -165,9 +165,8 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
             dialog.setIndicatorBackgroundColor(android.R.color.holo_orange_light);//设置指示器的颜色
             dialog.setTextSelectedColor(android.R.color.holo_orange_light);//设置字体获得焦点的颜色
             dialog.setTextUnSelectedColor(android.R.color.holo_blue_light);//设置字体没有获得焦点的颜色
-//            dialog.setDisplaySelectorArea("31",1,"2704",1,"2711",0,"15582",1);//设置已选中的地区
             dialog.setSelectorAreaPositionListener(this);
-            dialog.show(this);
+            dialog.show();
         }
     }
 
@@ -183,14 +182,15 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     @Override
     public void dialogclose() {
-        GlobalUtil.showToast("选择成功");
-        dialog.dismiss();
 
-        MainActivity.actionStart(this, null);    }
+    }
 
     @Override
     public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {
+        GlobalUtil.showToast("选择成功");
+        dialog.dismiss();
 
+        MainActivity.actionStart(this, null);
     }
 
     @Override

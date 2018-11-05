@@ -267,15 +267,15 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
     @Override
     public void dialogclose() {
-        GlobalUtil.showToast("选择成功");
-        dialog.dismiss();
-        recreate();
+
 
     }
 
     @Override
     public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {
-
+        GlobalUtil.showToast("选择成功");
+        dialog.dismiss();
+        recreate();
     }
 
     @Override

@@ -167,6 +167,7 @@ public class HomeFragment extends BaseFragment implements IInformationView {
             MainTabView tabView = ((MainActivity) activity).getMainTab();
             if (null != tabView) {
                 tabView.setPosition(position);
+                tabView.setTabUnable();
             }
         }
     }

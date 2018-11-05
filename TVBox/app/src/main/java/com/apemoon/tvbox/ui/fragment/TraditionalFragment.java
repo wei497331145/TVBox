@@ -23,6 +23,7 @@ import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +35,7 @@ import butterknife.BindView;
 public class TraditionalFragment extends RxBaseListFragment implements IInformationView {
 
     private InformationPresenter mInformaitonPresenter;
-    private int currentTwoClassId;
+    private int currentTwoClassId = 0;
     private InformationAdapter mInformationAdater;
     private List<InfoClassicalEntity.TwoClassicalBean> twoClasscialList;
     private List<InfoListEntity.InformationBean> informationBeanList;
@@ -176,6 +177,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
             } else {
                 if (getRequestType() == REQUESTTYPE_NEW_DATE) {
                     if (emptyRootLayout != null) {
+                        emptyRootLayout.setBackground(null);
                         emptyRootLayout.setVisibility(View.VISIBLE);
                     }
                 }
@@ -192,7 +194,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
-        if (lvTwoClassical == null) {
+        if (lvTwoClassical == null || entity == null) {
             return;
         }
         twoClasscialList = entity.getTraditonalTwoClassical();
@@ -240,7 +242,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         } else {
             if (emptyRootLayout != null) {
                 llRecy.setVisibility(View.VISIBLE);
-                emptyRootLayout.setVisibility(View.GONE);
+                emptyRootLayout.setVisibility(View.VISIBLE);
             }
         }
     }

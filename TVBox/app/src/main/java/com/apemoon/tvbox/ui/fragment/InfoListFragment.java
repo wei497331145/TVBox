@@ -217,6 +217,15 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @Override
     public void initListener() {
+        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    llContent.requestFocus();
+                }
+            }
+        });
+
 
     }
 

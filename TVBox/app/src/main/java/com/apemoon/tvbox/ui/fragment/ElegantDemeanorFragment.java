@@ -31,7 +31,7 @@ import butterknife.BindView;
 public class ElegantDemeanorFragment extends RxBaseListFragment implements IInformationView {
 
     private InformationPresenter mInformaitonPresenter;
-    private int currentTwoClassId;
+    private int currentTwoClassId = 0;
     private InformationAdapter mInformationAdater;
     private List<InfoClassicalEntity.TwoClassicalBean> twoClasscialList;
     private List<InfoListEntity.InformationBean> informationBeanList;
@@ -167,6 +167,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
             } else {
                 if (getRequestType() == REQUESTTYPE_NEW_DATE) {
                     if (emptyRootLayout != null) {
+                        emptyRootLayout.setBackground(null);
                         emptyRootLayout.setVisibility(View.VISIBLE);
                     }
                 }
@@ -184,7 +185,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
-        if(lvTwoClassical == null){
+        if(lvTwoClassical == null || entity == null){
             return;
         }
         twoClasscialList = entity.getSchoollTwoClassical();
@@ -231,7 +232,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
         } else {
             if (emptyRootLayout != null) {
                 llRecy.setVisibility(View.VISIBLE);
-                emptyRootLayout.setVisibility(View.GONE);
+                emptyRootLayout.setVisibility(View.VISIBLE);
             }
 
         }
