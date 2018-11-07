@@ -106,6 +106,7 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     @Override
     public void initListener() {
         setMainChangeListener(mMainTab);
+        setSettingChangeListener(mIvSetting);
 
         mMainTab.setIMainTavView(new IMainTabView() {
             @Override
@@ -153,6 +154,15 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 AnimationUtil.setAdapter(view, hasFocus);
+            }
+        });
+    }
+
+    private void setSettingChangeListener(View view) {
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                AnimationUtil.setSettingAdapter(view, hasFocus);
             }
         });
     }

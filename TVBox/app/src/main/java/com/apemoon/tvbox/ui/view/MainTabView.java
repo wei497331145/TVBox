@@ -37,6 +37,8 @@ public class MainTabView extends LinearLayout {
     private int mPosition = 1;
     private View indicator;
 
+    private View currentView;
+
     public int getPosition() {
         return mPosition;
     }
@@ -190,6 +192,9 @@ public class MainTabView extends LinearLayout {
 
 
     private void setTabChange(View view) {
+        if(currentView!=null) {
+            currentView.setBackgroundResource(R.drawable.bg_text_select);
+        }
         mTvMain.setEnabled(false);
         mTvNotice.setEnabled(false);
         mTvClass.setEnabled(false);
@@ -199,12 +204,15 @@ public class MainTabView extends LinearLayout {
         mTvPersonal.setEnabled(false);
         mTvStore.setEnabled(false);
         view.setEnabled(true);
-        buildIndicatorAnimatorTowards(view).start();
-
+        currentView = view;
+//        buildIndicatorAnimatorTowards(view).start();
     }
 
     public void setTabUnable(){
-        indicator.setVisibility(VISIBLE);
+//        indicator.setVisibility(VISIBLE);
+        if(currentView!=null) {
+            currentView.setBackgroundResource(R.drawable.bg_tab_selected);
+        }
         mTvMain.setEnabled(false);
         mTvNotice.setEnabled(false);
         mTvClass.setEnabled(false);

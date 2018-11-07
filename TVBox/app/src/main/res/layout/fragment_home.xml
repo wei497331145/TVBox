@@ -11,64 +11,90 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/tv_class_schedule"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_4"
             android:layout_marginRight="@dimen/dp_4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0"
+            android:padding="@dimen/dp_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_yellow_selector"
             android:nextFocusUp="@id/main_tab"
-            android:gravity="center"
-            android:text="@string/class_schedule"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_16" />
+            android:focusable="true"
+            android:background="@drawable/bg_bl_tv_selector">
+            <ImageView
+                android:id="@+id/iv_class_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/class_schedule"
+                android:scaleType="centerCrop"
+                android:src="@drawable/class_schedule"
+                />
+        </RelativeLayout>
 
-        <TextView
+
+        <RelativeLayout
             android:id="@+id/tv_class_performance"
+            android:layout_marginTop="@dimen/dp_4"
             android:layout_marginLeft="@dimen/dp_4"
             android:layout_marginRight="@dimen/dp_4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0"
-            android:layout_marginTop="@dimen/dp_8"
+            android:padding="@dimen/dp_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_red_selector"
-            android:gravity="center"
-            android:text="@string/class_performance"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_16" />
+            android:nextFocusUp="@id/main_tab"
+            android:focusable="true"
+            android:background="@drawable/bg_bl_tv_selector">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/class_schedule"
+                android:scaleType="centerCrop"
+                android:src="@drawable/class_performance"
+                />
+        </RelativeLayout>
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/tv_class_task"
+            android:layout_marginTop="@dimen/dp_4"
             android:layout_marginLeft="@dimen/dp_4"
             android:layout_marginRight="@dimen/dp_4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0"
-            android:layout_marginTop="@dimen/dp_8"
+            android:padding="@dimen/dp_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_purple_selector"
-            android:gravity="center"
-            android:text="@string/class_task"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_16" />
-
-        <TextView
+            android:nextFocusUp="@id/main_tab"
+            android:focusable="true"
+            android:background="@drawable/bg_bl_tv_selector">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/class_schedule"
+                android:scaleType="centerCrop"
+                android:src="@drawable/class_task"
+                />
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/tv_my_achievement"
+            android:layout_marginTop="@dimen/dp_4"
             android:layout_marginLeft="@dimen/dp_4"
             android:layout_marginRight="@dimen/dp_4"
-            android:layout_marginBottom="@dimen/dp_4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0"
-            android:layout_marginTop="@dimen/dp_8"
+            android:padding="@dimen/dp_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_blue_selector"
-            android:gravity="center"
-            android:text="@string/my_achievement"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_16" />
-
+            android:nextFocusUp="@id/main_tab"
+            android:focusable="true"
+            android:background="@drawable/bg_bl_tv_selector">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/class_schedule"
+                android:scaleType="centerCrop"
+                android:src="@drawable/my_achievement"
+                />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -77,13 +103,38 @@
         android:layout_weight="5"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:id="@+id/cv_curriculum"
+            android:nextFocusLeft="@id/tv_class_schedule"
+            android:nextFocusRight="@id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/bg_home_card_selector"
+            android:padding="@dimen/dp_4"
+            android:layout_weight="2">
+            <ImageView
+                android:id="@+id/iv_curriculum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:orientation="horizontal"
+            android:layout_weight="1">
             <RelativeLayout
                 android:id="@+id/cv_album"
-                android:nextFocusLeft="@id/tv_class_schedule"
-                android:nextFocusRight="@id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0"
-                android:layout_marginTop="@dimen/dp_20"
+                android:nextFocusLeft="@id/tv_my_achievement"
+                android:nextFocusRight="@id/cv_persoanl"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
                 android:background="@drawable/bg_home_card_selector"
@@ -93,79 +144,27 @@
                     android:id="@+id/iv_album"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
+                    android:scaleType="centerCrop" />
+            </RelativeLayout>
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_home_card"
-                android:paddingLeft="@dimen/dp_15"
-                android:paddingRight="@dimen/dp_15"
-                android:layout_gravity="bottom">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:text="@string/class_album"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_16" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_40"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical"
-                    android:text="更多"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_14" />
-            </RelativeLayout>
-            </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/cv_curriculum"
-            android:nextFocusLeft="@id/tv_class_schedule"
-            android:nextFocusRight="@id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:background="@drawable/bg_home_card_selector"
-            android:padding="@dimen/dp_4"
-            android:layout_weight="1">
-
-
-            <ImageView
-                android:id="@+id/iv_curriculum"
-                android:layout_width="match_parent"
+                android:id="@+id/cv_persoanl"
+                android:nextFocusLeft="@id/cv_album"
+                android:nextFocusRight="@id/recyclerView"
+                android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:tooltipText="精品"
-                />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_home_card"
-            android:paddingLeft="@dimen/dp_15"
-            android:paddingRight="@dimen/dp_15"
-            android:layout_gravity="bottom">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:text="@string/class_curriculum"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_16" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical"
-                android:text="更多"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_14" />
-        </RelativeLayout>
-        </RelativeLayout>
-
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@drawable/bg_home_card_selector"
+                android:padding="@dimen/dp_4"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/iv_personal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
@@ -194,9 +193,9 @@
                 android:layout_marginBottom="@dimen/dp_4"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
-                android:background="@color/font_CC00A4F8"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dp_15"
+                android:background="@color/font_FF7355FF"
                 android:text="@string/news_information"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_16" />

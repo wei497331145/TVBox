@@ -8,9 +8,10 @@
 <LinearLayout
     android:id="@+id/layout_tab"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_main_tab"
     android:layout_height="@dimen/dp_45"
     tools:showIn="@layout/activity_main">
+    <!--android:background="@drawable/bg_main_tab"-->
+
 
     <TextView
         android:id="@+id/tv_main"

@@ -99,14 +99,13 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     public RecyclerView getRecyclerView() {
         mRecyclerView.addItemDecoration(new RecycleViewDivider(
                 getActivity(), LinearLayoutManager.VERTICAL, 25, getResources().getColor(R.color.font_FF0072AC)));
-
+        GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
+        mRecyclerView.setLayoutManager(mManagerLayout);
         return mRecyclerView;
     }
 
     @Override
     public void initData() {
-        GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
-        mRecyclerView.setLayoutManager(mManagerLayout);
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
     }
 
@@ -187,7 +186,6 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void receiveInformationsFail() {
-
     }
 
     private View selectLeftView = null;

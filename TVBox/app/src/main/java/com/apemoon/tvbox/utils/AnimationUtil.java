@@ -25,4 +25,12 @@ public class AnimationUtil {
             view.animate().scaleX(unValueX).scaleY(unValueY).setDuration(300).start();
         }
     }
+
+    public static  void setSettingAdapter(View view, boolean hasFocus){
+        if (hasFocus) {
+            view.animate().scaleX(2f).scaleY(2f).setDuration(0).start();
+        } else {
+            view.animate().scaleX(1f).scaleY(1f).setDuration(0).start();
+        }
+    }
 }

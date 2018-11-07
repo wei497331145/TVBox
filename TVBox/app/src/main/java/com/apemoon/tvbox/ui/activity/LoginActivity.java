@@ -101,6 +101,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             case R.id.iv_setting:
                 Intent intent =  new Intent(Settings.ACTION_SETTINGS);
                 startActivity(intent);
+//                ShowActivity.actionStart(LoginActivity.this);
                 break;
         }
     }

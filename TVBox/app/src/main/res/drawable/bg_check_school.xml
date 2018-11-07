@@ -4,15 +4,15 @@
     <item android:state_focused="false" >
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
             <solid android:color="@color/transparent" />
-            <stroke android:width="@dimen/dp_1" android:color="@color/white" />
+            <stroke android:width="@dimen/dp_1" android:color="@color/font_FF4B00C8" />
             <corners android:radius="@dimen/dp_25" />
         </shape>
     </item>
 
-    <item android:state_focused="true" >
+    <item android:state_focused="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-            <solid android:color="@color/font_FF00C6FF" />
-            <stroke android:width="@dimen/dp_0.5" android:color="@color/font_FF00C6FF" />
+            <solid android:color="@color/font_FF785AFF" />
+            <stroke android:width="@dimen/dp_1" android:color="@color/font_FF785AFF" />
             <corners android:radius="@dimen/dp_25" />
 
         </shape>

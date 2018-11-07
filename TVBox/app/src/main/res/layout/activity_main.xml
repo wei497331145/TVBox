@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/font_FF006599">
+    android:background="@drawable/main_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/dp_15"
-        android:background="@color/font_FF0072AC"
         android:orientation="vertical">
 
         <include layout="@layout/view_user" />
@@ -16,7 +16,6 @@
         <com.apemoon.tvbox.ui.view.MainTabView
             android:id="@+id/main_tab"
             android:focusable="true"
-            android:background="@drawable/bg_bl_tv_big_corner_selector"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_30"
             android:layout_marginRight="@dimen/dp_30"
@@ -25,6 +24,8 @@
             android:layout_height="wrap_content">
             <requestFocus/>
         </com.apemoon.tvbox.ui.view.MainTabView>
+        <!--android:background="@drawable/bg_bl_tv_big_corner_selector"-->
+
 
         <FrameLayout
             android:id="@+id/fl_main"

@@ -42,5 +42,13 @@
 
     <color name="box_line_color">#00CCFF</color>
 
+    <color name="font_FF4B00C8">#FF4B00C8</color>
+
+    <color name="font_FF7E56FB">#ff7e56fb</color>
+    <color name="font_FF7355FF">#ff7355ff</color>
+    <color name="font_FF160071">#FF160047</color>
+    <color name="font_FF1E005A">#FF1E005A</color>
+    <color name="font_FF2D0078">#FF2D0078</color>
+    <color name="font_FF785AFF">#FF785AFF</color>
 
 </resources>

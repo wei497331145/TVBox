@@ -3,6 +3,7 @@ package com.apemoon.tvbox.ui.fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
@@ -42,19 +43,23 @@ import butterknife.OnClick;
 
 public class HomeFragment extends BaseFragment implements IInformationView {
     @BindView(R.id.tv_class_schedule)
-    TextView mTvClassSchedule;
+    RelativeLayout mTvClassSchedule;
     @BindView(R.id.tv_class_performance)
-    TextView mTvClassPerformance;
+    RelativeLayout mTvClassPerformance;
     @BindView(R.id.tv_class_task)
-    TextView mTvClassTask;
+    RelativeLayout mTvClassTask;
     @BindView(R.id.tv_my_achievement)
-    TextView mTvMyAchievement;
+    RelativeLayout mTvMyAchievement;
     @BindView(R.id.iv_album)
     ImageView mIvAlbum;
     @BindView(R.id.cv_album)
     RelativeLayout mCvAlbum;
     @BindView(R.id.iv_curriculum)
     ImageView mIvCurriculum;
+    @BindView(R.id.cv_persoanl)
+    RelativeLayout mCvPersonal;
+    @BindView(R.id.iv_personal)
+    ImageView mIvPersonal;
     @BindView(R.id.cv_curriculum)
     RelativeLayout mCvCurriculum;
     @BindView(R.id.recyclerView)
@@ -76,14 +81,21 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         mTvMyAchievement.setFocusable(true);
         mCvAlbum.setFocusable(true);
         mCvCurriculum.setFocusable(true);
+        mCvPersonal.setFocusable(true);
 
         RoundedBitmapDrawable drawableC = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_album));
         drawableC.setCornerRadius(5L);
         mIvAlbum.setImageDrawable(drawableC);
 
-        RoundedBitmapDrawable drawableD = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_curriculum));
+        RoundedBitmapDrawable drawableD = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_curriculm));
         drawableD.setCornerRadius(5L);
-        mIvCurriculum.setImageDrawable(drawableD);
+
+        RoundedBitmapDrawable drawableF = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_personal));
+        drawableF.setCornerRadius(5L);
+        mIvPersonal.setImageDrawable(drawableF);
+
+        mIvCurriculum.setImageDrawable(drawableC);
+        mIvAlbum.setImageDrawable(drawableD);
 
 
     }
@@ -135,6 +147,7 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         setTextChangeListener(mTvMyAchievement);
         setMainChangeListener(mCvAlbum);
         setMainChangeListener(mCvCurriculum);
+        setMainChangeListener(mCvPersonal);
     }
 
     private void setTextChangeListener(View view) {
@@ -221,15 +234,14 @@ public class HomeFragment extends BaseFragment implements IInformationView {
                 break;
             case R.id.tv_my_achievement://我的成绩
                 changeTab(3);
-
-
                 new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassRoomFragment(3), 200);
                 break;
             case R.id.cv_album://班级相册
                 changeTab(4);
                 new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassFragment(3), 200);
-
                 break;
+            case R.id.cv_persoanl://个人相册
+
             case R.id.cv_curriculum://精品课程
                 break;
         }
