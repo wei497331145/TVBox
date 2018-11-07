@@ -3,9 +3,9 @@
     android:id="@+id/ll_new"
     android:background="@drawable/bg_bl_news_selector"
     android:focusable="true"
-    android:layout_marginLeft="@dimen/dp_20"
-    android:layout_marginRight="@dimen/dp_20"
-    android:layout_marginTop="@dimen/dp_20"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:layout_marginTop="@dimen/dp_10"
     android:padding="@dimen/dp_10"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_80">
@@ -14,13 +14,12 @@
         android:id="@+id/iv_head"
         android:src="@drawable/news"
         android:scaleType="centerCrop"
-        android:layout_width="@dimen/dp_85"
+        android:layout_width="@dimen/dp_70"
         android:layout_height="match_parent" />
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_marginLeft="@dimen/dp_12"
         android:layout_marginRight="@dimen/dp_30"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -29,7 +28,7 @@
             android:text="做时代的见证者、开创者、建设者,做时代的见证者、开创者、建设者,做时代的见证者、开创者做时代的见证者、开创者"
             android:maxLines="2"
             android:ellipsize="end"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_15"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -37,11 +36,12 @@
         <TextView
             android:id="@+id/tv_time"
             android:text="2018.08.09"
+            android:layout_marginTop="@dimen/dp_3"
             android:textSize="@dimen/sp_12"
-            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
             android:textColor="@color/font_99FFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </FrameLayout>
+    </RelativeLayout>
 </LinearLayout>
