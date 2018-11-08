@@ -31,7 +31,7 @@ public class NewAdapter extends BaseQuickAdapter<InfoListEntity.InformationBean,
         helper.getView(R.id.ll_new).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                AnimationUtil.setTextAnimation(view,hasFocus,1.1f,1.05f,1.0f,1.0f);
+                AnimationUtil.setTextAnimation(view,hasFocus,1.05f,1.03f,1.0f,1.0f);
             }
         });
     }

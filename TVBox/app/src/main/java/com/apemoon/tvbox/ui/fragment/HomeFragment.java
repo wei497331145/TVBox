@@ -215,7 +215,7 @@ public class HomeFragment extends BaseFragment implements IInformationView {
     }
 
 
-    @OnClick({R.id.tv_class_schedule, R.id.tv_class_performance, R.id.tv_class_task, R.id.tv_my_achievement, R.id.cv_album, R.id.cv_curriculum})
+    @OnClick({R.id.tv_class_schedule, R.id.tv_class_performance, R.id.tv_class_task, R.id.tv_my_achievement, R.id.cv_album, R.id.cv_curriculum,R.id.cv_persoanl})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_class_schedule://班级课表

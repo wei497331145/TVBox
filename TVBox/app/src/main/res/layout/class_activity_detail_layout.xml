@@ -42,7 +42,7 @@
             android:layout_marginEnd="@dimen/dp_25"
             android:layout_marginStart="@dimen/dp_15"
             android:layout_weight="1"
-            android:background="#0078B5"
+            android:background="@color/font_FF1E005A"
             android:descendantFocusability="afterDescendants"
             android:focusable="true">
 
@@ -74,7 +74,7 @@
                     android:layout_width="@dimen/dp_100"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:background="#00A4F8" />
+                    android:background="@color/font_FF785AFF" />
 
 
                 <TextView
