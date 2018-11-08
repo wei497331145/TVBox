@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.apemoon.tvbox.R;
 import com.apemoon.tvbox.base.BaseActivity;
@@ -13,6 +14,7 @@ import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.interfaces.ILoginView;
 import com.apemoon.tvbox.presenter.LoginPresenter;
 import com.apemoon.tvbox.utils.AccountInfoUtil;
+import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.MD5EncoderUtil;
@@ -33,7 +35,8 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     EditText mEtPassword;
     @BindView(R.id.tv_login)
     Button mTvLogin;
-
+    @BindView(R.id.iv_setting)
+    ImageView mIvSetting;
 
 
     private String mAccount;
@@ -88,6 +91,16 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                     view.setScaleY(1.0f);
                 }
 
+            }
+        });
+        setSettingChangeListener(mIvSetting);
+    }
+
+    private void setSettingChangeListener(View view) {
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                AnimationUtil.setSettingAdapter(view, hasFocus);
             }
         });
     }

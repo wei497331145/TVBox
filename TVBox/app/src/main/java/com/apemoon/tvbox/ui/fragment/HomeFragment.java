@@ -241,8 +241,11 @@ public class HomeFragment extends BaseFragment implements IInformationView {
                 new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassFragment(3), 200);
                 break;
             case R.id.cv_persoanl://个人相册
-
+                changeTab(4);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassFragment(3), 200);
+                break;
             case R.id.cv_curriculum://精品课程
+
                 break;
         }
     }

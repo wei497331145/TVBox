@@ -111,7 +111,7 @@
                         android:layout_width="@dimen/dp_80"
                         android:layout_height="@dimen/dp_1"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:background="@color/font_CC00A4F8" />
+                        android:background="@color/font_FF2D0078" />
                 </LinearLayout>
 
                 <WebView

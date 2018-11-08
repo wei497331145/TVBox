@@ -14,7 +14,7 @@
         android:id="@+id/iv_head"
         android:src="@drawable/news"
         android:scaleType="centerCrop"
-        android:layout_width="@dimen/dp_70"
+        android:layout_width="@dimen/dp_90"
         android:layout_height="match_parent" />
 
     <RelativeLayout

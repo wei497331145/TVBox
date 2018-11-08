@@ -22,12 +22,11 @@
             android:layout_weight="1"
             android:nextFocusUp="@id/main_tab"
             android:focusable="true"
-            android:background="@drawable/bg_bl_tv_selector">
+            android:background="@drawable/bg_home_card_selector">
             <ImageView
                 android:id="@+id/iv_class_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/class_schedule"
                 android:scaleType="centerCrop"
                 android:src="@drawable/class_schedule"
                 />
@@ -45,11 +44,10 @@
             android:layout_weight="1"
             android:nextFocusUp="@id/tv_class_schedule"
             android:focusable="true"
-            android:background="@drawable/bg_bl_tv_selector">
+            android:background="@drawable/bg_home_card_selector">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/class_schedule"
                 android:scaleType="centerCrop"
                 android:src="@drawable/class_performance"
                 />
@@ -66,11 +64,10 @@
             android:layout_weight="1"
             android:nextFocusUp="@id/tv_class_performance"
             android:focusable="true"
-            android:background="@drawable/bg_bl_tv_selector">
+            android:background="@drawable/bg_home_card_selector">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/class_schedule"
                 android:scaleType="centerCrop"
                 android:src="@drawable/class_task"
                 />
@@ -87,11 +84,10 @@
             android:layout_weight="1"
             android:nextFocusUp="@id/tv_class_task"
             android:focusable="true"
-            android:background="@drawable/bg_bl_tv_selector">
+            android:background="@drawable/bg_home_card_selector">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/class_schedule"
                 android:scaleType="centerCrop"
                 android:src="@drawable/my_achievement"
                 />
@@ -115,19 +111,19 @@
             android:layout_marginRight="@dimen/dp_10"
             android:background="@drawable/bg_home_card_selector"
             android:padding="@dimen/dp_4"
-            android:layout_weight="2">
+            android:layout_weight="9">
             <ImageView
                 android:id="@+id/iv_curriculum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
+                android:scaleType="fitStart"
                 />
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="5">
             <RelativeLayout
                 android:id="@+id/cv_album"
                 android:nextFocusLeft="@id/tv_my_achievement"
@@ -155,6 +151,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
+                android:adjustViewBounds="true"
                 android:background="@drawable/bg_home_card_selector"
                 android:padding="@dimen/dp_4"
                 android:layout_weight="1">
@@ -171,7 +168,7 @@
         android:layout_width="@dimen/dp_0"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_20"
-        android:layout_weight="5">
+        android:layout_weight="4.5">
 
         <RelativeLayout
             android:layout_marginTop="@dimen/dp_4"

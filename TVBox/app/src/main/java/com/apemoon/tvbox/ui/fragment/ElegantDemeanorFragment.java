@@ -3,6 +3,7 @@ package com.apemoon.tvbox.ui.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
+import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
@@ -86,14 +88,15 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     public RecyclerView getRecyclerView() {
+        GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
+        mRecyclerView.setLayoutManager(mManagerLayout);
         return mRecyclerView;
     }
 
     @Override
     public void initData() {
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
-        GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
-        mRecyclerView.setLayoutManager(mManagerLayout);
+
     }
 
 

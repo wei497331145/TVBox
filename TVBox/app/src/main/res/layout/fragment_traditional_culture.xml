@@ -18,7 +18,7 @@
             android:id="@+id/ll_recy"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/font_FF007BB5"
+            android:background="@color/transparent"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
