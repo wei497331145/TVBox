@@ -70,6 +70,7 @@
                             android:layout_marginTop="@dimen/dp_77"
                             android:hint="@string/account_hint"
                             android:textColor="@color/black"
+                            android:theme="@style/MyEditText"
                             android:textColorHint="@color/font_FF999999"
                             android:textSize="@dimen/sp_16" />
 
@@ -82,6 +83,7 @@
                             android:layout_marginTop="@dimen/dp_30"
                             android:hint="@string/password_hint"
                             android:textColor="@color/black"
+                            android:theme="@style/MyEditText"
                             android:textColorHint="@color/font_FF999999"
                             android:textSize="@dimen/sp_16" />
 

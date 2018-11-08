@@ -146,15 +146,15 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         setTextChangeListener(mTvClassTask);
         setTextChangeListener(mTvMyAchievement);
         setMainChangeListener(mCvAlbum);
-        setMainChangeListener(mCvCurriculum);
-        setMainChangeListener(mCvPersonal);
+        setTextChangeListener(mCvCurriculum);
+        setTextChangeListener(mCvPersonal);
     }
 
     private void setTextChangeListener(View view) {
         view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                AnimationUtil.setTextAnimation(view, hasFocus, 1.1f, 1.1f, 1.0f, 1.0f);
+                AnimationUtil.setTextAnimation(view, hasFocus, 1.02f, 1.02f, 1.0f, 1.0f);
             }
         });
     }
@@ -242,7 +242,7 @@ public class HomeFragment extends BaseFragment implements IInformationView {
                 break;
             case R.id.cv_persoanl://个人相册
                 changeTab(4);
-                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassFragment(3), 200);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> selectedClassFragment(4), 200);
                 break;
             case R.id.cv_curriculum://精品课程
 

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/dp_30"
-        android:background="#0080C3"
+        android:background="@color/transparent"
         android:descendantFocusability="afterDescendants"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 

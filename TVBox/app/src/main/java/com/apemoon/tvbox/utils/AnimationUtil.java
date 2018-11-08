@@ -11,9 +11,9 @@ public class AnimationUtil {
 
     public static  void setAdapter(View view, boolean hasFocus){
         if (hasFocus) {
-            view.animate().scaleX(1.02f).scaleY(1.02f).setDuration(300).start();
+            view.animate().scaleX(1.005f).scaleY(1.005f).setDuration(300).start();
         } else {
-            view.animate().scaleX(0.98f).scaleY(0.98f).setDuration(300).start();
+            view.animate().scaleX(1f).scaleY(1f).setDuration(300).start();
         }
     }
 

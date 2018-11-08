@@ -3,7 +3,7 @@
     android:id="@+id/emptyRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/font_FF0072AC"
+    android:background="@color/font_FF1E005A"
     android:gravity="center"
     android:orientation="vertical"
     android:visibility="gone">
