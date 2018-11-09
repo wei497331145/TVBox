@@ -52,7 +52,7 @@ public class MainPresenter extends RxBasePresenter {
      * 用户登录接口
      */
     public void getSysAppVersion(){
-        Map<String, String> paras = RequestUtil.createMapWithoutToen();
+        Map<String, String> paras = RequestUtil.createMap();
         paras.put("key", "tv_apk");
         addDisposable(mDataManager.getNetService().systemAppVersion(paras),
                 new ProgressObserver<HttpResultBody<AppUpdateEntity>>(mContext, false) {
