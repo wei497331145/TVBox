@@ -27,6 +27,7 @@ import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.NewAdapter;
 import com.apemoon.tvbox.ui.view.MainTabView;
+import com.apemoon.tvbox.ui.view.RoundImageView;
 import com.apemoon.tvbox.utils.AnimationUtil;
 import com.apemoon.tvbox.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -65,6 +66,17 @@ public class HomeFragment extends BaseFragment implements IInformationView {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.iv_class_schedule)
+    RoundImageView iv_class_schedule;
+    @BindView(R.id.iv_class_performance)
+    RoundImageView  iv_class_performance;
+    @BindView(R.id.iv_class_task)
+    RoundImageView  iv_class_task;
+    @BindView(R.id.iv_my_achievement)
+    RoundImageView  iv_my_achievement;
+
+
+
     private NewAdapter mNewAdapter;
     private InformationPresenter mInformationPresenter;
 
@@ -82,20 +94,38 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         mCvAlbum.setFocusable(true);
         mCvCurriculum.setFocusable(true);
         mCvPersonal.setFocusable(true);
+//
+//        RoundedBitmapDrawable drawableC = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_album));
+//        drawableC.setCornerRadius(30L);
+//        mIvAlbum.setImageDrawable(drawableC);
+//
+//        RoundedBitmapDrawable drawableD = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_curriculm));
+//        drawableD.setCornerRadius(20L);
+//
+//        RoundedBitmapDrawable drawableF = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_personal));
+//        drawableF.setCornerRadius(20L);
+//        mIvPersonal.setImageDrawable(drawableF);
+//
+//        mIvCurriculum.setImageDrawable(drawableC);
+//        mIvAlbum.setImageDrawable(drawableD);
 
-        RoundedBitmapDrawable drawableC = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_album));
-        drawableC.setCornerRadius(5L);
-        mIvAlbum.setImageDrawable(drawableC);
+//
+//        RoundedBitmapDrawable drawable1 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.class_schedule));
+//        drawable1.setCornerRadius(0l);
+//        iv_class_schedule.setImageDrawable(drawable1);
+//
+//        RoundedBitmapDrawable drawable2 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.class_performance));
+//        drawable2.setCornerRadius(20L);
+//        iv_class_performance.setImageDrawable(drawable2);
+//
+//        RoundedBitmapDrawable drawable3 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.class_task));
+//        drawable3.setCornerRadius(30L);
+//        iv_class_task.setImageDrawable(drawable3);
+//
+//        RoundedBitmapDrawable drawable4 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.my_achievement));
+//        drawable4.setCornerRadius(0L);
+//        iv_my_achievement.setImageDrawable(drawable4);
 
-        RoundedBitmapDrawable drawableD = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_curriculm));
-        drawableD.setCornerRadius(5L);
-
-        RoundedBitmapDrawable drawableF = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_personal));
-        drawableF.setCornerRadius(5L);
-        mIvPersonal.setImageDrawable(drawableF);
-
-        mIvCurriculum.setImageDrawable(drawableC);
-        mIvAlbum.setImageDrawable(drawableD);
 
 
     }
