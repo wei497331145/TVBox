@@ -1,20 +1,31 @@
 package com.apemoon.tvbox.ui.activity;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apemoon.tvbox.R;
+import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.base.BaseActivity;
+import com.apemoon.tvbox.entity.AppUpdateEntity;
 import com.apemoon.tvbox.entity.UserEntity;
 import com.apemoon.tvbox.factory.main.FragmentFactory;
 import com.apemoon.tvbox.interfaces.IMainTabView;
@@ -28,6 +39,7 @@ import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.PreferenceUtil;
+import com.king.app.updater.AppUpdater;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
@@ -38,6 +50,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNewB.OnDialogCloseListener, AddressSelectorNewB.onSelectorAreaPositionListener {
+    @BindView(R.id.root_view)
+    LinearLayout mRootView;
     @BindView(R.id.tv_school_name)
     TextView mTvSchoolName;
     @BindView(R.id.rl_switch_school)
@@ -65,6 +79,8 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     private UserEntity mUserEntity;
 
     private MainPresenter mMainPresenter;
+
+    private Context mContext;
 
     public static void actionStart(Context context, UserEntity userEntity) {//带参启动界面
         Intent intent = new Intent(context, MainActivity.class);
@@ -94,6 +110,7 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         }
 
         mMainPresenter = new MainPresenter(this, this);
+        mMainPresenter.getSysAppVersion();
     }
 
     private void setUserData(UserEntity.UserInfoBean userInfo) {
@@ -216,6 +233,23 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     }
 
     @Override
+    public void getSystemAppVersion(AppUpdateEntity entity) {
+        try {
+            if (Double.parseDouble(entity.getConfigdesc()) > Double.parseDouble(TvApplication.getVersionName())) {
+                showAppUpgradeDialog(mRootView,MainActivity.this,entity);
+            }
+        }catch (Exception e){
+
+        }
+    }
+
+
+    @Override
+    public void getSystemAppVersionFail() {
+
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (mMainTab.hasFocus()) {
             boolean flag = mMainTab.setTabChange(keyCode);
@@ -291,5 +325,67 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     @Override
     public void onAddressSelected(Province province, City city, County county, Street street) {
 
+    }
+
+
+    /**
+     * App 升级提示
+     * @param view
+     * @param context
+     * @param entity
+     */
+    public void showAppUpgradeDialog(View view, Activity context, AppUpdateEntity entity) {
+
+        View popupView = context.getLayoutInflater().inflate(R.layout.layout_pop_show_app_upgrade, null);
+
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int width = manager.getDefaultDisplay().getWidth();
+        int height = manager.getDefaultDisplay().getHeight();
+
+
+        PopupWindow popView = new PopupWindow(popupView, width*2/3, height*2/3, true);
+        popView.setTouchable(true);
+        popView.setOutsideTouchable(false);
+        // 设置背景为半透明灰色
+        popView.setBackgroundDrawable(new ColorDrawable(0xb0000000));
+        // 设置动画
+        popView.setAnimationStyle(R.style.invitation_anim);
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popView.dismiss();
+                return true;
+            }
+        });
+
+        popView.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        TextView mTvVersion = (TextView)popupView.findViewById(R.id.tv_version);
+
+        TextView mTvEnsure = (TextView)popupView.findViewById(R.id.tv_ensure);
+
+        mTvVersion.setText("最新版本："+entity.getConfigdesc());
+
+        mTvEnsure.requestFocus();
+
+
+        mTvEnsure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AppUpdater.Builder()
+                        .serUrl(entity.getConfigvalue())
+                        .setFilename("TVBox.apk")
+                        .build(getContext())
+                        .start();
+            }
+        });
+
+
+    }
+
+
+    public Context getContext(){
+        return this;
     }
 }

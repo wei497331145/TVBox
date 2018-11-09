@@ -2,6 +2,7 @@ package com.apemoon.tvbox.interfaces.net;
 
 import com.apemoon.tvbox.base.net.HttpResultBody;
 import com.apemoon.tvbox.base.net.NetUrl;
+import com.apemoon.tvbox.entity.AppUpdateEntity;
 import com.apemoon.tvbox.entity.ClassActivityDetail;
 import com.apemoon.tvbox.entity.ClassActivityList;
 import com.apemoon.tvbox.entity.ClassSchedule;
@@ -45,6 +46,14 @@ public interface INetService {
     @FormUrlEncoded
     @POST(NetUrl.USER_LOGIN)
     Observable<HttpResultBody<UserEntity>> loginCall(@FieldMap Map<String, String> paras);
+
+    /**
+     * 获取系统最新APP版本号
+     */
+    @FormUrlEncoded
+    @POST(NetUrl.APP_VERSION)
+    Observable<HttpResultBody<AppUpdateEntity>> systemAppVersion(@FieldMap Map<String, String> paras);
+
 
 
     //===========================  通知的接口 ==================================

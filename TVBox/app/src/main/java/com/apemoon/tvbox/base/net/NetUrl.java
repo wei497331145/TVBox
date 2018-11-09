@@ -30,6 +30,8 @@ public class NetUrl {
     //==============================账号系统接口API==================================================
     public static final String USER_LOGIN = BASE_URL + "user/login";//用户登录接口
 
+    public static final String APP_VERSION = BASE_URL + "common/getConfigValue";//用户登录接口
+
 
     //==============================通知的接口========================================================
     public static final String NOTICE_RECEIVENOTICELIST = BASE_URL + "notice/receiveNoticeList";//查询我接受的公告通知
