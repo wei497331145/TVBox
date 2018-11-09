@@ -493,7 +493,7 @@ class SampleFragmentA : BaseFragment() {
                                         val keys = jb.keySet()
                                         keys.forEachIndexed { week, s ->
                                             if (week == 0) {
-                                              //  data[week][num + 1] = s
+                                                //  data[week][num + 1] = s
                                             } else {
                                                 data[week][num + 1] = jb.get(s).asString
                                             }
@@ -1107,6 +1107,8 @@ class SchoolAssignmentDetailFragment : BaseFragment() {
                 }
             }
         }
+        (activity as MainActivity).switchSchool.nextFocusDownId= tv_back!!.id
+        tv_back?.nextFocusUpId = (activity as MainActivity).switchSchool.id
         tv_back?.requestFocus()
     }
 

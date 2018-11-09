@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -204,6 +205,27 @@ class ClassActivityFragment : BaseFragment() {
             selectView?.postDelayed({
                 selectView?.requestFocus()
             }, 20)
+        }
+    }
+
+    private fun displayWidth(): Int {
+        val manager = activity?.windowManager
+        val outMetrics = DisplayMetrics()
+        manager?.defaultDisplay?.getMetrics(outMetrics)
+        return outMetrics.widthPixels
+        // int height = outMetrics.heightPixels;
+    }
+
+    private fun setItemLayoutParams(rootLayout: View?, count: Int) {
+        var width: Int
+        val height = ViewGroup.LayoutParams.WRAP_CONTENT
+        width = (displayWidth()) / count
+        if (width <= 0) {
+            width = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+        val params = ViewGroup.LayoutParams(width, height)
+        if (null != rootLayout && rootLayout is ViewGroup) {
+            rootLayout.layoutParams = params
         }
     }
 
@@ -443,6 +465,9 @@ class ClassActivityDetailFragment : BaseFragment() {
                 }
             }
         }
+
+        (activity as MainActivity).switchSchool.nextFocusDownId = tv_back!!.id
+        tv_back?.nextFocusUpId = (activity as MainActivity).switchSchool.id
     }
 
     // userId 	是 	int 	用户id
@@ -793,6 +818,8 @@ class PhotoListFragment : BaseFragment() {
                 }
             }
         }
+        (activity as MainActivity).switchSchool.nextFocusDownId = tv_back!!.id
+        tv_back?.nextFocusUpId = (activity as MainActivity).switchSchool.id
         tv_back?.requestFocus()
     }
 
