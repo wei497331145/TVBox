@@ -1,7 +1,6 @@
 package com.apemoon.tvbox.ui.activity;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -13,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apemoon.tvbox.R;
-import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.AppUpdateEntity;
 import com.apemoon.tvbox.entity.UserEntity;
@@ -36,10 +33,8 @@ import com.apemoon.tvbox.ui.view.MainTabView;
 import com.apemoon.tvbox.ui.view.address.AddressSelectorNewB;
 import com.apemoon.tvbox.ui.view.address.BottomDialog;
 import com.apemoon.tvbox.utils.AnimationUtil;
-import com.apemoon.tvbox.utils.ConstantUtil;
 import com.apemoon.tvbox.utils.GlideUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
-import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.king.app.updater.AppUpdater;
 import com.king.app.updater.UpdateConfig;
 import com.king.app.updater.callback.UpdateCallback;
@@ -72,6 +67,9 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
     public MainTabView getMainTab() {
         return mMainTab;
+    }
+    public View getSwitchSchool() {
+        return mIvSwitchSchool;
     }
 
     @BindView(R.id.main_tab)
@@ -270,6 +268,7 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         if(mMainTab!=null) {
             if (isVisiable) {
                 mMainTab.setVisibility(View.VISIBLE);
+                mIvSwitchSchool.setNextFocusDownId(mMainTab.getId());
                 mMainTab.requestFocus();
             } else {
                 mMainTab.setVisibility(View.GONE);
