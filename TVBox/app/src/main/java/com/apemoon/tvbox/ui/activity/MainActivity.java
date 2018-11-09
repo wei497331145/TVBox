@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +41,15 @@ import com.apemoon.tvbox.utils.GlideUtil;
 import com.apemoon.tvbox.utils.GlobalUtil;
 import com.apemoon.tvbox.utils.PreferenceUtil;
 import com.king.app.updater.AppUpdater;
+import com.king.app.updater.UpdateConfig;
+import com.king.app.updater.callback.UpdateCallback;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
 import com.smarttop.library.bean.Street;
 import com.smarttop.library.widget.OnAddressSelectedListener;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -81,6 +86,11 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     private MainPresenter mMainPresenter;
 
     private Context mContext;
+
+    private final Object mLock = new Object();
+
+    private Toast toast;
+
 
     public static void actionStart(Context context, UserEntity userEntity) {//带参启动界面
         Intent intent = new Intent(context, MainActivity.class);
@@ -234,13 +244,8 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
     @Override
     public void getSystemAppVersion(AppUpdateEntity entity) {
-        try {
-            if (Double.parseDouble(entity.getConfigdesc()) > Double.parseDouble(TvApplication.getVersionName())) {
-                showAppUpgradeDialog(mRootView,MainActivity.this,entity);
-            }
-        }catch (Exception e){
 
-        }
+                showAppUpgradeDialog(mRootView,MainActivity.this,entity);
     }
 
 
@@ -365,6 +370,8 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
         TextView mTvEnsure = (TextView)popupView.findViewById(R.id.tv_ensure);
 
+        ProgressBar progressBar = (ProgressBar)popupView.findViewById(R.id.progressBar);
+
         mTvVersion.setText("最新版本："+entity.getConfigdesc());
 
         mTvEnsure.requestFocus();
@@ -373,15 +380,62 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
         mTvEnsure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AppUpdater.Builder()
-                        .serUrl(entity.getConfigvalue())
-                        .setFilename("TVBox.apk")
-                        .build(getContext())
-                        .start();
-            }
+                UpdateConfig config = new UpdateConfig();
+                config.setUrl(entity.getConfigvalue());
+                new AppUpdater(getContext(),config)
+                        .setUpdateCallback(new UpdateCallback() {
+
+                            @Override
+                            public void onDownloading(boolean isDownloading) {
+                                if(isDownloading){
+                                    showToast("已经在下载中,请勿重复下载。");
+                                }
+                            }
+
+                            @Override
+                            public void onStart(String url) {
+                                progressBar.setProgress(0);
+                                progressBar.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onProgress(int progress, int total, boolean isChange) {
+                                if(isChange){
+                                    progressBar.setMax(total);
+                                    progressBar.setProgress(progress);
+                                }
+                            }
+
+                            @Override
+                            public void onFinish(File file) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+                        })
+                        .start();            }
         });
 
 
+    }
+    public void showToast(String text){
+        if(toast == null){
+            synchronized (mLock){
+                if(toast == null){
+                    toast = Toast.makeText(getContext(),text,Toast.LENGTH_SHORT);
+                }
+            }
+        }
+        toast.setText(text);
+        toast.show();
     }
 
 
