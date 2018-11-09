@@ -70,7 +70,7 @@ public interface INetService {
      */
     @FormUrlEncoded
     @POST(NetUrl.NOTICE_SETNOTEREADED)
-    Observable<HttpResultBody<ReceiveNoticeListEntity>> setNoticeRead(@FieldMap Map<String, String> paras);
+    Observable<HttpResultBody<String>> setNoticeRead(@FieldMap Map<String, String> paras);
 
 
     //===========================  个人中心的接口 ==================================

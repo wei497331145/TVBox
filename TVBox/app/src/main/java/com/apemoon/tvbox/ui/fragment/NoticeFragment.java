@@ -140,11 +140,17 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ReceiveNoticeListEntity.NoticeListBean noticeListBean = mNoticeAdapter.getData().get(position);
                 if ("0".endsWith(noticeListBean.getIsRead())) {
-                    mNoticePresenter.setNoteReaded("" + noticeListBean.getId());
-                    noticeListBean.setIsRead("1");
-                    noticeList.remove(position);
-                    noticeList.add(position, noticeListBean);
-//                    mNoticeAdapter.addData(noticeList);
+                    try {
+                        noticeListBean.setIsRead("1");
+                        noticeList.remove(position);
+                        noticeList.add(position, noticeListBean);
+                        View item = view.findViewById(R.id.v_dot_read);
+                        item.setVisibility(View.GONE);
+                        mNoticePresenter.setNoteReaded("" + noticeListBean.getId());
+                    }catch (Exception e){
+                        e.getMessage();
+                    }
+
 
                 }
             }

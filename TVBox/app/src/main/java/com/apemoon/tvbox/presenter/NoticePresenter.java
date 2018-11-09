@@ -76,10 +76,10 @@ public class NoticePresenter extends RxBasePresenter {
         paras.put("userType", PreferenceUtil.getString(ConstantUtil.USER_TYPE,""));
         paras.put("noticeId", noticeId);
         addDisposable(mDataManager.getNetService().setNoticeRead(paras),
-                new ProgressObserver<HttpResultBody<ReceiveNoticeListEntity>>(mContext, true) {
+                new ProgressObserver<HttpResultBody<String>>(mContext, true) {
 
                     @Override
-                    public void doNext(HttpResultBody<ReceiveNoticeListEntity> httpResultBody) {
+                    public void doNext(HttpResultBody<String> httpResultBody) {
                         if (mIReceiveNoticeView != null && TextUtils.equals(httpResultBody.code,"0000")) {
                             mIReceiveNoticeView.setNoticeReadSuccess();
                         }

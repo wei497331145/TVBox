@@ -244,8 +244,9 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
     @Override
     public void getSystemAppVersion(AppUpdateEntity entity) {
-
-                showAppUpgradeDialog(mRootView,MainActivity.this,entity);
+        if(updateApp(TvApplication.getVersionName(),entity.getConfigdesc())) {
+            showAppUpgradeDialog(mRootView, MainActivity.this, entity);
+        }
     }
 
 
@@ -442,4 +443,25 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     public Context getContext(){
         return this;
     }
+
+
+    /**
+     * 判断版本更新
+     * @param localVersion 本地app 版本号
+     * @param newVersion 最新版本号
+     * @return true 需要更新 false 不用
+     */
+    public boolean updateApp(String localVersion, String newVersion) {
+        try {
+            Double dlocal = Double.parseDouble(localVersion);
+            Double dnew = Double.parseDouble(newVersion);
+            if(dnew > dlocal){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

@@ -57,5 +57,7 @@
         android:background="@drawable/bg_gray_logout_selector"
         android:text="确定升级"
         android:textColor="@color/font_CCFFFFFF"
-        android:textSize="@dimen/sp_16" />
+        android:textSize="@dimen/sp_16" >
+    <requestFocus/>
+    </TextView>
 </RelativeLayout>
