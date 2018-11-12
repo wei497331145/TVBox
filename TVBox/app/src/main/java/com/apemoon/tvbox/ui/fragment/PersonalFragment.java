@@ -369,6 +369,10 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
         }
     }
 
+    /**
+     * 年级信息Adapter
+     * @param <UserSemstersEntity>
+     */
     class SmsAdapter<UserSemstersEntity> extends BaseSpinnerAdapter {
         List<com.apemoon.tvbox.entity.userCenter.UserSemstersEntity.SemstersBean> smstersList;
 
