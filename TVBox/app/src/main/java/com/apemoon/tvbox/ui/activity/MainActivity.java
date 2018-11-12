@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apemoon.tvbox.R;
+import com.apemoon.tvbox.app.TvApplication;
 import com.apemoon.tvbox.base.BaseActivity;
 import com.apemoon.tvbox.entity.AppUpdateEntity;
 import com.apemoon.tvbox.entity.UserEntity;
@@ -49,6 +50,10 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+
+/**
+ * Created by wxu on 2018/10/18.
+ */
 public class MainActivity extends BaseActivity implements IMainView, OnAddressSelectedListener, AddressSelectorNewB.OnDialogCloseListener, AddressSelectorNewB.onSelectorAreaPositionListener {
     @BindView(R.id.root_view)
     LinearLayout mRootView;
@@ -74,16 +79,12 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
     @BindView(R.id.main_tab)
     MainTabView mMainTab;
-    @BindView(R.id.fl_main)
-    FrameLayout mFlMain;
     private BottomDialog dialog;
 
     public static final String USER_ENTITY = "user_entity";
     private UserEntity mUserEntity;
 
     private MainPresenter mMainPresenter;
-
-    private Context mContext;
 
     private final Object mLock = new Object();
 
@@ -116,11 +117,15 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
                 setUserData(userInfo);
             }
         }
-
         mMainPresenter = new MainPresenter(this, this);
+        //获取版本更新信息
         mMainPresenter.getSysAppVersion();
     }
 
+    /**
+     * 加载标题信息
+     * @param userInfo
+     */
     private void setUserData(UserEntity.UserInfoBean userInfo) {
         GlideUtil.imageCircleLocal(this, userInfo.getHeadImage(), mIvHead);
         mTvSchoolName.setText(userInfo.getSchoolName());
@@ -278,25 +283,15 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
     }
 
 
-//    public void onRequestMainTabFocus() {
-//
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (mMainTab == null) {
-//                        return;
-//                    }
-//                    mMainTab.rqFocus();
-//                }
-//            }, 1000);
-//    }
-
     @Override
     public void onDestroy() {
         FragmentFactory.getIntance().clearFragment();
         super.onDestroy();
     }
 
+    /**
+     * 切换学校
+     */
     private void showSchoolPop() {
         if (dialog != null) {
             dialog.show();
@@ -308,7 +303,6 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
             dialog.setIndicatorBackgroundColor(android.R.color.holo_orange_light);//设置指示器的颜色
             dialog.setTextSelectedColor(android.R.color.holo_orange_light);//设置字体获得焦点的颜色
             dialog.setTextUnSelectedColor(android.R.color.holo_blue_light);//设置字体没有获得焦点的颜色
-//            dialog.setDisplaySelectorArea("31",1,"2704",1,"2711",0,"15582",1);//设置已选中的地区
             dialog.setSelectorAreaPositionListener(this);
             dialog.show();
         }
@@ -320,6 +314,13 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
     }
 
+    /**
+     * 学校选择回调
+     * @param provincePosition
+     * @param cityPosition
+     * @param countyPosition
+     * @param streetPosition
+     */
     @Override
     public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {
         GlobalUtil.showToast("选择成功");
@@ -445,7 +446,7 @@ public class MainActivity extends BaseActivity implements IMainView, OnAddressSe
 
 
     /**
-     * 判断版本更新
+     * 新APP版本
      * @param localVersion 本地app 版本号
      * @param newVersion 最新版本号
      * @return true 需要更新 false 不用

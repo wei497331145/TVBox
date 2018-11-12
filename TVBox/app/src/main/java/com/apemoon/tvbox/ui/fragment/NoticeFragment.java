@@ -179,7 +179,6 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
 
     private void configWebView(WebView webView) {
         if (null != webView) {
-//            webView.requestFocus();
             webView.setHorizontalScrollBarEnabled(true);
             webView.setVerticalScrollBarEnabled(true);
             WebSettings settings = webView.getSettings();
@@ -237,8 +236,6 @@ public class NoticeFragment extends RxBaseListFragment implements IReceiveNotice
                         break;
                     case REQUESTTYPE_ADD_DATE:
                         if (noticeList != null) {
-//                            noticeList.addAll(receiveNoticeListEntity.getNoticeList());
-
                             mNoticeAdapter.addData(receiveNoticeListEntity.getNoticeList());
                         }
                         break;

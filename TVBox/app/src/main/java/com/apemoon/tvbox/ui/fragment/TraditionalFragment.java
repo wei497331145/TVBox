@@ -3,7 +3,6 @@ package com.apemoon.tvbox.ui.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,11 +18,9 @@ import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
-import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,8 +41,6 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
     LinearLayout llRecy;
     @BindView(R.id.emptyRootLayout)
     LinearLayout emptyRootLayout;
-    @BindView(R.id.root_view)
-    RelativeLayout root_view;
     @BindView(R.id.lv_two_classical)
     RecyclerView lvTwoClassical;
     @BindView(R.id.recyclerView)
@@ -97,8 +92,6 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public RecyclerView getRecyclerView() {
-//        mRecyclerView.addItemDecoration(new RecycleViewDivider(
-//                getActivity(), LinearLayoutManager.VERTICAL, 25, getResources().getColor(R.color.font_FF0072AC)));
         GridLayoutManager mManagerLayout = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mManagerLayout);
         return mRecyclerView;
@@ -122,6 +115,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     public void initListener() {
+        //右侧列表点击事件
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -142,6 +136,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     @Override
     protected void lazyLoadData() {
+        //获取左侧列表数据
         mInformaitonPresenter.receiveInfoClassfication();
     }
 
@@ -155,12 +150,15 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     }
 
+    /**
+     * 加载右侧列表数据
+     *
+     * @param entity
+     */
     @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
-        if (mRecyclerView == null) {
-            return;
-        }
-        if (entity != null) {
+
+        if (mRecyclerView != null && entity != null) {
             informationBeanList = entity.getInformationList();
             setPageInfo(informationBeanList.size());
             if (informationBeanList != null && informationBeanList.size() > 0 && emptyRootLayout != null) {
@@ -174,11 +172,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
                 }
                 emptyRootLayout.setVisibility(View.GONE);
             } else {
-                if (getRequestType() == REQUESTTYPE_NEW_DATE) {
-                    if (emptyRootLayout != null) {
-                        emptyRootLayout.setBackground(null);
-                        emptyRootLayout.setVisibility(View.VISIBLE);
-                    }
+                if (getRequestType() == REQUESTTYPE_NEW_DATE && emptyRootLayout != null) {
+                    emptyRootLayout.setBackground(null);
+                    emptyRootLayout.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -190,6 +186,11 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     private View selectLeftView = null;
 
+    /**
+     * 加载左侧列表数据
+     *
+     * @param entity
+     */
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
         if (lvTwoClassical == null || entity == null) {
@@ -197,17 +198,18 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         }
         twoClasscialList = entity.getTraditonalTwoClassical();
         if (twoClasscialList != null && twoClasscialList.size() > 0 && lvTwoClassical != null) {
+            //暂无数据(隐藏)
             if (emptyRootLayout != null && llRecy != null) {
                 emptyRootLayout.setVisibility(View.GONE);
                 llRecy.setVisibility(View.VISIBLE);
             }
-
+            //当前选中左侧列表
             currentTwoClassId = twoClasscialList.get(0).getId();
+            //左侧列表Adapter
             InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
                 @Override
                 public void onItemSelectListner(int position, View itemView) {
                     selectLeftView = itemView;
-
                     InfoClassicalEntity.TwoClassicalBean bean = twoClasscialList.get(position);
                     if (bean != null) {
                         currentTwoClassId = bean.getId();
@@ -215,8 +217,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
                     }
                 }
             });
-            // lvTwoClassical.setAdapter(twoClassicaladapter);
+            //左侧列表加载数据
             twoClassicaladapter.setNewData(twoClasscialList);
+            //左侧列表点击
             twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -228,6 +231,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
                 }
             });
             twoClassicaladapter.bindToRecyclerView(lvTwoClassical);
+            //设置mainTab向下焦点
             lvTwoClassical.postDelayed(() -> {
                 if (null != lvTwoClassical && lvTwoClassical.getLayoutManager().getChildCount() > 0) {
                     View itemView = lvTwoClassical.getLayoutManager().getChildAt(0);
@@ -238,6 +242,7 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
             }, 20);
             requestNew();
         } else {
+            //暂无数据(显示)
             if (emptyRootLayout != null) {
                 llRecy.setVisibility(View.VISIBLE);
                 emptyRootLayout.setVisibility(View.VISIBLE);
@@ -255,7 +260,9 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
 
     }
 
-
+    /**
+     * 获取右侧列表数据
+     */
     @Override
     public void requestNew() {
         super.requestNew();
@@ -264,13 +271,22 @@ public class TraditionalFragment extends RxBaseListFragment implements IInformat
         }
     }
 
+    /**
+     * 上拉获取更多右侧列表数据
+     */
     @Override
     public void onLoadMoreRequested() {
         super.onLoadMoreRequested();
-        mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
+        if (mInformaitonPresenter != null) {
+            mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
+        }
     }
 
-
+    /**
+     * 返回左侧选中View
+     *
+     * @return
+     */
     public View getSelectLeftView() {
         return selectLeftView;
     }

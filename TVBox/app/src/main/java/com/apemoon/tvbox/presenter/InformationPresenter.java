@@ -111,7 +111,7 @@ public class InformationPresenter extends RxBasePresenter {
     }
 
     /**
-     * 获取信息列表
+     * 获取左侧信息列表
      */
     public void receiveInfoClassfication(){
         Map<String, String> paras = RequestUtil.createMap();

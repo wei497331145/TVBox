@@ -207,10 +207,7 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
     @Override
     public void initData() {
         webView.setBackgroundColor(0);
-//        webView.getBackground().setAlpha(0);
-//        mLlWeb.setBackgroundResource(R.drawable.bg_bl_tv_selector);
         configWebView(webView);
-
         mInformaitonPresenter = new InformationPresenter(getActivity(), this);
     }
 
@@ -220,7 +217,7 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     llContent.requestFocus();
                 }
             }
@@ -255,7 +252,6 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
                             initImages(bean);
                             break;
                         case TYPE_VIDEO_ID://视屏
-//                            initVidoView(bean);
                             initVidoView(bean);
                             break;
 
@@ -295,12 +291,13 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     }
 
+    /**
+     * 加载左侧列表数据
+     * @param entity
+     */
     @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
-        if(mRecyclerView == null){
-            return;
-        }
-        if (entity != null) {
+        if (entity != null && mRecyclerView != null) {
             informationBeanList = entity.getInformationList();
             //获取选中位置
             for (int i = 0; i < informationBeanList.size(); i++) {
@@ -365,14 +362,13 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
 
     @OnClick(R.id.tv_back)
     public void onViewClicked(View view) {
-        Activity activity=getActivity();
-        if(null!=activity) ((MainActivity) getActivity()).setMainTabVisiable(true);
+        Activity activity = getActivity();
+        if (null != activity) ((MainActivity) getActivity()).setMainTabVisiable(true);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         InfoListFragment.this.setUserVisibleHint(false);
         transaction.hide(InfoListFragment.this);
         Fragment fragment = FragmentFactory.getIntance().getFragment(currentFragmetnId);
-       // fragment.setUserVisibleHint(true);
         transaction.show(fragment).commit();
 
     }
@@ -392,6 +388,11 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
     }
 
+    /**
+     * 加载富文本
+     *
+     * @param bean
+     */
     private void initText(InfoListEntity.InformationBean bean) {
         llContent.setVisibility(View.VISIBLE);
         llTv.setVisibility(View.VISIBLE);
@@ -448,8 +449,6 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         webSettings.setDisplayZoomControls(false);
         // 加载URL
         webView.loadUrl(bean.getUrl());
-        // 添加js可调用的接口
-//        webView.addJavascriptInterface(new JS(), "jl");
         //屏蔽掉长按事件 因为webview长按时将会调用系统的复制控件:
         webView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -575,64 +574,6 @@ public class InfoListFragment extends RxBaseListFragment implements IInformation
         intent.putExtra(VIDEO_INFO, info);
         getActivity().startActivity(intent);
 
-    }
-
-
-    private void initPopWindow(InfoListEntity.InformationBean bean) {
-        View popupView = getActivity().getLayoutInflater().inflate(R.layout.layout_dialog_fee, null);
-        md2_popView = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
-        md2_popView.setTouchable(true);
-        md2_popView.setOutsideTouchable(false);
-        md2_popView.setFocusable(true);
-        // 设置背景为半透明灰色
-        md2_popView.setBackgroundDrawable(new BitmapDrawable(null, ""));
-        // 设置动画
-//        md2_popView.setAnimationStyle(R.style.invitation_anim);
-        BDVideoView videoView = popupView.findViewById(R.id.video_view);
-
-        videoView.setVisibility(View.VISIBLE);
-        if (TextUtils.isEmpty(bean.getVideos())) {
-            return;
-        }
-        videoView.setVisibility(View.VISIBLE);
-        VideoDetailInfo info = new VideoDetailInfo(bean.getTitle(), bean.getVideos());
-
-        videoView.setOnVideoControlListener(new SimpleOnVideoControlListener() {
-
-            @Override
-            public void onRetry(int errorStatus) {
-                // TODO: 2017/6/20 调用业务接口重新获取数据
-                // get info and call method "videoView.startPlayVideo(info);"
-            }
-
-            @Override
-            public void onBack() {
-                md2_popView.dismiss();
-            }
-
-            @Override
-            public void onFullScreen() {
-                DisplayUtils.toggleScreenOrientation(getActivity());
-            }
-        });
-        videoView.startPlayVideo(info);
-
-        md2_popView.showAtLocation(rootView, Gravity.NO_GRAVITY, 0, getStatusBarHeight(getActivity()));
-        popupView.requestFocus();
-
-//        rates_lst.getChildAt(0).requestFocus();
-    }
-
-    /**
-     * 获取状态通知栏高度
-     *
-     * @param activity
-     * @return
-     */
-    public static int getStatusBarHeight(Activity activity) {
-        Rect frame = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        return frame.top;
     }
 
 

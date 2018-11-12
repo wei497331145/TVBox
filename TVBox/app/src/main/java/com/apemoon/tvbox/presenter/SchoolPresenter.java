@@ -34,7 +34,7 @@ public class SchoolPresenter extends RxBasePresenter {
 
 
     /**
-     * 获取信息列表
+     * 获取学校类型
      */
     public void receiveSchoolType(){
         Map<String, String> paras = RequestUtil.createMap();
@@ -60,7 +60,7 @@ public class SchoolPresenter extends RxBasePresenter {
     }
 
     /**
-     * 获取信息列表
+     * 获取学校列表
      */
     public void receiveSchool(String provience,String city,String area,String schoolTypeId){
         Map<String, String> paras = RequestUtil.createMap();

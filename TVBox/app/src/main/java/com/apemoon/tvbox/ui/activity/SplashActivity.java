@@ -73,9 +73,9 @@ public class SplashActivity extends BaseActivity implements ILoginView {
 
     }
 
-    /*
-     *   用户登录成功
-     * */
+    /**
+     *  用户登录成功
+     */
     @Override
     public void loginSuccess(UserEntity userEntity, String code,String mAccount,String mPassword) {
         if (userEntity != null) {

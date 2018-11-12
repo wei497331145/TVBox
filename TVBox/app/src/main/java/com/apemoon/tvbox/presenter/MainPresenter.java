@@ -49,7 +49,7 @@ public class MainPresenter extends RxBasePresenter {
     }
 
     /**
-     * 用户登录接口
+     * 获取最新版本信息
      */
     public void getSysAppVersion(){
         Map<String, String> paras = RequestUtil.createMap();

@@ -3,7 +3,6 @@ package com.apemoon.tvbox.ui.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,7 +17,6 @@ import com.apemoon.tvbox.presenter.InformationPresenter;
 import com.apemoon.tvbox.ui.activity.MainActivity;
 import com.apemoon.tvbox.ui.adapter.information.InfoTwoClassicalAdapter;
 import com.apemoon.tvbox.ui.adapter.information.InformationAdapter;
-import com.apemoon.tvbox.ui.view.RecycleViewDivider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 
@@ -112,9 +110,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     public void initListener() {
-        if (mInformationAdater == null) {
-            mInformationAdater = new InformationAdapter(this);
-        }
+        //右侧列表点击事件
         mInformationAdater.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -134,6 +130,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     protected void lazyLoadData() {
+        //获取左侧列表数据
         mInformaitonPresenter.receiveInfoClassfication();
     }
 
@@ -149,10 +146,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     @Override
     public void receiveInformationsSuccess(InfoListEntity entity) {
-        if(mRecyclerView == null){
-            return;
-        }
-        if (entity != null) {
+        if (mRecyclerView != null && entity != null) {
             informationBeanList = entity.getInformationList();
             setPageInfo(informationBeanList.size());
             if (informationBeanList != null && informationBeanList.size() > 0) {
@@ -168,11 +162,10 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                     emptyRootLayout.setVisibility(View.GONE);
                 }
             } else {
-                if (getRequestType() == REQUESTTYPE_NEW_DATE) {
-                    if (emptyRootLayout != null) {
-                        emptyRootLayout.setBackground(null);
-                        emptyRootLayout.setVisibility(View.VISIBLE);
-                    }
+                if (getRequestType() == REQUESTTYPE_NEW_DATE && emptyRootLayout != null) {
+                    emptyRootLayout.setBackground(null);
+                    emptyRootLayout.setVisibility(View.VISIBLE);
+
                 }
 
             }
@@ -186,14 +179,26 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     private View selectLeftView = null;
 
+    /**
+     * 加载左侧列表数据
+     *
+     * @param entity
+     */
     @Override
     public void receiveInformationClassicalSuccess(InfoClassicalEntity entity) {
-        if(lvTwoClassical == null || entity == null){
+        if (lvTwoClassical == null || entity == null) {
             return;
         }
         twoClasscialList = entity.getSchoollTwoClassical();
-        if (twoClasscialList != null && twoClasscialList.size() > 0) {
+        if (twoClasscialList != null && twoClasscialList.size() > 0 && lvTwoClassical != null) {
+            //暂无数据(隐藏)
+            if (emptyRootLayout != null && llRecy != null) {
+                emptyRootLayout.setVisibility(View.GONE);
+                llRecy.setVisibility(View.VISIBLE);
+            }
+            //当前选中左侧列表
             currentTwoClassId = twoClasscialList.get(0).getId();
+            //左侧列表Adapter
             InfoTwoClassicalAdapter twoClassicaladapter = new InfoTwoClassicalAdapter(new RecyclerViewItemSelectListener() {
                 @Override
                 public void onItemSelectListner(int position, View view) {
@@ -205,9 +210,9 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                     }
                 }
             });
-            //  lvTwoClassical.setAdapter(twoClassicaladapter);
-
+            //左侧列表加载数据
             twoClassicaladapter.setNewData(twoClasscialList);
+            //左侧列表点击
             twoClassicaladapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -218,9 +223,8 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
                     }
                 }
             });
-
             twoClassicaladapter.bindToRecyclerView(lvTwoClassical);
-
+            //设置mainTab向下焦点
             lvTwoClassical.postDelayed(() -> {
                 if (null != lvTwoClassical && lvTwoClassical.getLayoutManager().getChildCount() > 0) {
                     View itemView = lvTwoClassical.getLayoutManager().getChildAt(0);
@@ -233,6 +237,7 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
             requestNew();
         } else {
+            //暂无数据(显示)
             if (emptyRootLayout != null) {
                 llRecy.setVisibility(View.VISIBLE);
                 emptyRootLayout.setVisibility(View.VISIBLE);
@@ -251,7 +256,9 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
 
     }
 
-
+    /**
+     * 获取右侧列表数据
+     */
     @Override
     public void requestNew() {
         super.requestNew();
@@ -259,14 +266,20 @@ public class ElegantDemeanorFragment extends RxBaseListFragment implements IInfo
             mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
         }
     }
-
+    /**
+     * 上拉获取更多右侧列表数据
+     */
     @Override
     public void onLoadMoreRequested() {
         super.onLoadMoreRequested();
         mInformaitonPresenter.receiveInformations(String.valueOf(getCurrentPage()), String.valueOf(getPageSize()), String.valueOf(currentTwoClassId));
     }
 
-
+    /**
+     * 返回左侧选中View
+     *
+     * @return
+     */
     public View getSelectLeftView() {
         return selectLeftView;
     }

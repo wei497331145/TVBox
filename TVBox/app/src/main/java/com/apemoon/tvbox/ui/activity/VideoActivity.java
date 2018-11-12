@@ -44,6 +44,9 @@ public class VideoActivity extends BaseActivity {
 
     }
 
+    /**
+     * 视频加载
+     */
     @Override
     public void initData() {
         if(getIntent()!=null){

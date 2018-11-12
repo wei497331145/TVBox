@@ -20,7 +20,6 @@ public interface IPersonalView {
 
     void receiveTeachersInfoSuccess(UserTeachersEntity entity);
 
-    void receiveTeachersInfoFail();
 
     void receiveRecords2Success(UserRecordInfoEntity entity);
 

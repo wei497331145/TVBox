@@ -154,6 +154,9 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     }
 
+    /**
+     * 切换学校
+     */
     private void showSchoolPop(){
         if (dialog != null) {
             dialog.show(this);
@@ -170,10 +173,6 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
         }
     }
 
-    private void showAccountPop(){
-        AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this,mSettingPresenter);
-
-    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -185,6 +184,13 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     }
 
+    /**
+     * 学校选择成功
+     * @param provincePosition
+     * @param cityPosition
+     * @param countyPosition
+     * @param streetPosition
+     */
     @Override
     public void selectorAreaPosition(int provincePosition, int cityPosition, int countyPosition, int streetPosition) {
         GlobalUtil.showToast("选择成功");
@@ -203,6 +209,14 @@ public class SettingActivity extends BaseActivity implements ILoginView,OnAddres
 
     @Override
     public void loginFail() {
+
+    }
+
+    /**
+     * 用户切换
+     */
+    private void showAccountPop(){
+        AccountInfoUtil.showSelectAccountWindow(mRootView,SettingActivity.this,mSettingPresenter);
 
     }
 }

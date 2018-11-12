@@ -51,29 +51,14 @@ public class HomeFragment extends BaseFragment implements IInformationView {
     RelativeLayout mTvClassTask;
     @BindView(R.id.tv_my_achievement)
     RelativeLayout mTvMyAchievement;
-    @BindView(R.id.iv_album)
-    ImageView mIvAlbum;
     @BindView(R.id.cv_album)
     RelativeLayout mCvAlbum;
-    @BindView(R.id.iv_curriculum)
-    ImageView mIvCurriculum;
     @BindView(R.id.cv_persoanl)
     RelativeLayout mCvPersonal;
-    @BindView(R.id.iv_personal)
-    ImageView mIvPersonal;
     @BindView(R.id.cv_curriculum)
     RelativeLayout mCvCurriculum;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-
-    @BindView(R.id.iv_class_schedule)
-    RoundImageView iv_class_schedule;
-    @BindView(R.id.iv_class_performance)
-    RoundImageView  iv_class_performance;
-    @BindView(R.id.iv_class_task)
-    RoundImageView  iv_class_task;
-    @BindView(R.id.iv_my_achievement)
-    RoundImageView  iv_my_achievement;
 
 
 
@@ -94,45 +79,8 @@ public class HomeFragment extends BaseFragment implements IInformationView {
         mCvAlbum.setFocusable(true);
         mCvCurriculum.setFocusable(true);
         mCvPersonal.setFocusable(true);
-//
-//        RoundedBitmapDrawable drawableC = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_album));
-//        drawableC.setCornerRadius(30L);
-//        mIvAlbum.setImageDrawable(drawableC);
-//
-//        RoundedBitmapDrawable drawableD = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_curriculm));
-//        drawableD.setCornerRadius(20L);
-//
-//        RoundedBitmapDrawable drawableF = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.school_personal));
-//        drawableF.setCornerRadius(20L);
-//        mIvPersonal.setImageDrawable(drawableF);
-//
-//        mIvCurriculum.setImageDrawable(drawableC);
-//        mIvAlbum.setImageDrawable(drawableD);
-
-//
-//        RoundedBitmapDrawable drawable1 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.class_schedule));
-//        drawable1.setCornerRadius(0l);
-//        iv_class_schedule.setImageDrawable(drawable1);
-//
-//        RoundedBitmapDrawable drawable2 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.class_performance));
-//        drawable2.setCornerRadius(20L);
-//        iv_class_performance.setImageDrawable(drawable2);
-//
-//        RoundedBitmapDrawable drawable3 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.class_task));
-//        drawable3.setCornerRadius(30L);
-//        iv_class_task.setImageDrawable(drawable3);
-//
-//        RoundedBitmapDrawable drawable4 = RoundedBitmapDrawableFactory.create(getResources(), id2Bitmap(getActivity(), R.drawable.my_achievement));
-//        drawable4.setCornerRadius(0L);
-//        iv_my_achievement.setImageDrawable(drawable4);
-
-
-
     }
 
-    public static Bitmap id2Bitmap(Context context, int id) {
-        return BitmapFactory.decodeResource(context.getResources(), id);
-    }
 
     @Override
     public void onStart() {
@@ -223,7 +171,6 @@ public class HomeFragment extends BaseFragment implements IInformationView {
                 if (fragment instanceof ClassRoomFragment) {
                     ((ClassRoomFragment) fragment).initSelectedPosition(position);
                     LogUtil.d("requestFocus1    " + position);
-                    //((ClassRoomFragment) fragment).setSelectedPosition(position);
                 }
             }
         }
@@ -238,7 +185,6 @@ public class HomeFragment extends BaseFragment implements IInformationView {
                 if (fragment instanceof ClassFragment) {
                     ((ClassFragment) fragment).initSelectedPosition(position);
                     LogUtil.d("requestFocus1    " + position);
-                    //((ClassRoomFragment) fragment).setSelectedPosition(position);
                 }
             }
         }

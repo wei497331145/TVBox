@@ -43,7 +43,6 @@ import butterknife.OnClick;
 public class PersonalFragment extends BaseFragment implements IPersonalView, View.OnFocusChangeListener {
 
     private PersonalPresenter mPersonalPresenter;
-
     //年级信息
     List<UserSemstersEntity.SemstersBean> semstersBeanList;
     private UserSemstersEntity mUserSemsterEntity;
@@ -185,7 +184,10 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     }
 
-
+    /**
+     * 加载个人信息
+     * @param userEntity
+     */
     private void setUserData(UserInfoEntity userEntity) {
         UserEntity.UserInfoBean userInfo = userEntity.getUserInfo();
         if (getActivity() != null) {
@@ -227,6 +229,10 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     }
 
+    /**
+     * 获取教师头数据
+     * @param entity
+     */
     @Override
     public void receiveTeachersInfoSuccess(UserTeachersEntity entity) {
         if(mRecyclerViewMd1 == null){
@@ -237,16 +243,14 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
         ms.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerViewMd1.setLayoutManager(ms);
         mRecyclerViewMd1.setAdapter(mTeachersAdapter);
-        ArrayList<String> newList = new ArrayList<>();
         mTeachersAdapter.setNewData(entity.getTeacherList());
     }
 
-    @Override
-    public void receiveTeachersInfoFail() {
 
-    }
-
-
+    /**
+     * 获取评价信息
+     * @param entity
+     */
     @Override
     public void receiveRecords2Success(UserRecordInfoEntity entity) {
         if(mRecyclerViewMd3 == null){
@@ -263,7 +267,10 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
 
     }
 
-
+    /**
+     * 获取奖惩信息
+     * @param entity
+     */
     @Override
     public void receiveRecords4Success(UserRecordInfoEntity entity) {
         if(mRecyclerViewMd2 == null){
@@ -315,7 +322,6 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
         });
         md3Spiner.setVisibility(View.VISIBLE);
         mPersonalPresenter.receiveRecords("2", entity.getCurrentSemesterId());
-//        mPersonalPresenter.receiveRecords("3", entity.getCurrentSemesterId());
         mPersonalPresenter.receiveRecords("4", entity.getCurrentSemesterId());
     }
 
@@ -330,9 +336,6 @@ public class PersonalFragment extends BaseFragment implements IPersonalView, Vie
         mTvJudgeInfo.setBackgroundResource(R.drawable.bg_bl_tv_info_selector);
     }
 
-//         mTvBaseInfo.setOnFocusChangeListener(this);
-//        mTvSanctionInfo.setOnFocusChangeListener(this);
-//        mTvJudgeInfo.setOnFocusChangeListener(this);
 
     @Override
     public void onFocusChange(View view, boolean b) {
